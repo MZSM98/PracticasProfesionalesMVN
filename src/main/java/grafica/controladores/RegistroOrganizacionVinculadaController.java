@@ -84,7 +84,7 @@ public class RegistroOrganizacionVinculadaController {
         organizacionVinculadaDTO.setTelefonoOV(textTelefonoOV.getText().trim());
         organizacionVinculadaDTO.setDireccionOV(textDireccionOV.getText().trim());
         
-        if (!validarCampos(organizacionVinculadaDTO)) {
+        if (!validarCamposOrganizacionVinculada(organizacionVinculadaDTO)) {
             
             return;
         }        
@@ -97,7 +97,7 @@ public class RegistroOrganizacionVinculadaController {
         }
     }
     
-    private boolean validarCampos(OrganizacionVinculadaDTO organizacionVinculadaDTO) {
+    private boolean validarCamposOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculadaDTO) {
                
         try {
             

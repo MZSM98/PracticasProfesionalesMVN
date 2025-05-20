@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 public class ConfiguracionDB {
     
-    private static final String PROPERTIES_FILE = "resources/properties/db_config.properties";
+    private static final String PROPERTIES_FILE = "/main/resources/properties/db_config.properties";
     private static final Logger LOG = Logger.getLogger(ConfiguracionDB.class);
     
     public static Properties loadProperties() {

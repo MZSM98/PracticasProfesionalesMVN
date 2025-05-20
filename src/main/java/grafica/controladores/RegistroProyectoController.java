@@ -1,28 +1,35 @@
 package grafica.controladores;
 
 import accesoadatos.dto.ProyectoDTO;
+import accesoadatos.dto.OrganizacionVinculadaDTO;
 import accesoadatos.dto.ProyectoDTO.EstadoProyecto;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import grafica.validadores.OrganizacionVinculadaValidador;
 import grafica.utils.AlertaUtil;
 import grafica.validadores.ProyectoValidador;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import logica.dao.ProyectoDAO;
+import logica.dao.OrganizacionVinculadaDAO;
 import logica.interfaces.InterfazProyectoDAO;
+import logica.interfaces.InterfazOrganizacionVinculadaDAO;
 
-public class RegistroProyectoController {    
+public class RegistroProyectoController implements Initializable {    
     
-    private static final Logger LOG = Logger.getLogger(RegistroOrganizacionVinculadaController.class);
+    private static final Logger LOG = Logger.getLogger(RegistroProyectoController.class);
     
     @FXML
     private TextField textProyectoID;
@@ -31,39 +38,107 @@ public class RegistroProyectoController {
     private TextField textTituloProyecto;
     
     @FXML
-    private TextField textPeriodoEscolar;
+    private TextField textResponsableProyecto;
+    
+    @FXML
+    private ComboBox<String> comboPeriodoEscolar;
     
     @FXML
     private TextArea textDescripcionProyecto;
     
     @FXML
-    private ComboBox comboOrganizacionVinculada;
+    private ComboBox<OrganizacionVinculadaDTO> comboOrganizacionVinculada;
       
-            
     @FXML 
-    private Button botonCancelarRegistroOV;
+    private Button botonCancelar;
     
     @FXML
-    private Button botonRegistrarOrganizacionVinculada;
+    private Button botonGuardarProyecto;
     
     private InterfazProyectoDAO interfazProyectoDAO;
+    private InterfazOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
     private ProyectoDTO proyectoDTO;
     
     private boolean modoEdicion = false;
     
-    public void initialize() {
-        
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
         interfazProyectoDAO = new ProyectoDAO();
+        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAO();
+        
+        
+        textProyectoID.setDisable(true);
+        
+        cargarPeriodosEscolares();
+        
+        cargarOrganizacionesVinculadas();
+    }
+    
+    private void cargarPeriodosEscolares() {
+        // Debo agregar después la lógica e implementación en base de datos para los periodos escolares
+        ObservableList<String> periodos = FXCollections.observableArrayList(
+            "Febrero 2025 - Junio 2025",
+            "Agosto 2025 - Diciembre 2025",
+            "Febrero 2026 - Junio 2026"
+        );
+        comboPeriodoEscolar.setItems(periodos);
+    }
+    
+    private void cargarOrganizacionesVinculadas() {
+        
+        try {
+            
+            List<OrganizacionVinculadaDTO> organizaciones = 
+                interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas();
+            
+            List<OrganizacionVinculadaDTO> organizacionesActivas = organizaciones.stream()
+                .filter(org -> "ACTIVO".equals(org.getEstadoOV()))
+                .collect(java.util.stream.Collectors.toList());
+            
+            comboOrganizacionVinculada.setItems(FXCollections.observableArrayList(organizacionesActivas));
+            
+            comboOrganizacionVinculada.setCellFactory(param -> new javafx.scene.control.ListCell<OrganizacionVinculadaDTO>() {
+                @Override
+                protected void updateItem(OrganizacionVinculadaDTO item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.getNombreOV());
+                    }
+                }
+            });
+            
+            comboOrganizacionVinculada.setButtonCell(new javafx.scene.control.ListCell<OrganizacionVinculadaDTO>() {
+                @Override
+                protected void updateItem(OrganizacionVinculadaDTO item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.getNombreOV());
+                    }
+                }
+            });
+            
+        } catch (SQLException e) {
+            
+            LOG.error("Error al cargar las organizaciones vinculadas: " + e.getMessage());
+            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
+        } catch (IOException e) {
+            
+            LOG.error("Error al cargar las organizaciones vinculadas: " + e.getMessage());
+            AlertaUtil.mostrarAlerta("Error", "Error al cargar la información, contacte con un administrador", Alert.AlertType.ERROR);
+        }
     }
     
     public void cambiarAModoEdicion(boolean modoEdicion) {
         
-        textProyectoID.setDisable(true);        
         this.modoEdicion = modoEdicion;
         
         if (modoEdicion) {
             
-            botonRegistrarOrganizacionVinculada.setText("Actualizar");
+            botonGuardarProyecto.setText("Actualizar");
         }
     }
     
@@ -71,36 +146,61 @@ public class RegistroProyectoController {
         
         this.proyectoDTO = proyectoDTO;
         
+        textProyectoID.setText(String.valueOf(proyectoDTO.getProyectoID()));
         textTituloProyecto.setText(proyectoDTO.getTituloProyecto());
         textDescripcionProyecto.setText(proyectoDTO.getDescripcionProyecto());
-        comboOrganizacionVinculada.set(proyectoDTO.getRfcMoral());
-        text.setText(proyectoDTO.getDireccionOV());
+        comboPeriodoEscolar.setValue(proyectoDTO.getPeriodoEscolar());
         
+        try {
+            
+            OrganizacionVinculadaDTO organizacion = 
+                interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(proyectoDTO.getRfcMoral());
+            
+            if (organizacion != null) {
+                
+                for (OrganizacionVinculadaDTO org : comboOrganizacionVinculada.getItems()) {
+                    
+                    if (org.getRfcMoral().equals(organizacion.getRfcMoral())) {
+                        
+                        comboOrganizacionVinculada.setValue(org);
+                        textResponsableProyecto.setText(organizacion.getNombreOV());
+                        break;
+                    }
+                }
+            }
+        } catch (SQLException | IOException e) {
+            
+            LOG.error("Error al cargar la organización del proyecto: " + e.getMessage());
+            AlertaUtil.mostrarAlerta("Error", "No se pudieron cargar las organizaciones, contacte con un administrador", Alert.AlertType.ERROR);
+        }
     }
     
     @FXML
-    private void registrarOrganizacionVinculada(ActionEvent evento) {
+    private void guardarProyecto(ActionEvent evento) {
         
-        if(!modoEdicion){
+        if (!modoEdicion) {
             
             proyectoDTO = new ProyectoDTO();
         }
         
         proyectoDTO.setTituloProyecto(textTituloProyecto.getText().trim());
-        proyectoDTO.setNombreOV(textNombreOV.getText().trim());
-        proyectoDTO.setTelefonoOV(textTelefonoOV.getText().trim());
-        proyectoDTO.setDireccionOV(textDireccionOV.getText().trim());
+        proyectoDTO.setDescripcionProyecto(textDescripcionProyecto.getText().trim());
+        proyectoDTO.setPeriodoEscolar(comboPeriodoEscolar.getValue());
+        OrganizacionVinculadaDTO organizacionSeleccionada = comboOrganizacionVinculada.getValue();
         
-        if (!validarCampos(proyectoDTO)) {
+        if (organizacionSeleccionada != null) {
             
+            proyectoDTO.setRfcMoral(organizacionSeleccionada.getRfcMoral());
+        }
+        if (!validarCampos(proyectoDTO)) {
             return;
-        }        
+        }
         if (modoEdicion) {
             
-            actualizarOrganizacionVinculada(proyectoDTO);
+            actualizarProyecto(proyectoDTO);
         } else {
             
-            crearNuevaOrganizacionVinculada(proyectoDTO);
+            crearNuevoProyecto(proyectoDTO);
         }
     }
     
@@ -108,7 +208,7 @@ public class RegistroProyectoController {
                
         try {
             
-            ProyectoValidador.validarOrganizacionVinculada(proyectoDTO);
+            ProyectoValidador.validarProyecto(proyectoDTO);
             return true;
         } catch (IllegalArgumentException iae) {
             
@@ -118,75 +218,79 @@ public class RegistroProyectoController {
         }
     }
     
-    private void crearNuevaOrganizacionVinculada(ProyectoDTO proyectoDTO) {
+    private void crearNuevoProyecto(ProyectoDTO proyectoDTO) {
         
-        proyectoDTO.setEstadoProyecto(EstadoProyecto.ACTIVO.name());                
+        proyectoDTO.setEstadoProyecto(EstadoProyecto.ACTIVO.name());
+        
         try {
             
-            interfazProyectoDAO.insertarProyecto(proyectoDTO);
-            AlertaUtil.mostrarAlerta("Éxito", "Organización Registrada", Alert.AlertType.INFORMATION);
-            limpiarCampos();
+            boolean exito = interfazProyectoDAO.insertarProyecto(proyectoDTO);
             
-        } catch(SQLIntegrityConstraintViolationException icve){
+            if (exito) {
+                
+                AlertaUtil.mostrarAlerta("Éxito", "Proyecto registrado correctamente", Alert.AlertType.INFORMATION);
+                limpiarCampos();
+            } else {
+                
+                AlertaUtil.mostrarAlerta("Error", "No se pudo registrar el proyecto", Alert.AlertType.ERROR);
+            }
             
-            LOG.error(icve);
-            AlertaUtil.mostrarAlerta("Error", "La Organización que está tratando de registrar ya existe", Alert.AlertType.WARNING);
+        } catch (SQLException sqle) {
             
-        } catch (SQLException e) {
+            LOG.error("Error con la conexión de base de datos", sqle);
+            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
+        } catch (IOException ioe) {
             
-            LOG.error("Error con la conexion de base de datos", e);
-            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos: ", Alert.AlertType.ERROR);
-            
-        } catch (IOException e) {
-            
-            LOG.error("Error al registrar la organización", e);
-            AlertaUtil.mostrarAlerta("Error", "Error al registrar la organización: ", Alert.AlertType.ERROR);
-        } 
+            LOG.error("Error al registrar el proyecto", ioe);
+            AlertaUtil.mostrarAlerta("Error", "Error al registrar el proyecto", Alert.AlertType.ERROR);
+        }
     }
     
-    private void actualizarOrganizacionVinculada(ProyectoDTO organizacionVinculadaDTO) {
-                
+    private void actualizarProyecto(ProyectoDTO proyectoDTO) {
+        
         try {
             
-            boolean actualizacionExitosa = organizacionVinculadaDAO.editarOrganizacionVinculada(organizacionVinculadaDTO);            
+            boolean actualizacionExitosa = interfazProyectoDAO.editarProyecto(proyectoDTO);
+            
             if (actualizacionExitosa) {
                 
-                AlertaUtil.mostrarAlerta("Éxito", "Organización actualizada correctamente", Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlerta("Éxito", "Proyecto actualizado correctamente", Alert.AlertType.INFORMATION);
                 cerrarVentana();
             } else {
                 
-                AlertaUtil.mostrarAlerta("Error", "No se pudo actualizar la organización", Alert.AlertType.ERROR);
+                AlertaUtil.mostrarAlerta("Error", "No se pudo actualizar el proyecto", Alert.AlertType.ERROR);
             }
             
-        } catch (SQLException e) {
+        } catch (SQLException sqle) {
             
-            LOG.error("Error con la conexión de base de datos", e);
-            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos: " + e.getMessage(), Alert.AlertType.ERROR);
-        } catch (IOException e) {
+            LOG.error("Error con la conexión de base de datos", sqle);
+            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
+        } catch (IOException ioe) {
             
-            LOG.error("Error al actualizar la organización", e);
-            AlertaUtil.mostrarAlerta("Error", "Error al actualizar la organización: " + e.getMessage(), Alert.AlertType.ERROR);
+            LOG.error("Error al actualizar el proyecto", ioe);
+            AlertaUtil.mostrarAlerta("Error", "Error al actualizar el proyecto", Alert.AlertType.ERROR);
         }
     }
     
     @FXML
-    private void cancelarRegistroOrganizacionVinculada(ActionEvent evento) {
+    private void cancelarRegistro(ActionEvent evento) {
         
         cerrarVentana();
     }
     
     private void cerrarVentana() {
         
-        Stage stage = (Stage) botonCancelarRegistroOV.getScene().getWindow();
+        Stage stage = (Stage) botonCancelar.getScene().getWindow();
         stage.close();
     }
     
     private void limpiarCampos() {
         
-        text.setText("");
-        textNombreOV.setText("");
-        textTelefonoOV.setText("");
-        textDireccionOV.setText("");
+        textProyectoID.setText("");
+        textTituloProyecto.setText("");
+        textDescripcionProyecto.setText("");
+        comboPeriodoEscolar.setValue(null);
+        comboOrganizacionVinculada.setValue(null);
+        textResponsableProyecto.setText("");
     }
-        
 }

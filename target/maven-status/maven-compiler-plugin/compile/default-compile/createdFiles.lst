@@ -8,6 +8,7 @@ accesoadatos\dto\ProyectoDTO.class
 grafica\utils\AlertaUtil.class
 logica\interfaces\InterfazCoordinadorDAO.class
 grafica\controladores\RegistroOrganizacionVinculadaController.class
+grafica\controladores\RegistroProyectoController$1.class
 logica\funcionalidades\GeneradorCredenciales.class
 logica\dao\AutoEvaluacionDAO.class
 accesoadatos\dto\ResponsableOVDTO.class
@@ -26,11 +27,13 @@ grafica\controladores\GestionAcademicoEvaluadorController.class
 accesoadatos\dto\OrganizacionVinculadaDTO$EstadoOrganizacionVinculada.class
 accesoadatos\dto\EstudianteDTO.class
 grafica\validadores\AcademicoValidador.class
+grafica\controladores\MenuPrincipalCoordinadorController.class
 accesoadatos\dto\CredencialesIngresoDTO.class
 logica\dao\CoordinadorDAO.class
 logica\dao\EstudianteDAO.class
 logica\dao\AcademicoEvaluadorDAO.class
 grafica\validadores\ProyectoValidador.class
+grafica\controladores\RegistroProyectoController.class
 accesoadatos\dto\AcademicoEvaluadorDTO.class
 logica\dao\CredencialesIngresoDAO.class
 logica\interfaces\InterfazUsuarioDAO.class
@@ -40,7 +43,9 @@ accesoadatos\dto\OrganizacionVinculadaDTO.class
 logica\interfaces\InterfazEstudianteDAO.class
 logica\interfaces\InterfazAcademicoEvaluadorDAO.class
 logica\interfaces\InterfazReporteParcialDAO.class
+grafica\controladores\RegistroProyectoController$2.class
 com\pdc\practicasprofesionales\PracticasProfesionales.class
+grafica\controladores\RegistroAcademicoEvaluadorController.class
 logica\dao\ProfesorEEDAO.class
 grafica\validadores\OrganizacionVinculadaValidador.class
 accesoadatos\ConfiguracionDB.class

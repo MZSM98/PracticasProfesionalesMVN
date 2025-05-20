@@ -34,7 +34,7 @@ public class MenuPrincipalCoordinadorController{
             stage.showAndWait();                     
         } catch (IOException ex) {
             
-            LOG.error("Error al cargar la ventana de registro OV: " + ex.getMessage());            
+            LOG.error("Error al cargar la ventana de gestión de Organizaciones Vinculadas: " + ex.getMessage());            
         }        
     }
     
@@ -53,8 +53,27 @@ public class MenuPrincipalCoordinadorController{
             
         } catch (IOException ex) {
             
-            LOG.error("Error al cargar la ventana de registro OV: " + ex.getMessage());            
+            LOG.error("Error al cargar la ventana de gestión de academicos: " + ex.getMessage());            
         }        
+    }
+    
+    @FXML
+    private void abrirGestionProyecto(){
+        
+        try {
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/proyecto/FXMLGestionProyecto.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Gestión Proyectos");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();            
+            
+        } catch (IOException ex) {
+            
+            LOG.error("Error al cargar la ventana de gestión de proyectos: " + ex.getMessage());            
+        }     
     }
     
     @FXML

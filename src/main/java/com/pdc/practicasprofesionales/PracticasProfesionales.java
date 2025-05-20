@@ -17,7 +17,7 @@ public class PracticasProfesionales extends Application {
         
         LOG.info("Se inició correctamente el log");
         
-        Parent root = FXMLLoader.load(getClass().getResource("/grafica/FXMLMenuPrincipalCoordinador.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml"));
                
         Scene scene = new Scene(root);
         

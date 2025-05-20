@@ -28,10 +28,10 @@
                </font>
             </Label>
             <TextField fx:id="textBuscarTitulo" layoutX="178.0" layoutY="84.0" prefHeight="25.0" prefWidth="330.0" />
-            <Button fx:id="botonEditarProyecto" layoutX="524.0" layoutY="154.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Editar" />
-            <Button fx:id="botonRegistrarProyecto" layoutX="524.0" layoutY="118.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Registrar" />
+            <Button fx:id="botonEditarProyecto" layoutX="524.0" layoutY="154.0" mnemonicParsing="false" onAction="#editarProyecto" prefHeight="25.0" prefWidth="74.0" text="Editar" />
+            <Button fx:id="botonRegistrarProyecto" layoutX="524.0" layoutY="118.0" mnemonicParsing="false" onAction="#abrirRegistroProyecto" prefHeight="25.0" prefWidth="74.0" text="Registrar" />
             <Button fx:id="botonSalir" layoutX="524.0" layoutY="192.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Salir" />
-            <Button fx:id="botonCambiarEstadoProyecto" layoutX="23.0" layoutY="84.0" mnemonicParsing="false" text="Cambiar Estado" />
+            <Button fx:id="botonCambiarEstadoProyecto" layoutX="23.0" layoutY="84.0" mnemonicParsing="false" onAction="#cambiarEstadoProyecto" text="Cambiar Estado" />
             <Label layoutX="136.0" layoutY="88.0" text="Titulo:" />
             <Button fx:id="botonConsultarProyecto" layoutX="524.0" layoutY="372.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Consultar" />
          </children>
