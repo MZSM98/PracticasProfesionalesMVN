@@ -93,7 +93,7 @@ public class GestionOrganizacionVinculadaController implements Initializable {
         
         try {
             
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/organizacionvinculada/FXMLRegistroOV.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/organizacionvinculada/FXMLRegistroOrganizacionVinculada.fxml"));
             Parent root = loader.load();            
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);

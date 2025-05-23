@@ -20,23 +20,23 @@ public class OrganizacionVinculadaValidador {
         }
     }
     
-    public static void validarNombre(String nombreOV, int longitudMaxima) {
+    public static void validarNombre(String nombreOV, String longitudMinimaYMaxima) {
         
         if (nombreOV.isEmpty()) {
             
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
         
-        String formatoNombre = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
+        String formatoNombre = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\\s]+$";
         
         if (!nombreOV.matches(formatoNombre)){
             
-            throw new IllegalArgumentException("El nombre sólo puede contener letras");
+            throw new IllegalArgumentException("El nombre sólo puede contener letras y números");
         }
         
-        if (nombreOV.length() > longitudMaxima) {
+        if (!nombreOV.matches(longitudMinimaYMaxima)) {
             
-            throw new IllegalArgumentException("El nombre no puede tener más de " + longitudMaxima + " caracteres");
+            throw new IllegalArgumentException("El nombre debe tener al menos 3 letras y menos de 100");
         }
     }
     
@@ -51,7 +51,7 @@ public class OrganizacionVinculadaValidador {
         
         if (!telefonoOV.matches(formatoTelefono)) {
             
-            throw new IllegalArgumentException("Numero de telefono inválido");
+            throw new IllegalArgumentException("Numero de telefono inválido: el número debe tener 10 dígitos");
         }               
     }
     
@@ -66,7 +66,7 @@ public class OrganizacionVinculadaValidador {
         
         if (!direccionOV.matches(formatoDireccion)){
             
-            throw new IllegalArgumentException("La dirección no es válida");
+            throw new IllegalArgumentException("La dirección sólo debe contener letras y números");
         }
         
         if (direccionOV.length() > longitudMaxima) {
@@ -78,7 +78,7 @@ public class OrganizacionVinculadaValidador {
     public static void validarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculadaDTO) {
         
         validarRfcMoral(organizacionVinculadaDTO.getRfcMoral(),12);
-        validarNombre(organizacionVinculadaDTO.getNombreOV(), 45);
+        validarNombre(organizacionVinculadaDTO.getNombreOV(), ".{3,100}");
         validarTelefono(organizacionVinculadaDTO.getTelefonoOV(),10);
         validarDireccion(organizacionVinculadaDTO.getDireccionOV(), 200);
     }

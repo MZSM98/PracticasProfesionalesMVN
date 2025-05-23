@@ -65,12 +65,8 @@ public class RegistroProyectoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         interfazProyectoDAO = new ProyectoDAO();
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAO();
-        
-        
         textProyectoID.setDisable(true);
-        
         cargarPeriodosEscolares();
-        
         cargarOrganizacionesVinculadas();
     }
     

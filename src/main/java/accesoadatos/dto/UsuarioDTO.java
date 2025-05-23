@@ -2,17 +2,10 @@ package accesoadatos.dto;
 
 public class UsuarioDTO {
 
-    private String rol;
     private String usuario;
     private String contrasena;
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
+    private TipoUsuarioDTO tipoUsuario;
+    private String salt;
 
     public String getUsuario() {
         return usuario;
@@ -28,6 +21,22 @@ public class UsuarioDTO {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public TipoUsuarioDTO getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(TipoUsuarioDTO tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
     
 }

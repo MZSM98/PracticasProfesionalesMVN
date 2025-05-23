@@ -1,10 +1,11 @@
 
 package accesoadatos.dto;
 
-public class ResponsableOVDTO {
+public class ResponsableOrganizacionVinculadaDTO {
     private String rfc;
-    private String puesto;
+    private String cargo;
     private String nombreResponsable;
+    private String rfcMoralOrganizacionVinculada;
 
     public String getRfc() {
         return rfc;
@@ -14,12 +15,12 @@ public class ResponsableOVDTO {
         this.rfc = rfc;
     }
 
-    public String getPuesto() {
-        return puesto;
+    public String getCargo() {
+        return cargo;
     }
 
-    public void setPuesto(String puesto) {
-        this.puesto = puesto;
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
     public String getNombreResponsable() {
@@ -28,6 +29,14 @@ public class ResponsableOVDTO {
 
     public void setNombreResponsable(String nombreResponsable) {
         this.nombreResponsable = nombreResponsable;
+    }
+    
+    public String getRfcMoralOrganizacionVinculada() {
+        return rfcMoralOrganizacionVinculada;
+    }
+
+    public void setRfcMoralOrganizacionVinculada(String rfcMoralOrganizacionVinculada) {
+        this.rfcMoralOrganizacionVinculada = rfcMoralOrganizacionVinculada;
     }
     
     

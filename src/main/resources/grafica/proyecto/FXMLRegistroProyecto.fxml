@@ -28,8 +28,8 @@
             <TextArea fx:id="textDescripcionProyecto" layoutX="142.0" layoutY="164.0" prefHeight="59.0" prefWidth="358.0" />
             <ComboBox fx:id="comboOrganizacionVinculada" layoutX="145.0" layoutY="242.0" prefHeight="25.0" prefWidth="358.0" />
             <TextField fx:id="textResponsableProyecto" editable="false" layoutX="145.0" layoutY="280.0" prefHeight="25.0" prefWidth="358.0" />
-            <Button fx:id="botonGuardarProyecto" layoutX="534.0" layoutY="86.0" mnemonicParsing="false" text="Guardar" />
-            <Button fx:id="botonCancelar" layoutX="534.0" layoutY="124.0" mnemonicParsing="false" text="Cancelar" />
+            <Button fx:id="botonGuardarProyecto" layoutX="534.0" layoutY="86.0" mnemonicParsing="false" onAction="#guardarProyecto" text="Guardar" />
+            <Button fx:id="botonCancelar" layoutX="534.0" layoutY="124.0" mnemonicParsing="false" onAction="#cancelarRegistro" text="Cancelar" />
             <Label layoutX="24.0" layoutY="18.0" text="ID de Proyecto:" />
             <TextField fx:id="textProyectoID" layoutX="113.0" layoutY="14.0" prefHeight="25.0" prefWidth="61.0" />
          </children>

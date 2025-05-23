@@ -117,30 +117,26 @@ public class EstudianteDAO implements InterfazEstudianteDAO {
         final String CONSULTA_SQL = "SELECT * FROM estudiante";
         List<EstudianteDTO> listaEstudiantes = new ArrayList<>();
 
-        Connection conexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultadoEstudiantes = null;
-
         try {
-            conexion = new ConexionBD().getConexionBD();
-            preparedStatement = conexion.prepareStatement(CONSULTA_SQL);
-            resultadoEstudiantes = preparedStatement.executeQuery();
+            conexionBD = new ConexionBD().getConexionBD();
+            declaracionPreparada = conexionBD.prepareStatement(CONSULTA_SQL);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
 
-            while(resultadoEstudiantes.next()) {
+            while(resultadoDeOperacion.next()) {
                 EstudianteDTO estudiante = new EstudianteDTO();
-                estudiante.setMatricula(resultadoEstudiantes.getString("matricula"));
-                estudiante.setNombreEstudiante(resultadoEstudiantes.getString("nombreEstudiante"));
-                estudiante.setPeriodoEscolar(resultadoEstudiantes.getString("periodoEscolar"));
-                estudiante.setSeccionEstudiante(resultadoEstudiantes.getString("seccionEstudiante"));
-                estudiante.setAvanceCrediticio(resultadoEstudiantes.getInt("avanceCrediticio"));
-                estudiante.setPromedio(resultadoEstudiantes.getDouble("promedio"));
+                estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
+                estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
+                estudiante.setPeriodoEscolar(resultadoDeOperacion.getString("periodoEscolar"));
+                estudiante.setSeccionEstudiante(resultadoDeOperacion.getString("seccionEstudiante"));
+                estudiante.setAvanceCrediticio(resultadoDeOperacion.getInt("avanceCrediticio"));
+                estudiante.setPromedio(resultadoDeOperacion.getDouble("promedio"));
 
                 listaEstudiantes.add(estudiante);
             }
         } finally {
-            if (resultadoEstudiantes != null) resultadoEstudiantes.close();
-            if (preparedStatement != null) preparedStatement.close();
-            if (conexion != null) conexion.close();
+            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
+            if (declaracionPreparada != null) declaracionPreparada.close();
+            if (conexionBD != null) conexionBD.close();
         }
 
         return listaEstudiantes;

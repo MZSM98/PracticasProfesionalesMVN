@@ -20,6 +20,8 @@ public class MenuPrincipalCoordinadorController{
     @FXML
     private Label labelCerrarSesion;    
     
+    private Stage parentStage;
+    
     @FXML    
     private void abrirGestionOrganizacionVinculada(ActionEvent event){
         
@@ -53,9 +55,11 @@ public class MenuPrincipalCoordinadorController{
             
         } catch (IOException ex) {
             
-            LOG.error("Error al cargar la ventana de gestión de academicos: " + ex.getMessage());            
+            LOG.error("Error al cargar la ventana de Gestion de Académicos: " + ex.getMessage());
+            
         }        
     }
+    
     
     @FXML
     private void abrirGestionProyecto(){
@@ -81,5 +85,11 @@ public class MenuPrincipalCoordinadorController{
         
         Stage currentStage = (Stage) labelCerrarSesion.getScene().getWindow();
         currentStage.close();
+        parentStage.show();
+    }
+    
+    public void setParentStage(Stage parentStage) {
+        
+        this.parentStage = parentStage;
     }
 }

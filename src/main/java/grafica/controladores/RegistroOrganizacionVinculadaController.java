@@ -80,9 +80,9 @@ public class RegistroOrganizacionVinculadaController {
         }
         
         organizacionVinculadaDTO.setRfcMoral(textRfcOV.getText().trim().toUpperCase());
-        organizacionVinculadaDTO.setNombreOV(textNombreOV.getText().trim());
+        organizacionVinculadaDTO.setNombreOV(textNombreOV.getText().replaceAll("\\s+"," ").trim());
         organizacionVinculadaDTO.setTelefonoOV(textTelefonoOV.getText().trim());
-        organizacionVinculadaDTO.setDireccionOV(textDireccionOV.getText().trim());
+        organizacionVinculadaDTO.setDireccionOV(textDireccionOV.getText().replaceAll("\\s+"," ").trim());
         
         if (!validarCamposOrganizacionVinculada(organizacionVinculadaDTO)) {
             

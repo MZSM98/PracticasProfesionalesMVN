@@ -13,4 +13,8 @@ public class AlertaUtil {
         alerta.showAndWait();
     }
     
+    private AlertaUtil(){
+        throw new IllegalAccessError("Clase de utileria...");
+    }
+    
 }

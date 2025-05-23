@@ -1,6 +1,6 @@
 package logica.dao;
 
-import accesoadatos.dto.ResponsableOVDTO;
+import accesoadatos.dto.ResponsableOrganizacionVinculadaDTO;
 import accesoadatos.ConexionBD;
 
 import java.io.IOException;
@@ -13,12 +13,12 @@ import logica.interfaces.InterfazResponsableOrganizacionVinculadaDAO;
 
 public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableOrganizacionVinculadaDAO {
 
-    Connection conexionBD;
-    PreparedStatement declaracionPreparada;
-    ResultSet resultadoDeOperacion;
+    private Connection conexionBD;
+    private PreparedStatement declaracionPreparada;
+    private ResultSet resultadoDeOperacion;
 
     @Override
-    public boolean insertarResponsableOV(ResponsableOVDTO responsable) throws SQLException, IOException {
+    public boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
         String insertarSQL = "INSERT INTO responsableov (rfc, puesto, nombreResponsable) VALUES (?, ?, ?)";
         boolean insercionExitosa = false;
 
@@ -26,7 +26,7 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
             conexionBD = new ConexionBD().getConexionBD();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, responsable.getRfc());
-            declaracionPreparada.setString(2, responsable.getPuesto());
+            declaracionPreparada.setString(2, responsable.getCargo());
             declaracionPreparada.setString(3, responsable.getNombreResponsable());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
@@ -56,14 +56,14 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
     }
 
     @Override
-    public boolean editarResponsableOV(ResponsableOVDTO responsable) throws SQLException, IOException {
+    public boolean editarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
         String actualizarSQL = "UPDATE responsableov SET puesto = ?, nombreResponsable = ? WHERE rfc = ?";
         boolean actualizacionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBD();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
-            declaracionPreparada.setString(1, responsable.getPuesto());
+            declaracionPreparada.setString(1, responsable.getCargo());
             declaracionPreparada.setString(2, responsable.getNombreResponsable());
             declaracionPreparada.setString(3, responsable.getRfc());
             declaracionPreparada.executeUpdate();
@@ -76,9 +76,9 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
     }
 
     @Override
-    public ResponsableOVDTO buscarResponsableOV(String rfc) throws SQLException, IOException {
+    public ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfc) throws SQLException, IOException {
         String consultaSQL = "SELECT rfc, puesto, nombreResponsable FROM responsableov WHERE rfc = ?";
-        ResponsableOVDTO responsable = null;
+        ResponsableOrganizacionVinculadaDTO responsable = null;
 
         try {
             conexionBD = new ConexionBD().getConexionBD();
@@ -87,9 +87,9 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
-                responsable = new ResponsableOVDTO();
+                responsable = new ResponsableOrganizacionVinculadaDTO();
                 responsable.setRfc(resultadoDeOperacion.getString("rfc"));
-                responsable.setPuesto(resultadoDeOperacion.getString("puesto"));
+                responsable.setCargo(resultadoDeOperacion.getString("puesto"));
                 responsable.setNombreResponsable(resultadoDeOperacion.getString("nombreResponsable"));
             }
         } finally {

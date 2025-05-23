@@ -3,6 +3,7 @@ package logica.dao;
 import logica.interfaces.InterfazAcademicoEvaluadorDAO;
 import accesoadatos.dto.AcademicoEvaluadorDTO;
 import accesoadatos.ConexionBD;
+import accesoadatos.dto.UsuarioDTO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,13 +13,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import logica.interfaces.InterfazUsuarioDAO;
+import grafica.utils.ContrasenaUtil;
 
 public class AcademicoEvaluadorDAO implements InterfazAcademicoEvaluadorDAO {
     
-    Connection conexionBD;
-    PreparedStatement declaracionPreparada;
-    ResultSet resultadoDeOperacion;
-       
+    private Connection conexionBD;
+    private PreparedStatement declaracionPreparada;
+    private ResultSet resultadoDeOperacion;
+    
+    private InterfazUsuarioDAO interfazUsuarioDAO;
+    
+    public AcademicoEvaluadorDAO(){
+        interfazUsuarioDAO = new UsuarioDAO();
+    }
+    
     @Override
     public boolean insertarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException, IOException{
         
@@ -28,10 +37,17 @@ public class AcademicoEvaluadorDAO implements InterfazAcademicoEvaluadorDAO {
         try {
             
             conexionBD = new ConexionBD().getConexionBD();
+            UsuarioDTO usuario = new UsuarioDTO();
+            usuario.setUsuario(academicoEvaluador.getNumeroDeTrabajador());
+            usuario.setTipoUsuario(academicoEvaluador.getTipoUsuario());
+            usuario.setContrasena(ContrasenaUtil.creaContrasenaPorDefecto(academicoEvaluador));
+            interfazUsuarioDAO.insertarUsuario(usuario);
+            
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, academicoEvaluador.getNumeroDeTrabajador());
             declaracionPreparada.setString(2, academicoEvaluador.getNombreAcademico());
             declaracionPreparada.executeUpdate();
+            
             insercionExitosa = true;
             
         } finally {

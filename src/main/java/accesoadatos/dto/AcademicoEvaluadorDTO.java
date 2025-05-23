@@ -21,6 +21,5 @@ public class AcademicoEvaluadorDTO extends UsuarioDTO{
     public void setNombreAcademico(String nombreAcademico) {
         this.nombreAcademico = nombreAcademico;
     }
-    
-    
+        
 }

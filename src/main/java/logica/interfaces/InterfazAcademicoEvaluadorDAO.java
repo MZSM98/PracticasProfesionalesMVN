@@ -17,5 +17,4 @@ public interface InterfazAcademicoEvaluadorDAO {
     
     List<AcademicoEvaluadorDTO> listarAcademicoEvaluador() throws SQLException, IOException;
     
-    
 }

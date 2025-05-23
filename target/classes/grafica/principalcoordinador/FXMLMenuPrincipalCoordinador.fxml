@@ -26,7 +26,7 @@
             <Button fx:id="botonConsultarEstadisticas" layoutX="259.0" layoutY="201.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Estadísticas" />
             <Label layoutX="479.0" layoutY="99.0" text="Ov's" />
             <Button fx:id="botonGestionarOVs" layoutX="457.0" layoutY="130.0" mnemonicParsing="false" onAction="#abrirGestionOrganizacionVinculada" prefHeight="25.0" prefWidth="68.0" text="Gestión" />
-            <Button fx:id="botonConsultarProyectos" layoutX="457.0" layoutY="159.0" mnemonicParsing="false" text="Proyectos" />
+            <Button fx:id="botonGestionarProyectos" layoutX="457.0" layoutY="159.0" mnemonicParsing="false" text="Proyectos" onAction="#abrirGestionProyecto" />
             <Label fx:id="labelCerrarSesion" layoutX="487.0" layoutY="264.0" onMouseClicked="#cerrarSesion" text="Cerrar Sesión" textFill="#0095ff" underline="true">
                <font>
                   <Font name="System Bold" size="12.0" />

@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS `organizacionvinculada`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organizacionvinculada` (
   `rfcMoral` varchar(12) NOT NULL,
-  `nombreOV` varchar(45) NOT NULL,
+  `nombreOV` varchar(100) DEFAULT NULL,
   `telefonoOV` varchar(10) NOT NULL,
   `direccionOV` varchar(200) NOT NULL,
   `estadoOV` enum('ACTIVO','INACTIVO') NOT NULL DEFAULT 'ACTIVO',
@@ -145,7 +145,7 @@ CREATE TABLE `organizacionvinculada` (
 
 LOCK TABLES `organizacionvinculada` WRITE;
 /*!40000 ALTER TABLE `organizacionvinculada` DISABLE KEYS */;
-INSERT INTO `organizacionvinculada` VALUES ('SAM981231H54','Computación sin Fronteras y ni Señuelos','2282928271','Araucarias 89','ACTIVO'),('SAM981231H76','SiDoctom','2282929871','Ciruelos 2','INACTIVO'),('SAM981231H78','Marcos2','1234567890','Araucarias','ACTIVO'),('SRT981231U78','Marcos','1234567890','Ciruelos 15','ACTIVO');
+INSERT INTO `organizacionvinculada` VALUES ('SAM981231H54','Computación sin Fronteras y ni Señuelos','2282928271','Araucarias 89','ACTIVO'),('SAM981231H76','SiDoctom','2282929871','Ciruelos 2','INACTIVO'),('SAM981231H78','Marcos2','1234567890','Araucarias','INACTIVO'),('SRT981231U78','Marcos','1234567890','Ciruelos 15','ACTIVO');
 /*!40000 ALTER TABLE `organizacionvinculada` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,6 +171,7 @@ CREATE TABLE `profesoree` (
 
 LOCK TABLES `profesoree` WRITE;
 /*!40000 ALTER TABLE `profesoree` DISABLE KEYS */;
+INSERT INTO `profesoree` VALUES ('GUI202020','2','Guillermo'),('VIC202020','3','Victor');
 /*!40000 ALTER TABLE `profesoree` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +187,7 @@ CREATE TABLE `proyecto` (
   `titulo` varchar(100) NOT NULL,
   `periodoEscolar` varchar(45) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
-  `rfcMoral` varchar(12) DEFAULT NULL,
+  `rfcMoral` varchar(12) NOT NULL,
   `estadoProyecto` enum('ACTIVO','INACTIVO') NOT NULL DEFAULT 'ACTIVO',
   PRIMARY KEY (`proyectoID`),
   KEY `fk_proyecto_organizacion` (`rfcMoral`),
@@ -234,29 +235,32 @@ LOCK TABLES `reporteparcial` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `representanteov`
+-- Table structure for table `responsableorganizacionvinculada`
 --
 
-DROP TABLE IF EXISTS `representanteov`;
+DROP TABLE IF EXISTS `responsableorganizacionvinculada`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `representanteov` (
+CREATE TABLE `responsableorganizacionvinculada` (
   `rfc` varchar(13) NOT NULL,
+  `nombreRepresentante` varchar(100) DEFAULT NULL,
   `cargo` varchar(45) NOT NULL,
-  `nombreRepresentante` varchar(100) NOT NULL,
   `correoRepresentante` varchar(100) NOT NULL,
+  `rfcMoral_OV` varchar(12) NOT NULL,
   PRIMARY KEY (`rfc`),
-  UNIQUE KEY `rfc_UNIQUE` (`rfc`)
+  UNIQUE KEY `rfc_UNIQUE` (`rfc`),
+  KEY `fk_representanteov_organizacionvinculada` (`rfcMoral_OV`),
+  CONSTRAINT `fk_representanteov_organizacionvinculada` FOREIGN KEY (`rfcMoral_OV`) REFERENCES `organizacionvinculada` (`rfcMoral`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `representanteov`
+-- Dumping data for table `responsableorganizacionvinculada`
 --
 
-LOCK TABLES `representanteov` WRITE;
-/*!40000 ALTER TABLE `representanteov` DISABLE KEYS */;
-/*!40000 ALTER TABLE `representanteov` ENABLE KEYS */;
+LOCK TABLES `responsableorganizacionvinculada` WRITE;
+/*!40000 ALTER TABLE `responsableorganizacionvinculada` DISABLE KEYS */;
+/*!40000 ALTER TABLE `responsableorganizacionvinculada` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -294,6 +298,7 @@ CREATE TABLE `usuario` (
   `usuario` varchar(15) NOT NULL,
   `contrasena` varchar(64) NOT NULL,
   `tipousuario` int NOT NULL,
+  `salt` varchar(24) NOT NULL,
   PRIMARY KEY (`usuario`),
   KEY `tipo_usuario_fk_idx` (`tipousuario`),
   CONSTRAINT `tipo_usuario_fk` FOREIGN KEY (`tipousuario`) REFERENCES `tipousuario` (`idtipo`)
@@ -306,6 +311,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES ('COR123456','69fa4d17ff66295f11b24a4d7bc8b2a9d7c9ac8317ab81e516c6e045bbf0e08f',1,'dHbZy4XvGCUjvP6R3bFdfg=='),('GUI202020','9a0ec7270ee7c828fddbea70e3c4bd905da8edc15d67c28fba889ef3032c8a90',3,'LlKp2UX8saTbB/VkVhTo2A=='),('VIC202020','ef54dd3da9570809d14015c8d43f02739a092db6ea7ccfad56eb977aa2c481ae',3,'XRRzwxNfJRRcKUh3+/lsMg==');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -318,4 +324,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-20 16:32:15
+-- Dump completed on 2025-05-22 19:34:18

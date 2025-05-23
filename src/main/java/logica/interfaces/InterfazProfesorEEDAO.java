@@ -3,6 +3,7 @@ package logica.interfaces;
 import accesoadatos.dto.ProfesorEEDTO;
 import java.sql.SQLException;
 import java.io.IOException;
+import java.util.List;
 
 public interface InterfazProfesorEEDAO {
     
@@ -14,4 +15,6 @@ public interface InterfazProfesorEEDAO {
     
     ProfesorEEDTO buscarProfesorEE(String numeroTrabajador) throws SQLException, IOException;
     
+    List<ProfesorEEDTO> listaProfesorEE() throws SQLException, IOException;
+
 }
