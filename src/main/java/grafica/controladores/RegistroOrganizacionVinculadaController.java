@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import grafica.validadores.OrganizacionVinculadaValidador;
 import grafica.utils.AlertaUtil;
 import grafica.utils.ConstantesUtil;
+import grafica.utils.RestriccionCamposUtil;
 import logica.interfaces.InterfazOrganizacionVinculadaDAO;
 
 public class RegistroOrganizacionVinculadaController {    
@@ -33,7 +34,6 @@ public class RegistroOrganizacionVinculadaController {
     
     @FXML
     private TextField textDireccionOV;
-      
             
     @FXML 
     private Button botonCancelarRegistroOV;
@@ -49,6 +49,7 @@ public class RegistroOrganizacionVinculadaController {
     public void initialize() {
         
         organizacionVinculadaDAO = new OrganizacionVinculadaDAO();
+        aplicarRestriccionesACampos();
     }
     
     public void cambiarAModoEdicion(boolean modoEdicion) {
@@ -81,9 +82,9 @@ public class RegistroOrganizacionVinculadaController {
         }
         
         organizacionVinculadaDTO.setRfcMoral(textRfcOV.getText().trim().toUpperCase());
-        organizacionVinculadaDTO.setNombreOV(textNombreOV.getText().replaceAll(ConstantesUtil.REGEX_ESPACIOS_MULTIPLES,ConstantesUtil.REGEX_ESPACIO).trim());
+        organizacionVinculadaDTO.setNombreOV(textNombreOV.getText().replaceAll(ConstantesUtil.REGEX_ESPACIOS_MULTIPLES,ConstantesUtil.ESPACIO).trim());
         organizacionVinculadaDTO.setTelefonoOV(textTelefonoOV.getText().trim());
-        organizacionVinculadaDTO.setDireccionOV(textDireccionOV.getText().replaceAll(ConstantesUtil.REGEX_ESPACIOS_MULTIPLES,ConstantesUtil.REGEX_ESPACIO).trim());
+        organizacionVinculadaDTO.setDireccionOV(textDireccionOV.getText().replaceAll(ConstantesUtil.REGEX_ESPACIOS_MULTIPLES,ConstantesUtil.ESPACIO).trim());
         
         if (!validarCamposOrganizacionVinculada(organizacionVinculadaDTO)) {
             
@@ -179,6 +180,14 @@ public class RegistroOrganizacionVinculadaController {
         textNombreOV.setText("");
         textTelefonoOV.setText("");
         textDireccionOV.setText("");
+    }
+    
+    private void aplicarRestriccionesACampos(){
+        
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textRfcOV, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textNombreOV, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textTelefonoOV, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textDireccionOV, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
     }
         
 }

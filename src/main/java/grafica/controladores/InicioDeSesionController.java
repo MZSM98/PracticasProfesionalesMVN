@@ -32,6 +32,7 @@ import logica.interfaces.InterfazUsuarioDAO;
 import org.apache.log4j.Logger;
 import grafica.utils.AlertaUtil;
 import grafica.utils.ConstantesUtil;
+import grafica.utils.RestriccionCamposUtil;
 
 public class InicioDeSesionController implements Initializable {
 
@@ -58,6 +59,7 @@ public class InicioDeSesionController implements Initializable {
         interfazUsuarioDAO = new UsuarioDAO();
         interfazTipoUsuarioDAO = new TipoUsuarioDAO();
         poblarComboTipoUsuario();
+        aplicarRestriccionesACampos();
     }    
 
     @FXML
@@ -75,6 +77,7 @@ public class InicioDeSesionController implements Initializable {
         usuarioDTO.setContrasena(textContrasena.getText().trim());
         usuarioDTO.setTipoUsuario(comboTipoUsuario.getValue());
         textUsuario.lengthProperty();
+        
         if(!validarCamposInicioSesion(usuarioDTO)){
             
             return;
@@ -146,7 +149,7 @@ public class InicioDeSesionController implements Initializable {
             AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException ioe) {
             
-            LOG.error(ioe);
+            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION,ioe);
             AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.NONE);
         }
     }
@@ -159,7 +162,7 @@ public class InicioDeSesionController implements Initializable {
             return true;
         } catch (IllegalArgumentException iae) {
             
-            LOG.error (ConstantesUtil.LOG_DATOS_NO_VALIDOS, iae);
+            LOG.error (ConstantesUtil.LOG_DATOS_NO_VALIDOS,iae);
             AlertaUtil.mostrarAlerta(ConstantesUtil.ALERTA_DATOS_INVALIDOS, iae.getMessage(), Alert.AlertType.WARNING);
             return false;
         } 
@@ -170,5 +173,11 @@ public class InicioDeSesionController implements Initializable {
         comboTipoUsuario.setValue(null);
         textUsuario.setText("");
         textContrasena.setText("");
+    }
+    
+    private void aplicarRestriccionesACampos(){
+        
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textContrasena, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textUsuario, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
     }
 }

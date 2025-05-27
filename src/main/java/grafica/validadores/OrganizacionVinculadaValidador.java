@@ -44,11 +44,11 @@ public class OrganizacionVinculadaValidador {
         
         if (telefonoOV.isEmpty()) {
             
-            throw new IllegalArgumentException("El teléfono es obligatorio");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_TELEFONO_OBLIGATORIO);
         }        
-        if (!telefonoOV.matches(ConstantesUtil.REGEX_TELEFONO)) {
+        if (telefonoOV.length() !=(ConstantesUtil.LONGITUD_TELEFONO)) {
             
-            throw new IllegalArgumentException("Numero de telefono inválido: el número debe tener 10 dígitos");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_LONGITUD_TELEFONO);
         }               
     }
     
@@ -56,7 +56,7 @@ public class OrganizacionVinculadaValidador {
         
         if (direccionOV.isEmpty()) {
             
-            throw new IllegalArgumentException("La dirección es obligatoria");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_DIRECCION_OBLIGATORIA);
         }      
         if (!direccionOV.matches(ConstantesUtil.REGEX_LETRAS_Y_NUMEROS)){
             
