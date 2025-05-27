@@ -36,11 +36,11 @@ public class AcademicoEvaluadorDAO implements InterfazAcademicoEvaluadorDAO {
         
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             UsuarioDTO usuario = new UsuarioDTO();
             usuario.setUsuario(academicoEvaluador.getNumeroDeTrabajador());
             usuario.setTipoUsuario(academicoEvaluador.getTipoUsuario());
-            usuario.setContrasena(ContrasenaUtil.creaContrasenaPorDefecto(academicoEvaluador));
+            usuario.setContrasena(ContrasenaUtil.crearContrasenaPorDefecto(academicoEvaluador));
             interfazUsuarioDAO.insertarUsuario(usuario);
             
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
@@ -68,7 +68,7 @@ public class AcademicoEvaluadorDAO implements InterfazAcademicoEvaluadorDAO {
         
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setString(1, numeroDeTrabajador);
             declaracionPreparada.executeUpdate();
@@ -92,7 +92,7 @@ public class AcademicoEvaluadorDAO implements InterfazAcademicoEvaluadorDAO {
         boolean actualizacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, academicoEvaluador.getNombreAcademico());
             declaracionPreparada.setString(2, academicoEvaluador.getNumeroDeTrabajador());
@@ -113,7 +113,7 @@ public class AcademicoEvaluadorDAO implements InterfazAcademicoEvaluadorDAO {
         AcademicoEvaluadorDTO academico = null;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, numeroDeTrabajador);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -140,7 +140,7 @@ public class AcademicoEvaluadorDAO implements InterfazAcademicoEvaluadorDAO {
         List<AcademicoEvaluadorDTO> academicos = new ArrayList<>();
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 

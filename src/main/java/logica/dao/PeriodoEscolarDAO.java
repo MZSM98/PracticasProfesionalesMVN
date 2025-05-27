@@ -23,7 +23,7 @@ public class PeriodoEscolarDAO implements InterfazPeriodoEscolarDAO {
         PeriodoEscolarDTO periodoEscolar = null;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, idPeriodoEscolar);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -49,7 +49,7 @@ public class PeriodoEscolarDAO implements InterfazPeriodoEscolarDAO {
         List<PeriodoEscolarDTO> listaPeriodoEscolar = new ArrayList<>();
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 

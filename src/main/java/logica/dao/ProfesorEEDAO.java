@@ -32,11 +32,11 @@ public class ProfesorEEDAO implements InterfazProfesorEEDAO {
         boolean insercionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             UsuarioDTO usuario = new UsuarioDTO();
             usuario.setUsuario(profesor.getNumeroTrabajador());
             usuario.setTipoUsuario(profesor.getTipoUsuario());
-            usuario.setContrasena(ContrasenaUtil.creaContrasenaPorDefecto(profesor));
+            usuario.setContrasena(ContrasenaUtil.crearContrasenaPorDefecto(profesor));
             interfazUsuarioDAO.insertarUsuario(usuario);
             
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
@@ -59,7 +59,7 @@ public class ProfesorEEDAO implements InterfazProfesorEEDAO {
         boolean eliminacionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setString(1, numeroTrabajador);
             declaracionPreparada.executeUpdate();
@@ -77,7 +77,7 @@ public class ProfesorEEDAO implements InterfazProfesorEEDAO {
         boolean actualizacionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, profesor.getNombreProfesor());
             declaracionPreparada.setString(2, profesor.getSeccion());
@@ -97,7 +97,7 @@ public class ProfesorEEDAO implements InterfazProfesorEEDAO {
         ProfesorEEDTO profesor = null;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, numeroTrabajador);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -122,7 +122,7 @@ public class ProfesorEEDAO implements InterfazProfesorEEDAO {
         List<ProfesorEEDTO> profesores = new ArrayList<>();
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
             

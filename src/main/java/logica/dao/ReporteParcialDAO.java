@@ -22,7 +22,7 @@ public class ReporteParcialDAO implements InterfazReporteParcialDAO {
         boolean insercionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setDate(1, reporte.getFechaDeReporte());
             declaracionPreparada.setInt(2, reporte.getHorasReportadas());
@@ -41,7 +41,7 @@ public class ReporteParcialDAO implements InterfazReporteParcialDAO {
         boolean eliminacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setDate(1, fechaDeReporte);
             declaracionPreparada.executeUpdate();
@@ -59,7 +59,7 @@ public class ReporteParcialDAO implements InterfazReporteParcialDAO {
         boolean actualizacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setInt(1, reporte.getHorasReportadas());
             declaracionPreparada.setDate(2, reporte.getFechaDeReporte());
@@ -78,7 +78,7 @@ public class ReporteParcialDAO implements InterfazReporteParcialDAO {
         ReporteParcialDTO reporte = null;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setDate(1, fechaDeReporte);
             resultadoDeOperacion = declaracionPreparada.executeQuery();

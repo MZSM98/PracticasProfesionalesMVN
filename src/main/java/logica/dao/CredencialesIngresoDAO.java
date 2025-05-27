@@ -21,7 +21,7 @@ public class CredencialesIngresoDAO implements InterfazCredencialesIngresoDAO {
         boolean insercionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, credenciales.getUsuario());
             declaracionPreparada.setString(2, credenciales.getContrasena());
@@ -40,7 +40,7 @@ public class CredencialesIngresoDAO implements InterfazCredencialesIngresoDAO {
         boolean eliminacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setString(1, usuario);
             declaracionPreparada.executeUpdate();
@@ -58,7 +58,7 @@ public class CredencialesIngresoDAO implements InterfazCredencialesIngresoDAO {
         boolean actualizacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, credenciales.getContrasena());
             declaracionPreparada.setString(2, credenciales.getUsuario());
@@ -77,7 +77,7 @@ public class CredencialesIngresoDAO implements InterfazCredencialesIngresoDAO {
         CredencialesIngresoDTO credenciales = null;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, usuario);
             resultadoDeOperacion = declaracionPreparada.executeQuery();

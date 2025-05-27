@@ -1,7 +1,6 @@
 package logica.dao;
 
 import accesoadatos.ConexionBD;
-import accesoadatos.dto.PeriodoEscolarDTO;
 import accesoadatos.dto.SeccionDTO;
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,7 +23,7 @@ public class SeccionDAO implements InterfazSeccionDAO {
         SeccionDTO seccion = null;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, idSeccion);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -48,7 +47,7 @@ public class SeccionDAO implements InterfazSeccionDAO {
         List<SeccionDTO> listaSeccion = new ArrayList<>();
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 

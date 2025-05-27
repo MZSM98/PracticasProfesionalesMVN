@@ -9,16 +9,16 @@ import org.apache.log4j.Logger;
 
 public class ConexionBD {
     
-    private static ConexionBD instance;
-    private final Connection conexionBD;
+    private static ConexionBD instanciaConexionBaseDatos;
+    private final Connection conexionBaseDatos;
     private static final Logger LOG = Logger.getLogger(ConexionBD.class);
     
     public ConexionBD() throws SQLException {
        
-        Properties props = ConfiguracionDB.loadProperties();
-        String URL = props.getProperty("db.url");
-        String USER = props.getProperty("db.user");
-        String PASSWORD = props.getProperty("db.password");
+        Properties props = ConfiguracionBD.loadProperties();
+        String url = props.getProperty("db.url");
+        String user = props.getProperty("db.user");
+        String password = props.getProperty("db.password");
         try {
         
             Class.forName("com.mysql.cj.jdbc.Driver"); 
@@ -29,19 +29,19 @@ public class ConexionBD {
             throw new SQLException("Driver de base de datos no encontrado", e);
         }
         
-        this.conexionBD = DriverManager.getConnection(URL, USER, PASSWORD);  
+        this.conexionBaseDatos = DriverManager.getConnection(url, user, password);  
         
     }
     
-    public static ConexionBD getInstance() throws SQLException {
-        if (instance == null || instance.getConexionBD().isClosed()) {
-            instance = new ConexionBD();
+    public static ConexionBD getInstanciaConexionBaseDatos() throws SQLException {
+        if (instanciaConexionBaseDatos == null || instanciaConexionBaseDatos.getConexionBaseDatos().isClosed()) {
+            instanciaConexionBaseDatos = new ConexionBD();
         }
         
-        return instance;
+        return instanciaConexionBaseDatos;
     }
     
-    public Connection getConexionBD() {
-        return conexionBD;
+    public Connection getConexionBaseDatos() {
+        return conexionBaseDatos;
     }
 }

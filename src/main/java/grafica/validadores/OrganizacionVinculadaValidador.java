@@ -1,86 +1,79 @@
 package grafica.validadores;
 
 import accesoadatos.dto.OrganizacionVinculadaDTO;
+import grafica.utils.ConstantesUtil;
 
 
 public class OrganizacionVinculadaValidador {
     
-    public static void validarRfcMoral(String rfcMoral, int longitudExacta) {
+    private OrganizacionVinculadaValidador(){
+        
+        throw new IllegalAccessError (ConstantesUtil.ALERTA_CLASE_UTILERIA);
+    }
+    
+    public static void validarRfcMoral(String rfcMoral) {
         
         if (rfcMoral.isEmpty()) {
             
-            throw new IllegalArgumentException("El RFC es obligatorio");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_RFC_OBLIGATORIO);
         }
-        
-        String formatoRfcMoral = "^[A-Z]{3}[0-9]{6}[A-Z][0-9]{2}$";
-    
-        if (!rfcMoral.matches(formatoRfcMoral)) {
             
-            throw new IllegalArgumentException("RFC inválido");
+        if (!rfcMoral.matches(ConstantesUtil.REGEX_RFC_MORAL)) {
+            
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_RFC_INVALIDO);
         }
     }
     
-    public static void validarNombre(String nombreOV, String longitudMinimaYMaxima) {
+    public static void validarNombre(String nombreOV) {
         
         if (nombreOV.isEmpty()) {
             
-            throw new IllegalArgumentException("El nombre es obligatorio");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_NOMBRE_OBLIGATORIO);
         }
-        
-        String formatoNombre = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\\s]+$";
-        
-        if (!nombreOV.matches(formatoNombre)){
+        if (!nombreOV.matches(ConstantesUtil.REGEX_LETRAS_Y_NUMEROS)){
             
-            throw new IllegalArgumentException("El nombre sólo puede contener letras y números");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_NOMBRES_NO_PERSONALES);
         }
-        
-        if (!nombreOV.matches(longitudMinimaYMaxima)) {
+        if (!nombreOV.matches(ConstantesUtil.REGEX_LONGITUD_NOMBRES)) {
             
-            throw new IllegalArgumentException("El nombre debe tener al menos 3 letras y menos de 100");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_LONGITUD_NOMBRE);
         }
     }
     
-    public static void validarTelefono(String telefonoOV, int longitudExacta) {
+    public static void validarTelefono(String telefonoOV) {
         
         if (telefonoOV.isEmpty()) {
             
             throw new IllegalArgumentException("El teléfono es obligatorio");
-        }
-        
-        String formatoTelefono = "^[0-9]{10}$";
-        
-        if (!telefonoOV.matches(formatoTelefono)) {
+        }        
+        if (!telefonoOV.matches(ConstantesUtil.REGEX_TELEFONO)) {
             
             throw new IllegalArgumentException("Numero de telefono inválido: el número debe tener 10 dígitos");
         }               
     }
     
-    public static void validarDireccion(String direccionOV, int longitudMaxima) {
+    public static void validarDireccion(String direccionOV) {
         
         if (direccionOV.isEmpty()) {
             
             throw new IllegalArgumentException("La dirección es obligatoria");
-        }
-        
-        String formatoDireccion = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]$";
-        
-        if (!direccionOV.matches(formatoDireccion)){
+        }      
+        if (!direccionOV.matches(ConstantesUtil.REGEX_LETRAS_Y_NUMEROS)){
             
-            throw new IllegalArgumentException("La dirección sólo debe contener letras y números");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_FORMATO_DIRECCION);
         }
-        
-        if (direccionOV.length() > longitudMaxima) {
+        if (!direccionOV.matches(ConstantesUtil.REGEX_LONGITUD_DIRECCION)) {
             
-            throw new IllegalArgumentException("La dirección no puede exceder los " + longitudMaxima + " caracteres");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_LONGITUD_DIRECCION);
         }
     }
     
     public static void validarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculadaDTO) {
         
-        validarRfcMoral(organizacionVinculadaDTO.getRfcMoral(),12);
-        validarNombre(organizacionVinculadaDTO.getNombreOV(), ".{3,100}");
-        validarTelefono(organizacionVinculadaDTO.getTelefonoOV(),10);
-        validarDireccion(organizacionVinculadaDTO.getDireccionOV(), 200);
+        validarRfcMoral(organizacionVinculadaDTO.getRfcMoral());
+        validarNombre(organizacionVinculadaDTO.getNombreOV());
+        validarTelefono(organizacionVinculadaDTO.getTelefonoOV());
+        validarDireccion(organizacionVinculadaDTO.getDireccionOV());
     }
     
 }

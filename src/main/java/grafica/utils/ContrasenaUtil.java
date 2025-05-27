@@ -7,19 +7,31 @@ import accesoadatos.dto.ProfesorEEDTO;
 
 public class ContrasenaUtil {
     
-    public static final String creaContrasenaPorDefecto(AcademicoEvaluadorDTO academicoEvaluador){
+    private ContrasenaUtil(){
+        
+        throw new IllegalAccessError(ConstantesUtil.ALERTA_CLASE_UTILERIA);
+    }
+    
+    public static final String crearContrasenaPorDefecto(AcademicoEvaluadorDTO academicoEvaluador){
+        
         String contrasenaDefecto = academicoEvaluador.getNumeroDeTrabajador().substring(0,7);
         return contrasenaDefecto.concat(academicoEvaluador.getNombreAcademico().substring(0, 2));
     }
-    public static final String creaContrasenaPorDefecto(ProfesorEEDTO profesorEE){
+    
+    public static final String crearContrasenaPorDefecto(ProfesorEEDTO profesorEE){
+        
         String contrasenaDefecto = profesorEE.getNumeroTrabajador().substring(0,7);
         return contrasenaDefecto.concat(profesorEE.getNombreProfesor().substring(0, 2));
     }
-    public static final String creaContrasenaPorDefecto(CoordinadorDTO coordinador){
+    
+    public static final String crearContrasenaPorDefecto(CoordinadorDTO coordinador){
+        
         String contrasenaDefecto = coordinador.getNumeroDeTrabajador().substring(0,7);
         return contrasenaDefecto.concat(coordinador.getNombreCoordinador().substring(0, 2));
-    }    
-    public static final String creaContrasenaPorDefecto(EstudianteDTO estudiante){
+    }   
+    
+    public static final String crearContrasenaPorDefecto(EstudianteDTO estudiante){
+        
         String contrasenaDefecto = estudiante.getMatricula().substring(0,7);
         return contrasenaDefecto.concat(estudiante.getNombreEstudiante().substring(0, 2));
     }    

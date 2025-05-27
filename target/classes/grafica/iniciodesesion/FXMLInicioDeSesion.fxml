@@ -10,30 +10,30 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="387.0" prefWidth="506.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="grafica.controladores.InicioDeSesionController">
+<AnchorPane id="AnchorPane" prefHeight="387.0" prefWidth="506.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="grafica.controladores.InicioDeSesionController">
    <children>
-      <ImageView fx:id="imageLogo" fitHeight="101.0" fitWidth="109.0" layoutX="210.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imageLogo" fitHeight="101.0" fitWidth="109.0" layoutX="210.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/login.png" />
+            <Image url="@../../images/login.png" />
          </image>
       </ImageView>
-      <Label fx:id="labelInicioSesion" layoutX="196.0" layoutY="175.0" text="Inicio de sesión">
+      <Label fx:id="labelInicioSesion" layoutX="196.0" layoutY="181.0" text="Inicio de sesión">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Label fx:id="labelTitulo" layoutX="60.0" layoutY="24.0" text="Sistema de prácticas profesionales">
+      <Label fx:id="labelTitulo" layoutX="60.0" layoutY="22.0" text="Sistema de prácticas profesionales">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="labelTipoUsuario" layoutX="90.0" layoutY="226.0" text="Tipo usuario:" />
-      <Label fx:id="labelUsuario" layoutX="90.0" layoutY="264.0" text="Usuario:" />
-      <Label fx:id="labelContrasena" layoutX="90.0" layoutY="300.0" text="Contraseña:" />
-      <TextField fx:id="txtUsuario" layoutX="180.0" layoutY="260.0" prefHeight="25.0" prefWidth="224.0" />
-      <PasswordField fx:id="txtContrasena" layoutX="180.0" layoutY="296.0" prefHeight="25.0" prefWidth="224.0" />
-      <ComboBox fx:id="comboTipoUsuario" layoutX="180.0" layoutY="222.0" prefHeight="25.0" prefWidth="224.0" promptText="Seleccione un tipo" />
-      <Button fx:id="botonIniciarSesion" layoutX="139.0" layoutY="342.0" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar sesión" />
-      <Button fx:id="botonSalir" layoutX="281.0" layoutY="342.0" mnemonicParsing="false" onAction="#cerrarPrograma" prefHeight="25.0" prefWidth="85.0" text="Salir" />
+      <Label fx:id="labelTipoUsuario" layoutX="96.0" layoutY="227.0" text="Tipo usuario:" />
+      <Label fx:id="labelUsuario" layoutX="97.0" layoutY="265.0" text="Usuario:" />
+      <Label fx:id="labelContrasena" layoutX="97.0" layoutY="302.0" text="Contraseña:" />
+      <ComboBox fx:id="comboTipoUsuario" layoutX="186.0" layoutY="223.0" prefHeight="25.0" prefWidth="224.0" promptText="Seleccione un tipo" />
+      <TextField fx:id="textUsuario" layoutX="187.0" layoutY="261.0" prefHeight="25.0" prefWidth="224.0" />
+      <PasswordField fx:id="textContrasena" layoutX="187.0" layoutY="298.0" prefHeight="25.0" prefWidth="224.0" />
+      <Button fx:id="botonIniciarSesion" layoutX="139.0" layoutY="347.0" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar sesión" />
+      <Button fx:id="botonSalir" layoutX="281.0" layoutY="347.0" mnemonicParsing="false" onAction="#cerrarPrograma" prefHeight="25.0" prefWidth="85.0" text="Salir" />
    </children>
 </AnchorPane>

@@ -42,13 +42,15 @@ public class EstudianteDAO implements InterfazEstudianteDAO {
         boolean insercionExitosa = false;
         
         try {
+
             UsuarioDTO usuario = new UsuarioDTO();
             usuario.setUsuario(estudiante.getMatricula());
             usuario.setTipoUsuario(interfazTipoUsuarioDAO.buscarTipoUsuario(ESTUDIANTE));
-            usuario.setContrasena(ContrasenaUtil.creaContrasenaPorDefecto(estudiante));
+            usuario.setContrasena(ContrasenaUtil.crearContrasenaPorDefecto(estudiante));
             interfazUsuarioDAO.insertarUsuario(usuario);
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, estudiante.getMatricula());
             declaracionPreparada.setString(2, estudiante.getNombreEstudiante());            
@@ -71,7 +73,7 @@ public class EstudianteDAO implements InterfazEstudianteDAO {
         boolean eliminacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setString(1, matricula);
             declaracionPreparada.executeUpdate();
@@ -90,7 +92,7 @@ public class EstudianteDAO implements InterfazEstudianteDAO {
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, estudiante.getNombreEstudiante());            
             declaracionPreparada.setInt(2, estudiante.getPeriodoEscolar().getIdPeriodoEscolar());
@@ -114,7 +116,7 @@ public class EstudianteDAO implements InterfazEstudianteDAO {
         EstudianteDTO estudiante = null;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, matricula);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -144,7 +146,7 @@ public class EstudianteDAO implements InterfazEstudianteDAO {
         List<EstudianteDTO> listaEstudiantes = new ArrayList<>();
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(CONSULTA_SQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 

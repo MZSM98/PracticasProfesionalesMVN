@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import grafica.validadores.OrganizacionVinculadaValidador;
 import grafica.utils.AlertaUtil;
+import grafica.utils.ConstantesUtil;
 import logica.interfaces.InterfazOrganizacionVinculadaDAO;
 
 public class RegistroOrganizacionVinculadaController {    
@@ -55,7 +56,7 @@ public class RegistroOrganizacionVinculadaController {
         this.modoEdicion = modoEdicion;
         if (modoEdicion) {
             
-            botonRegistrarOrganizacionVinculada.setText("Actualizar");
+            botonRegistrarOrganizacionVinculada.setText(ConstantesUtil.ACTUALIZAR);
         }
     }
     
@@ -80,9 +81,9 @@ public class RegistroOrganizacionVinculadaController {
         }
         
         organizacionVinculadaDTO.setRfcMoral(textRfcOV.getText().trim().toUpperCase());
-        organizacionVinculadaDTO.setNombreOV(textNombreOV.getText().replaceAll("\\s+"," ").trim());
+        organizacionVinculadaDTO.setNombreOV(textNombreOV.getText().replaceAll(ConstantesUtil.REGEX_ESPACIOS_MULTIPLES,ConstantesUtil.REGEX_ESPACIO).trim());
         organizacionVinculadaDTO.setTelefonoOV(textTelefonoOV.getText().trim());
-        organizacionVinculadaDTO.setDireccionOV(textDireccionOV.getText().replaceAll("\\s+"," ").trim());
+        organizacionVinculadaDTO.setDireccionOV(textDireccionOV.getText().replaceAll(ConstantesUtil.REGEX_ESPACIOS_MULTIPLES,ConstantesUtil.REGEX_ESPACIO).trim());
         
         if (!validarCamposOrganizacionVinculada(organizacionVinculadaDTO)) {
             
@@ -105,35 +106,33 @@ public class RegistroOrganizacionVinculadaController {
             return true;
         } catch (IllegalArgumentException iae) {
             
-            LOG.error ("Se ingresaron datos inválidos");
-            AlertaUtil.mostrarAlerta("Datos Inválidos o Incompletos", iae.getMessage(), Alert.AlertType.WARNING);
+            LOG.error (ConstantesUtil.ALERTA_DATOS_INVALIDOS, iae);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, iae.getMessage(), Alert.AlertType.WARNING);
             return false;
         }
     }
     
     private void crearNuevaOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculadaDTO) {
         
-        organizacionVinculadaDTO.setEstadoOV(EstadoOrganizacionVinculada.ACTIVO.name());                
+        organizacionVinculadaDTO.setEstadoOV(EstadoOrganizacionVinculada.ACTIVO.name());
+        
         try {
             
             organizacionVinculadaDAO.insertarOrganizacionVinculada(organizacionVinculadaDTO);
-            AlertaUtil.mostrarAlerta("Éxito", "Organización Registrada", Alert.AlertType.INFORMATION);
-            limpiarCampos();
-            
+            AlertaUtil.mostrarAlerta(ConstantesUtil.EXITO, ConstantesUtil.ALERTA_REGISTRO_EXITOSO, Alert.AlertType.INFORMATION);
+            limpiarCampos();            
         } catch(SQLIntegrityConstraintViolationException icve){
             
-            LOG.error(icve);
-            AlertaUtil.mostrarAlerta("Error", "La Organización que está tratando de registrar ya existe", Alert.AlertType.WARNING);
+            LOG.error(ConstantesUtil.LOG_ERROR_REGISTRO_DUPLICADO,icve);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_REGISTRO_RFC_MORAL_DUPLICADO, Alert.AlertType.WARNING);
+        } catch (SQLException sqle) {
             
-        } catch (SQLException e) {
+            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+        } catch (IOException ioe) {
             
-            LOG.error("Error con la conexion de base de datos", e);
-            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos: ", Alert.AlertType.ERROR);
-            
-        } catch (IOException e) {
-            
-            LOG.error("Error al registrar la organización", e);
-            AlertaUtil.mostrarAlerta("Error", "Error al registrar la organización: ", Alert.AlertType.ERROR);
+            LOG.error(ConstantesUtil.ALERTA_REGISTRO_FALLIDO, ioe);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_REGISTRO_FALLIDO, Alert.AlertType.ERROR);
         } 
     }
     
@@ -144,21 +143,21 @@ public class RegistroOrganizacionVinculadaController {
             boolean actualizacionExitosa = organizacionVinculadaDAO.editarOrganizacionVinculada(organizacionVinculadaDTO);            
             if (actualizacionExitosa) {
                 
-                AlertaUtil.mostrarAlerta("Éxito", "Organización actualizada correctamente", Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlerta(ConstantesUtil.EXITO, ConstantesUtil.ALERTA_ACTUALIZACION_EXITOSA, Alert.AlertType.INFORMATION);
                 cerrarVentana();
             } else {
                 
-                AlertaUtil.mostrarAlerta("Error", "No se pudo actualizar la organización", Alert.AlertType.ERROR);
+                AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ACTUALIZACION_FALLIDA, Alert.AlertType.ERROR);
             }
             
-        } catch (SQLException e) {
+        } catch (SQLException sqle) {
             
-            LOG.error("Error con la conexión de base de datos", e);
-            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos: " + e.getMessage(), Alert.AlertType.ERROR);
-        } catch (IOException e) {
+            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+        } catch (IOException ioe) {
             
-            LOG.error("Error al actualizar la organización", e);
-            AlertaUtil.mostrarAlerta("Error", "Error al actualizar la organización: " + e.getMessage(), Alert.AlertType.ERROR);
+            LOG.error(ConstantesUtil.LOG_ACTUALIZACION_FALLIDA, ioe);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ACTUALIZACION_FALLIDA, Alert.AlertType.ERROR);
         }
     }
     
@@ -166,13 +165,13 @@ public class RegistroOrganizacionVinculadaController {
     private void cancelarRegistroOrganizacionVinculada(ActionEvent evento) {
         
         cerrarVentana();
-    }
+    }    
     
     private void cerrarVentana() {
         
         Stage stage = (Stage) botonCancelarRegistroOV.getScene().getWindow();
         stage.close();
-    }
+    }    
     
     private void limpiarCampos() {
         

@@ -25,13 +25,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logica.dao.TipoUsuarioDAO;
 import logica.dao.UsuarioDAO;
-import logica.funcionalidades.InicioDeSesionValidador;
+import grafica.validadores.InicioDeSesionValidador;
 import logica.interfaces.InterfazTipoUsuarioDAO;
 import logica.interfaces.InterfazUsuarioDAO;
 
 import org.apache.log4j.Logger;
 import grafica.utils.AlertaUtil;
 import logica.interfaces.InterfazMenuPrincipal;
+import grafica.utils.ConstantesUtil;
 
 public class InicioDeSesionController implements Initializable {
     
@@ -46,10 +47,10 @@ public class InicioDeSesionController implements Initializable {
     private Button botonSalir;
 
     @FXML
-    private TextField txtUsuario;
+    private TextField textUsuario;
     
     @FXML
-    private PasswordField txtContrasena;
+    private PasswordField textContrasena;
 
     @FXML
     private ComboBox<TipoUsuarioDTO> comboTipoUsuario;
@@ -59,6 +60,7 @@ public class InicioDeSesionController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         interfazUsuarioDAO = new UsuarioDAO();
         interfazTipoUsuarioDAO = new TipoUsuarioDAO();
         poblarComboTipoUsuario();
@@ -66,55 +68,62 @@ public class InicioDeSesionController implements Initializable {
 
     @FXML
     void cerrarPrograma(ActionEvent event) {
+        
         Stage currentStage = (Stage) botonSalir.getScene().getWindow();
         currentStage.close();
     }
 
     @FXML
     void iniciarSesion(ActionEvent event){
-        UsuarioDTO usuario = new UsuarioDTO();
-        usuario.setUsuario(txtUsuario.getText().trim());
-        usuario.setContrasena(txtContrasena.getText().trim());
-        usuario.setTipoUsuario(comboTipoUsuario.getValue());
         
-        if(!InicioDeSesionValidador.validar(usuario)){
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setUsuario(textUsuario.getText().trim());
+        usuarioDTO.setContrasena(textContrasena.getText().trim());
+        usuarioDTO.setTipoUsuario(comboTipoUsuario.getValue());
+        textUsuario.lengthProperty();
+        if(!validarCamposInicioSesion(usuarioDTO)){
+            
             return;
         }
-        
+
         try {
-            UsuarioDTO usuarioBusqueda = interfazUsuarioDAO.buscarUsuario(usuario.getUsuario());
-            usuario.setSalt(usuarioBusqueda.getSalt());
-            
-            if(interfazUsuarioDAO.autenticarUsuario(usuario)){
-                abrirMenuPrincipal(event, obtenerRecursoVetana(usuario.getTipoUsuario()));
-            }else{
-                AlertaUtil.mostrarAlerta("Advertencia", "Favor de validar los datos de acceso.", Alert.AlertType.WARNING);
-            }
+                UsuarioDTO usuarioBusqueda = interfazUsuarioDAO.buscarUsuario(usuarioDTO.getUsuario());
+                usuarioDTO.setSalt(usuarioBusqueda.getSalt());
 
-        } catch (SQLException ex) {
-           LOG.error(ex);
-           AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
-        
-        } catch (NullPointerException npe){
-            
-            LOG.error("No se seleccionó ningún tipo de usuario",npe);
-            AlertaUtil.mostrarAlerta("Advertencia", "Debe seleccionar un tipo de usuario", Alert.AlertType.WARNING);
-        }
-    
-        catch (IOException ex) {
-            
-           LOG.error(ex);
-        }
+                if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
 
+                    abrirMenuPrincipal(event, obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
+                    limpiarCampos();
+
+                } else {
+
+                    AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, ConstantesUtil.ALERTA_CREDENCIALES_INVALIDAS, Alert.AlertType.WARNING);
+                }
+ 
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.ALERTA_ERROR_BD,sqle);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+        } catch (IOException ex) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA,ex);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
+        }
     }
     
+
     private void abrirMenuPrincipal(ActionEvent event, String resource){
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+
         Parent root = null;
-        try {          
+        
+        try {      
+            
             root = loader.load();
-        } catch (IOException ex) {
-            LOG.error(ex);
+        } catch (IOException ioe) {
+            
+            LOG.error(ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, ioe);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
         }
             
         InterfazMenuPrincipal controlador = loader.getController();
@@ -124,25 +133,33 @@ public class InicioDeSesionController implements Initializable {
         
         Scene scene = new Scene(root);
         Stage stage = new Stage();
-        stage.setTitle("Menu Principal");
+        stage.setTitle(ConstantesUtil.MENU_PRINCIPAL);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
     
     private void poblarComboTipoUsuario(){
+        
         List<TipoUsuarioDTO> listaTipoUsuario;
+        
         try {
+            
             listaTipoUsuario = interfazTipoUsuarioDAO.listaTipoUsuario();
             ObservableList<TipoUsuarioDTO> listaObservableTipoUsuario = FXCollections.observableArrayList(listaTipoUsuario);
             comboTipoUsuario.setItems(listaObservableTipoUsuario);
         } catch (SQLException sqle) {
-            LOG.error("Error de conexión con la base de datos",sqle);
-        } catch (IOException ex) {
-            LOG.error(ex);
+            
+            LOG.error(ConstantesUtil.ALERTA_ERROR_BD,sqle);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+        } catch (IOException ioe) {
+            
+            LOG.error(ioe);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.NONE);
         }
     }
     
+
     private String obtenerRecursoVetana(TipoUsuarioDTO tipoUsuario){
         if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
             return "/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml";
@@ -156,5 +173,25 @@ public class InicioDeSesionController implements Initializable {
             throw new AssertionError("No existe tipo de usuario");
         }
     }
- 
+
+    private boolean validarCamposInicioSesion(UsuarioDTO usuarioDTO) {
+               
+        try {
+            
+            InicioDeSesionValidador.validarInicioDeSesion(usuarioDTO);
+            return true;
+        } catch (IllegalArgumentException iae) {
+            
+            LOG.error (ConstantesUtil.LOG_DATOS_NO_VALIDOS, iae);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ALERTA_DATOS_INVALIDOS, iae.getMessage(), Alert.AlertType.WARNING);
+            return false;
+        } 
+    }
+    
+    private void limpiarCampos() {
+        comboTipoUsuario.setValue(null);
+        textUsuario.setText("");
+        textContrasena.setText("");
+    }
+
 }

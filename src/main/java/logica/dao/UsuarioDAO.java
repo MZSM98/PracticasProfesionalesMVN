@@ -26,7 +26,7 @@ public class UsuarioDAO implements InterfazUsuarioDAO{
         ResultSet resultadoDeOperacion = null;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, usuario);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -54,7 +54,7 @@ public class UsuarioDAO implements InterfazUsuarioDAO{
         PreparedStatement declaracionPreparada = null;
         String salt = generateSalt();
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, usuario.getUsuario());
             declaracionPreparada.setString(2, usuario.getContrasena().concat(salt));
@@ -88,7 +88,7 @@ public class UsuarioDAO implements InterfazUsuarioDAO{
         ResultSet resultadoDeOperacion = null;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, usuario.getUsuario());
             declaracionPreparada.setString(2, usuario.getContrasena().concat(usuario.getSalt()));

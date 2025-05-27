@@ -7,8 +7,13 @@ logica\dao\ProyectoDAO.class
 accesoadatos\dto\ProyectoDTO.class
 logica\interfaces\InterfazTipoUsuarioDAO.class
 grafica\utils\AlertaUtil.class
+<<<<<<< HEAD
 logica\dao\PeriodoEscolarDAO.class
+=======
+grafica\utils\RestriccionCamposUtil.class
+>>>>>>> e54e7754dccf82f2ac88783e4bea7cb5538c2ee8
 logica\interfaces\InterfazCoordinadorDAO.class
+grafica\validadores\InicioDeSesionValidador.class
 grafica\controladores\RegistroOrganizacionVinculadaController.class
 grafica\controladores\RegistroProyectoController$1.class
 grafica\utils\ConstantesUtil.class
@@ -20,6 +25,7 @@ grafica\controladores\RegistroRepresentanteOrganizacionVinculadaController.class
 accesoadatos\dto\UsuarioDTO.class
 logica\dao\TipoUsuarioDAO.class
 logica\dao\ReporteParcialDAO.class
+accesoadatos\ConfiguracionBD.class
 accesoadatos\dto\TipoUsuarioDTO.class
 logica\dao\OrganizacionVinculadaDAO.class
 grafica\controladores\GestionarEstudianteController.class
@@ -40,9 +46,12 @@ grafica\controladores\MenuPrincipalCoordinadorController.class
 accesoadatos\dto\CredencialesIngresoDTO.class
 grafica\validadores\ResponsableOrganizacionVinculadaValidador.class
 logica\dao\CoordinadorDAO.class
+<<<<<<< HEAD
 logica\interfaces\InterfazMenuPrincipal.class
 grafica\validadores\EstudianteValidador.class
 logica\funcionalidades\InicioDeSesionValidador.class
+=======
+>>>>>>> e54e7754dccf82f2ac88783e4bea7cb5538c2ee8
 grafica\controladores\InicioDeSesionController.class
 logica\dao\EstudianteDAO.class
 grafica\controladores\RegistrarEstudianteController.class
@@ -70,5 +79,4 @@ grafica\controladores\RegistroAcademicoEvaluadorController.class
 grafica\controladores\ConsultarEvaluacionPresentacionController.class
 logica\dao\ProfesorEEDAO.class
 grafica\validadores\OrganizacionVinculadaValidador.class
-accesoadatos\ConfiguracionDB.class
 logica\interfaces\InterfazProyectoDAO.class

@@ -24,7 +24,7 @@ public class TipoUsuarioDAO implements InterfazTipoUsuarioDAO {
         List<TipoUsuarioDTO> listaTipoUsuario = new ArrayList<>();
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
@@ -50,7 +50,7 @@ public class TipoUsuarioDAO implements InterfazTipoUsuarioDAO {
         TipoUsuarioDTO tipoUsuario = new TipoUsuarioDTO();
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, idtipo);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
