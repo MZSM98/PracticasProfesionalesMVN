@@ -16,6 +16,11 @@ Thumbs.db
 
 target/
 !.mvn/wrapper/maven.wrapper.jar
+<<<<<<< HEAD
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+=======
+!*/src/main/*/target/
+!*/src/test/*/target/
+>>>>>>> bfa29cf8db095ebf4ab1dc3e1ae62b27f2e7b9f6

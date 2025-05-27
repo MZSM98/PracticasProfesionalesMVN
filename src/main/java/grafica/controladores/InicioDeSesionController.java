@@ -31,11 +31,17 @@ import logica.interfaces.InterfazUsuarioDAO;
 
 import org.apache.log4j.Logger;
 import grafica.utils.AlertaUtil;
+import logica.interfaces.InterfazMenuPrincipal;
 import grafica.utils.ConstantesUtil;
 import grafica.utils.RestriccionCamposUtil;
 
 public class InicioDeSesionController implements Initializable {
-
+    
+    private static final Integer COORDINADOR = 1;
+    private static final Integer ACADEMICO_EVALUADOR = 2;
+    private static final Integer PROFESOR_EE = 3;
+    private static final Integer ESTUDIANTE = 4;
+    
     private static final Logger LOG = Logger.getLogger(InicioDeSesionController.class);
 
     @FXML
@@ -82,20 +88,21 @@ public class InicioDeSesionController implements Initializable {
             
             return;
         }
-        
+
         try {
-            
-            UsuarioDTO usuarioBusqueda = interfazUsuarioDAO.buscarUsuario(usuarioDTO.getUsuario());
-            usuarioDTO.setSalt(usuarioBusqueda.getSalt());
-            
-            if(interfazUsuarioDAO.autenticarUsuario(usuarioDTO)){
-                
-                abrirMenuPrincipal(event);
-                limpiarCampos();
-            }else{
-                
-                AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, ConstantesUtil.ALERTA_CREDENCIALES_INVALIDAS, Alert.AlertType.WARNING);
-            }
+                UsuarioDTO usuarioBusqueda = interfazUsuarioDAO.buscarUsuario(usuarioDTO.getUsuario());
+                usuarioDTO.setSalt(usuarioBusqueda.getSalt());
+
+                if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
+
+                    abrirMenuPrincipal(event, obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
+                    limpiarCampos();
+
+                } else {
+
+                    AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, ConstantesUtil.ALERTA_CREDENCIALES_INVALIDAS, Alert.AlertType.WARNING);
+                }
+ 
         } catch (SQLException sqle) {
             
             LOG.error(ConstantesUtil.ALERTA_ERROR_BD,sqle);
@@ -107,9 +114,10 @@ public class InicioDeSesionController implements Initializable {
         }
     }
     
-    private void abrirMenuPrincipal(ActionEvent event){
-        
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml"));
+
+    private void abrirMenuPrincipal(ActionEvent event, String resource){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+
         Parent root = null;
         
         try {      
@@ -121,7 +129,7 @@ public class InicioDeSesionController implements Initializable {
             AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
         }
             
-        MenuPrincipalCoordinadorController controlador = loader.getController();
+        InterfazMenuPrincipal controlador = loader.getController();
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         controlador.setParentStage(currentStage);
         currentStage.close();
@@ -154,6 +162,21 @@ public class InicioDeSesionController implements Initializable {
         }
     }
     
+
+    private String obtenerRecursoVetana(TipoUsuarioDTO tipoUsuario){
+        if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
+            return "/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml";
+        } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {
+            return "/grafica/academicoevaluador/FXMLMenuPrincipalAcademicoEvaluador.fxml";
+        } else if (PROFESOR_EE.equals(tipoUsuario.getIdTipo())) {
+            return "/grafica/profesoree/FXMLMenuPrincipalProfesorEE.fxml";
+        } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
+            return "/grafica/estudiante/FXMLMenuPrincipalEstudiante.fxml";
+        } else {
+            throw new AssertionError("No existe tipo de usuario");
+        }
+    }
+
     private boolean validarCamposInicioSesion(UsuarioDTO usuarioDTO) {
                
         try {
@@ -169,15 +192,15 @@ public class InicioDeSesionController implements Initializable {
     }
     
     private void limpiarCampos() {
-        
         comboTipoUsuario.setValue(null);
         textUsuario.setText("");
         textContrasena.setText("");
     }
-    
+
     private void aplicarRestriccionesACampos(){
         
         RestriccionCamposUtil.aplicarRestriccionLongitud(textContrasena, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
         RestriccionCamposUtil.aplicarRestriccionLongitud(textUsuario, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
     }
+
 }
