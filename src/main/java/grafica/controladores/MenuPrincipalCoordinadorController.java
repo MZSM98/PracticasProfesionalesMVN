@@ -10,10 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logica.interfaces.InterfazMenuPrincipal;
 import org.apache.log4j.Logger;
 
 
-public class MenuPrincipalCoordinadorController{
+public class MenuPrincipalCoordinadorController implements InterfazMenuPrincipal{
     
     private static final Logger LOG = Logger.getLogger(GestionOrganizacionVinculadaController.class);
     
