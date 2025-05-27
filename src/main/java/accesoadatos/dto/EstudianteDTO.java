@@ -1,22 +1,14 @@
 package accesoadatos.dto;
 
-public class EstudianteDTO {
+public class EstudianteDTO extends UsuarioDTO{
     
     private String matricula;
     private String nombreEstudiante;
-    private String periodoEscolar;
-    private String seccionEstudiante;
-    private int avanceCrediticio;
-    private double promedio;
-    
-    public String getSeccionEstudiante() {
-        return seccionEstudiante;
-    }
+    private PeriodoEscolarDTO periodoEscolar;
+    private SeccionDTO seccionEstudiante;
+    private Integer avanceCrediticio;
+    private Double promedio;
 
-    public void setSeccionEstudiante(String seccionEstudiante) {
-        this.seccionEstudiante = seccionEstudiante;
-    }
-    
     public String getMatricula() {
         return matricula;
     }
@@ -33,28 +25,38 @@ public class EstudianteDTO {
         this.nombreEstudiante = nombreEstudiante;
     }
 
-    public double getPromedio() {
-        return promedio;
-    }
-
-    public void setPromedio(double promedio) {
-        this.promedio = promedio;
-    }
-
-    public String getPeriodoEscolar() {
+    public PeriodoEscolarDTO getPeriodoEscolar() {
         return periodoEscolar;
     }
 
-    public void setPeriodoEscolar(String periodoEscolar) {
+    public void setPeriodoEscolar(PeriodoEscolarDTO periodoEscolar) {
         this.periodoEscolar = periodoEscolar;
     }
 
-    public int getAvanceCrediticio() {
+    public SeccionDTO getSeccionEstudiante() {
+        return seccionEstudiante;
+    }
+
+    public void setSeccionEstudiante(SeccionDTO seccionEstudiante) {
+        this.seccionEstudiante = seccionEstudiante;
+    }
+
+    public Integer getAvanceCrediticio() {
         return avanceCrediticio;
     }
 
-    public void setAvanceCrediticio(int avanceCrediticio) {
+    public void setAvanceCrediticio(Integer avanceCrediticio) {
         this.avanceCrediticio = avanceCrediticio;
     }
+
+    public Double getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(Double promedio) {
+        this.promedio = promedio;
+    }
+
+
     
 }

@@ -31,9 +31,15 @@ import logica.interfaces.InterfazUsuarioDAO;
 
 import org.apache.log4j.Logger;
 import grafica.utils.AlertaUtil;
+import logica.interfaces.InterfazMenuPrincipal;
 
 public class InicioDeSesionController implements Initializable {
-
+    
+    private static final Integer COORDINADOR = 1;
+    private static final Integer ACADEMICO_EVALUADOR = 2;
+    private static final Integer PROFESOR_EE = 3;
+    private static final Integer ESTUDIANTE = 4;
+    
     private static final Logger LOG = Logger.getLogger(InicioDeSesionController.class);
 
     @FXML
@@ -80,7 +86,7 @@ public class InicioDeSesionController implements Initializable {
             usuario.setSalt(usuarioBusqueda.getSalt());
             
             if(interfazUsuarioDAO.autenticarUsuario(usuario)){
-                abrirMenuPrincipal(event);
+                abrirMenuPrincipal(event, obtenerRecursoVetana(usuario.getTipoUsuario()));
             }else{
                 AlertaUtil.mostrarAlerta("Advertencia", "Favor de validar los datos de acceso.", Alert.AlertType.WARNING);
             }
@@ -102,8 +108,8 @@ public class InicioDeSesionController implements Initializable {
 
     }
     
-    private void abrirMenuPrincipal(ActionEvent event){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml"));
+    private void abrirMenuPrincipal(ActionEvent event, String resource){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent root = null;
         try {          
             root = loader.load();
@@ -111,7 +117,7 @@ public class InicioDeSesionController implements Initializable {
             LOG.error(ex);
         }
             
-        MenuPrincipalCoordinadorController controlador = loader.getController();
+        InterfazMenuPrincipal controlador = loader.getController();
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         controlador.setParentStage(currentStage);
         currentStage.close();
@@ -135,8 +141,20 @@ public class InicioDeSesionController implements Initializable {
         } catch (IOException ex) {
             LOG.error(ex);
         }
-
-        
     }
     
+    private String obtenerRecursoVetana(TipoUsuarioDTO tipoUsuario){
+        if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
+            return "/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml";
+        } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {
+            return "/grafica/academicoevaluador/FXMLMenuPrincipalAcademicoEvaluador.fxml";
+        } else if (PROFESOR_EE.equals(tipoUsuario.getIdTipo())) {
+            return "/grafica/profesoree/FXMLMenuPrincipalProfesorEE.fxml";
+        } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
+            return "/grafica/estudiante/FXMLMenuPrincipalEstudiante.fxml";
+        } else {
+            throw new AssertionError("No existe tipo de usuario");
+        }
+    }
+ 
 }
