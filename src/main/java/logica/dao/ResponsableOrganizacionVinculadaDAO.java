@@ -23,7 +23,7 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
         boolean insercionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, responsable.getRfc());
             declaracionPreparada.setString(2, responsable.getCargo());
@@ -43,7 +43,7 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
         boolean eliminacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setString(1, rfc);
             declaracionPreparada.executeUpdate();
@@ -61,7 +61,7 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
         boolean actualizacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, responsable.getCargo());
             declaracionPreparada.setString(2, responsable.getNombreResponsable());
@@ -81,7 +81,7 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
         ResponsableOrganizacionVinculadaDTO responsable = null;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, rfc);
             resultadoDeOperacion = declaracionPreparada.executeQuery();

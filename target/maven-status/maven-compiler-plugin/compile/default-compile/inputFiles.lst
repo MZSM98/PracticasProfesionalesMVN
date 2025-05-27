@@ -18,7 +18,6 @@ C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\interfaces\InterfazResponsableOrganizacionVinculadaDAO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\validadores\ProyectoValidador.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\validadores\OrganizacionVinculadaValidador.java
-C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\funcionalidades\InicioDeSesionValidador.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\controladores\RegistroRepresentanteOrganizacionVinculadaController.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\controladores\MenuPrincipalCoordinadorController.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\dao\ProyectoDAO.java
@@ -27,10 +26,12 @@ C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\interfaces\InterfazAutoEvaluacionDAO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\dao\EstudianteDAO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\dao\ResponsableOrganizacionVinculadaDAO.java
+C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\validadores\InicioDeSesionValidador.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\dto\AutoEvaluacionDTO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\dto\OrganizacionVinculadaDTO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\validadores\ResponsableOrganizacionVinculadaValidador.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\dto\ProfesorEEDTO.java
+C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\ConfiguracionBD.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\dao\CredencialesIngresoDAO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\dto\AcademicoEvaluadorDTO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\interfaces\InterfazTipoUsuarioDAO.java
@@ -44,7 +45,6 @@ C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\controladores\RegistroProyectoController.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\controladores\RegistroAcademicoEvaluadorController.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\dao\TipoUsuarioDAO.java
-C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\ConfiguracionDB.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\dto\ProyectoDTO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\dao\AutoEvaluacionDAO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\dto\EstudianteDTO.java
@@ -53,5 +53,6 @@ C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\utils\ConstantesUtil.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\interfaces\InterfazAcademicoEvaluadorDAO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\interfaces\InterfazEstudianteDAO.java
+C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\grafica\utils\RestriccionCamposUtil.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\logica\dao\ReporteParcialDAO.java
 C:\Users\User\Documents\NetBeansProjects\PracticasProfesionalesMVN\src\main\java\accesoadatos\dto\UsuarioDTO.java

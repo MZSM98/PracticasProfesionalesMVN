@@ -24,7 +24,7 @@ public class CoordinadorDAO implements InterfazCoordinadorDAO {
         boolean insercionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, coordinador.getNumeroDeTrabajador());
             declaracionPreparada.setString(2, coordinador.getNombreCoordinador());
@@ -44,7 +44,7 @@ public class CoordinadorDAO implements InterfazCoordinadorDAO {
         boolean eliminacionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setString(1, numeroDeTrabajador);
             declaracionPreparada.executeUpdate();
@@ -62,7 +62,7 @@ public class CoordinadorDAO implements InterfazCoordinadorDAO {
         boolean actualizacionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, coordinador.getNombreCoordinador());
             declaracionPreparada.setString(2, coordinador.getTelefono());
@@ -82,7 +82,7 @@ public class CoordinadorDAO implements InterfazCoordinadorDAO {
         CoordinadorDTO coordinador = null;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, numeroDeTrabajador);
             resultadoDeOperacion = declaracionPreparada.executeQuery();

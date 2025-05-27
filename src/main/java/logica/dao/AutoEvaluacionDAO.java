@@ -23,7 +23,7 @@ public class AutoEvaluacionDAO implements InterfazAutoEvaluacionDAO {
         boolean insercionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setDate(1, autoEvaluacion.getFechaDeEvaluacion());
             declaracionPreparada.setInt(2, autoEvaluacion.getPuntaje());
@@ -43,7 +43,7 @@ public class AutoEvaluacionDAO implements InterfazAutoEvaluacionDAO {
         boolean eliminacionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setDate(1, fechaEvaluacion);
             declaracionPreparada.executeUpdate();
@@ -61,7 +61,7 @@ public class AutoEvaluacionDAO implements InterfazAutoEvaluacionDAO {
         boolean actualizacionExitosa = false;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setInt(1, autoEvaluacion.getPuntaje());
             declaracionPreparada.setInt(2, autoEvaluacion.getTotalHoras());
@@ -81,7 +81,7 @@ public class AutoEvaluacionDAO implements InterfazAutoEvaluacionDAO {
         AutoEvaluacionDTO autoEvaluacion = null;
         
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setDate(1, fechaEvaluacion);
             resultadoDeOperacion = declaracionPreparada.executeQuery();

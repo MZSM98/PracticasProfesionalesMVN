@@ -26,7 +26,7 @@ public class ProyectoDAO implements InterfazProyectoDAO {
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
             declaracionPreparada.setString(2, proyecto.getPeriodoEscolar());
@@ -50,7 +50,7 @@ public class ProyectoDAO implements InterfazProyectoDAO {
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setInt(1, proyectoID);
             declaracionPreparada.executeUpdate();
@@ -71,7 +71,7 @@ public class ProyectoDAO implements InterfazProyectoDAO {
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
             declaracionPreparada.setString(2, proyecto.getPeriodoEscolar());
@@ -97,7 +97,7 @@ public class ProyectoDAO implements InterfazProyectoDAO {
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, "%" + titulo + "%");
             resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -130,7 +130,7 @@ public class ProyectoDAO implements InterfazProyectoDAO {
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
@@ -161,7 +161,7 @@ public class ProyectoDAO implements InterfazProyectoDAO {
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, proyectoID);
             resultadoDeOperacion = declaracionPreparada.executeQuery();

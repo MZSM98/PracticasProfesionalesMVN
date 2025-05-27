@@ -25,7 +25,7 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(INSERTAR_SQL);
             declaracionPreparada.setString(1, organizacionVinculada.getRfcMoral());
             declaracionPreparada.setString(2, organizacionVinculada.getNombreOV());
@@ -49,7 +49,7 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
         boolean eliminacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(ELIMINAR_SQL);
             declaracionPreparada.setString(1, rfcMoral);
             declaracionPreparada.executeUpdate();
@@ -67,7 +67,7 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
         boolean actualizacionExitosa = false;
 
         try {
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(ACTUALIZAR_SQL);
             declaracionPreparada.setString(1, organizacionVinculada.getNombreOV());
             declaracionPreparada.setString(2, organizacionVinculada.getDireccionOV());
@@ -95,7 +95,7 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
 
         try {
             
-            conexionBD = new ConexionBD().getConexionBD();
+            conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(CONSULTA_SQL);
             declaracionPreparada.setString(1, rfcMoral);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -130,7 +130,7 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
 
         try {
             
-            conexion = new ConexionBD().getConexionBD();
+            conexion = new ConexionBD().getConexionBaseDatos();
             preparedStatement = conexion.prepareStatement(CONSULTATODO_SQL);
             resultadoOrganizacionVinculada = preparedStatement.executeQuery();
             while(resultadoOrganizacionVinculada.next()) {

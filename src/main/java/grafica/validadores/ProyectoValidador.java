@@ -2,52 +2,53 @@
 package grafica.validadores;
 
 import accesoadatos.dto.ProyectoDTO;
+import grafica.utils.ConstantesUtil;
 
 
 public class ProyectoValidador {
-
-    public static void validarTituloProyecto(String tituloProyecto, int longitudMaxima){
+    
+    private ProyectoValidador(){
+        throw new IllegalAccessError (ConstantesUtil.ALERTA_CLASE_UTILERIA);
+    }
+    public static void validarTituloProyecto(String tituloProyecto){
         
         if (tituloProyecto.isEmpty()){
             
-            throw new IllegalArgumentException ("El titulo es obligatorio");
+            throw new IllegalArgumentException (ConstantesUtil.ALERTA_TITULO_OBLIGATORIO);
         }
         
-        String formatoTituloProyecto = "^[a-zA-Z]$";
-        
-        if (!tituloProyecto.matches(formatoTituloProyecto)){
+        if (!tituloProyecto.matches(ConstantesUtil.REGEX_SOLO_LETRAS)){
             
-            throw new IllegalArgumentException ("Ingrese sólamente letras para el título");
+            throw new IllegalArgumentException (ConstantesUtil.ALERTA_FORMATO_TITULO);
         }
-        if (tituloProyecto.length() >= longitudMaxima){
+        if (!tituloProyecto.matches(ConstantesUtil.REGEX_LONGITUD_NOMBRES)){
             
-            throw new IllegalArgumentException ("El título es muy largo, ingrese un título más corto");
+            throw new IllegalArgumentException (ConstantesUtil.ALERTA_LONGITUD_TITULO);
         }
     }
     
-    public static void validarDescripcionProyecto(String descripcionProyecto, int longitudMaxima){
+    public static void validarDescripcionProyecto(String descripcionProyecto){
         
         if (descripcionProyecto.isEmpty()){
             
-            throw new IllegalArgumentException ("La descripción es obligatoria");
+            throw new IllegalArgumentException (ConstantesUtil.ALERTA_DESCRIPCION_OBLIGATORIA);
         }
-                
-        String formatoDescripcionProyecto = "^[a-zA-Z0-9]$";
-        
-        if (!descripcionProyecto.matches(formatoDescripcionProyecto)){
+        if (!descripcionProyecto.matches(ConstantesUtil.REGEX_LETRAS_Y_NUMEROS)){
             
-            throw new IllegalArgumentException ("La descripción debe contener sólo letras y números");
+            throw new IllegalArgumentException (ConstantesUtil.ALERTA_FORMATO_DESCRIPCION);
         }
-        if (descripcionProyecto.length() >= longitudMaxima ){
+        if (!descripcionProyecto.matches(ConstantesUtil.REGEX_LONGITUD_DESCRIPCION) ){
         
-            throw new IllegalArgumentException ("La descripción es muy larga, ingrese una descripción más corta");
+            throw new IllegalArgumentException (ConstantesUtil.ALERTA_LONGITUD_DESCRIPCION);
         }
     }
     
     public static void validarProyecto (ProyectoDTO proyectoDTO){
         
-        validarTituloProyecto(proyectoDTO.getTituloProyecto(), 100);
-        validarDescripcionProyecto(proyectoDTO.getDescripcionProyecto(), 255);
+        validarTituloProyecto(proyectoDTO.getTituloProyecto());
+        validarDescripcionProyecto(proyectoDTO.getDescripcionProyecto());
+        
+        
     }
     
 }
