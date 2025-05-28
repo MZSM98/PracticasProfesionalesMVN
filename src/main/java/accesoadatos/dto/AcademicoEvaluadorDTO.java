@@ -1,4 +1,3 @@
-
 package accesoadatos.dto;
 
 public class AcademicoEvaluadorDTO extends UsuarioDTO{

@@ -25,5 +25,4 @@ public class TipoUsuarioDTO {
     public String toString() {
         return tipo;
     }
-
 }

@@ -13,20 +13,20 @@ import java.util.List;
 
 public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDAO {
 
-    Connection conexionBD;
-    PreparedStatement declaracionPreparada = null;
-    ResultSet resultadoDeOperacion;
+    private Connection conexionBD;
+    private PreparedStatement declaracionPreparada = null;
+    private ResultSet resultadoDeOperacion;
 
     @Override
     public boolean insertarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException, IOException {
         
-        String INSERTAR_SQL = "INSERT INTO organizacionvinculada (rfcMoral, nombreOV, direccionOV, telefonoOV) VALUES (?, ?, ?, ?)";
+        String insertarSQL = "INSERT INTO organizacionvinculada (rfcMoral, nombreOV, direccionOV, telefonoOV) VALUES (?, ?, ?, ?)";
         boolean insercionExitosa = false;
 
         try {
             
             conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(INSERTAR_SQL);
+            declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, organizacionVinculada.getRfcMoral());
             declaracionPreparada.setString(2, organizacionVinculada.getNombreOV());
             declaracionPreparada.setString(3, organizacionVinculada.getDireccionOV());
@@ -45,12 +45,12 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
     @Override
     public boolean eliminarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException {
         
-        final String ELIMINAR_SQL = "DELETE FROM organizacionvinculada WHERE rfcMoral = ?";
+        final String eliminarSQL = "DELETE FROM organizacionvinculada WHERE rfcMoral = ?";
         boolean eliminacionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(ELIMINAR_SQL);
+            declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setString(1, rfcMoral);
             declaracionPreparada.executeUpdate();
             eliminacionExitosa = true;
@@ -63,12 +63,12 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
 
     @Override
     public boolean editarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException, IOException {
-        final String ACTUALIZAR_SQL = "UPDATE organizacionvinculada SET nombreOV = ?, direccionOV = ?, telefonoOV = ?, estadoOV = ? WHERE rfcMoral = ?";
+        final String actualizarSQL = "UPDATE organizacionvinculada SET nombreOV = ?, direccionOV = ?, telefonoOV = ?, estadoOV = ? WHERE rfcMoral = ?";
         boolean actualizacionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(ACTUALIZAR_SQL);
+            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, organizacionVinculada.getNombreOV());
             declaracionPreparada.setString(2, organizacionVinculada.getDireccionOV());
             declaracionPreparada.setString(3, organizacionVinculada.getTelefonoOV());
@@ -89,14 +89,14 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
     @Override
     public OrganizacionVinculadaDTO buscarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException {
         
-        final String CONSULTA_SQL = "SELECT rfcMoral, nombreOV, direccionOV, telefonoOV, estadoOV FROM organizacionvinculada WHERE rfcMoral = ?";
+        final String consultaSQL = "SELECT rfcMoral, nombreOV, direccionOV, telefonoOV, estadoOV FROM organizacionvinculada WHERE rfcMoral = ?";
         OrganizacionVinculadaDTO organizacionVinculada;
         organizacionVinculada = null;
 
         try {
             
             conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(CONSULTA_SQL);
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, rfcMoral);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
@@ -121,33 +121,29 @@ public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDA
     @Override
     public List<OrganizacionVinculadaDTO> listarOrganizacionesVinculadas() throws SQLException, IOException {
         
-        final String CONSULTATODO_SQL = "SELECT * FROM organizacionvinculada";
+        final String consultaTodoSQL = "SELECT * FROM organizacionvinculada";
         List<OrganizacionVinculadaDTO> listaOrganizacionVinculada = new ArrayList<>();
-
-        Connection conexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultadoOrganizacionVinculada = null;
 
         try {
             
-            conexion = new ConexionBD().getConexionBaseDatos();
-            preparedStatement = conexion.prepareStatement(CONSULTATODO_SQL);
-            resultadoOrganizacionVinculada = preparedStatement.executeQuery();
-            while(resultadoOrganizacionVinculada.next()) {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+            while(resultadoDeOperacion.next()) {
                 
                 OrganizacionVinculadaDTO organizacionVinculada = new OrganizacionVinculadaDTO();
-                organizacionVinculada.setRfcMoral(resultadoOrganizacionVinculada.getString("rfcMoral"));
-                organizacionVinculada.setNombreOV(resultadoOrganizacionVinculada.getString("nombreOV"));
-                organizacionVinculada.setTelefonoOV(resultadoOrganizacionVinculada.getString("telefonoOV"));
-                organizacionVinculada.setDireccionOV(resultadoOrganizacionVinculada.getString("direccionOV"));
-                organizacionVinculada.setEstadoOV(resultadoOrganizacionVinculada.getString("estadoOV"));
+                organizacionVinculada.setRfcMoral(resultadoDeOperacion.getString("rfcMoral"));
+                organizacionVinculada.setNombreOV(resultadoDeOperacion.getString("nombreOV"));
+                organizacionVinculada.setTelefonoOV(resultadoDeOperacion.getString("telefonoOV"));
+                organizacionVinculada.setDireccionOV(resultadoDeOperacion.getString("direccionOV"));
+                organizacionVinculada.setEstadoOV(resultadoDeOperacion.getString("estadoOV"));
                 listaOrganizacionVinculada.add(organizacionVinculada);                
             }
         } finally {
             
-            if (resultadoOrganizacionVinculada != null) resultadoOrganizacionVinculada.close();
-            if (preparedStatement != null) preparedStatement.close();
-            if (conexion != null) conexion.close();
+            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
+            if (declaracionPreparada != null) declaracionPreparada.close();
+            if (conexionBD != null) conexionBD.close();
         }
 
         return listaOrganizacionVinculada;

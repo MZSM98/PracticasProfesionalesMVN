@@ -23,6 +23,7 @@ import accesoadatos.dto.OrganizacionVinculadaDTO;
 import accesoadatos.dto.OrganizacionVinculadaDTO.EstadoOrganizacionVinculada;
 import logica.dao.OrganizacionVinculadaDAO;
 import grafica.utils.AlertaUtil;
+import grafica.utils.ConstantesUtil;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -80,11 +81,11 @@ public class GestionOrganizacionVinculadaController implements Initializable {
         } catch (SQLException sqle) {
             
             LOG.error("Error al cargar las organizaciones vinculadas: " + sqle.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudo cargar la información, contacte al administrador: ", Alert.AlertType.ERROR);            
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, "No se pudo cargar la información, contacte al administrador: ", Alert.AlertType.ERROR);            
         } catch (IOException ioe){
             
             LOG.error("No se lograron cargar los registros" + ioe.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudo cargar la información, contacte al adminsitrador", Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, "No se pudo cargar la información, contacte al adminsitrador", Alert.AlertType.ERROR);
         }
     }
         
@@ -153,7 +154,7 @@ public class GestionOrganizacionVinculadaController implements Initializable {
         
         if (organizacionSeleccionada == null) {
             
-            AlertaUtil.mostrarAlerta("Aviso", "Por favor, seleccione una organización para cambiar su estado", Alert.AlertType.WARNING);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, "Por favor, seleccione una organización para cambiar su estado", Alert.AlertType.WARNING);
             return;
         }
         
@@ -170,18 +171,16 @@ public class GestionOrganizacionVinculadaController implements Initializable {
             
             if (actualizacionExitosa) {
                 
-                AlertaUtil.mostrarAlerta("Éxito", "Estado de la organización cambiado a: " + nuevoEstado, Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlerta(ConstantesUtil.EXITO, "Estado de la organización cambiado a: " + nuevoEstado, Alert.AlertType.INFORMATION);
                 cargarOrganizacionesVinculadas();                
             } else {
                 
-                AlertaUtil.mostrarAlerta("Error", "No se pudo cambiar el estado de la organización", Alert.AlertType.ERROR);
+                AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, "No se pudo cambiar el estado de la organización", Alert.AlertType.ERROR);
             }
-            
         } catch (SQLException e) {
             
-            LOG.error("Error de conexión con la base de datos: " + e.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "Error al conectar con la base de datos: ", Alert.AlertType.ERROR);
-            
+            LOG.error(ConstantesUtil.ALERTA_ERROR_BD + e.getMessage());
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException e){
             
             LOG.error("Error al cambiar estado de la organización: " + e.getMessage());

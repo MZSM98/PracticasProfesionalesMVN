@@ -45,11 +45,16 @@ public class OrganizacionVinculadaValidador {
         if (telefonoOV.isEmpty()) {
             
             throw new IllegalArgumentException(ConstantesUtil.ALERTA_TELEFONO_OBLIGATORIO);
+        }
+        if (telefonoOV.matches(ConstantesUtil.REGEX_TELEFONO)){
+            
+            throw new IllegalArgumentException (ConstantesUtil.ALERTA_FORMATO_TELEFONO);
         }        
         if (telefonoOV.length() !=(ConstantesUtil.LONGITUD_TELEFONO)) {
             
             throw new IllegalArgumentException(ConstantesUtil.ALERTA_LONGITUD_TELEFONO);
-        }               
+        }            
+        
     }
     
     public static void validarDireccion(String direccionOV) {
@@ -75,5 +80,4 @@ public class OrganizacionVinculadaValidador {
         validarTelefono(organizacionVinculadaDTO.getTelefonoOV());
         validarDireccion(organizacionVinculadaDTO.getDireccionOV());
     }
-    
 }

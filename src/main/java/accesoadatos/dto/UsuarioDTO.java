@@ -38,5 +38,4 @@ public class UsuarioDTO {
     public void setSalt(String salt) {
         this.salt = salt;
     }
-    
 }

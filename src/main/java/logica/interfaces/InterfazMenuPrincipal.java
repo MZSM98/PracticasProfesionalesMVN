@@ -1,4 +1,3 @@
-
 package logica.interfaces;
 
 import javafx.stage.Stage;

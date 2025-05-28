@@ -1,4 +1,3 @@
-
 package accesoadatos.dto;
 
 public class ProfesorEEDTO extends UsuarioDTO{
@@ -30,6 +29,4 @@ public class ProfesorEEDTO extends UsuarioDTO{
     public void setSeccion(String seccion) {
         this.seccion = seccion;
     }
-    
-    
 }

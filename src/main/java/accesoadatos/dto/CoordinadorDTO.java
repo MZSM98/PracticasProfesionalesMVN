@@ -1,9 +1,6 @@
-
 package accesoadatos.dto;
 
-
-
-public class CoordinadorDTO {
+public class CoordinadorDTO extends UsuarioDTO {
     
     private String numeroDeTrabajador;
     private String nombreCoordinador;
@@ -17,7 +14,6 @@ public class CoordinadorDTO {
         this.numeroDeTrabajador = numeroDeTrabajador;
     }
 
-    
     public String getNombreCoordinador() {
         return nombreCoordinador;
     }
@@ -33,6 +29,4 @@ public class CoordinadorDTO {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-    
-    
 }

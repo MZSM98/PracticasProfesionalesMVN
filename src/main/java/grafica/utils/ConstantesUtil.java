@@ -25,7 +25,8 @@ public class ConstantesUtil {
     public static final String REGEX_LETRAS_Y_NUMEROS = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]+$";
     public static final String REGEX_SOLO_LETRAS = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
     public static final String REGEX_RFC_MORAL = "^[A-Z]{3}[0-9]{6}[A-Z][0-9]{2}$";
-    public static final String REGEX_RFC_FISICO = "";
+    public static final String REGEX_RFC_FISICO = "^[A-Z]{4}[0-9]{6}[A-Z][0-9]{2}$";
+    public static final String REGEX_TELEFONO = "\\d+";
     public static final String REGEX_ESPACIOS_MULTIPLES = "\\s+";
     public static final String REGEX_LONGITUD_NOMBRES = ".{3,100}";
     public static final String REGEX_LONGITUD_DIRECCION = ".{3,200}";
@@ -65,6 +66,8 @@ public class ConstantesUtil {
     public static final String ALERTA_DIRECCION_OBLIGATORIA = "La direccion es obligatoria";
     public static final String ALERTA_LONGITUD_TELEFONO = "El número de telefono debe tener 10 dígitos";
     public static final String ALERTA_TELEFONO_OBLIGATORIO = "El número de telefono es obligatorio";
+    public static final String ALERTA_FORMATO_TELEFONO = "El telefono sólo puede contener números";
+    public static final String ALERTA_CAMBIO_ESTADO = "Estado de la organización cambiado a:";
     
     public static final String LOG_ACTUALIZACION_FALLIDA = "Error al actualizar el registro";
     public static final String LOG_ERROR_VENTANA = "No se pudo cargar la ventana";

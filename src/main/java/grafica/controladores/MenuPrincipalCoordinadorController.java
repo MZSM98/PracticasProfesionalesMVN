@@ -61,7 +61,6 @@ public class MenuPrincipalCoordinadorController implements InterfazMenuPrincipal
         }        
     }
     
-    
     @FXML
     private void abrirGestionProyecto(){
         
