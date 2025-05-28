@@ -55,13 +55,16 @@ public class InicioDeSesionController implements Initializable {
 
     @FXML
     private ComboBox<TipoUsuarioDTO> comboTipoUsuario;
+    
+    @FXML
+    private Button botonIniciarSesion;
 
     private InterfazUsuarioDAO interfazUsuarioDAO;
     private InterfazTipoUsuarioDAO interfazTipoUsuarioDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        botonIniciarSesion.setDefaultButton(Boolean.TRUE);
         interfazUsuarioDAO = new UsuarioDAO();
         interfazTipoUsuarioDAO = new TipoUsuarioDAO();
         poblarComboTipoUsuario();
@@ -167,7 +170,7 @@ public class InicioDeSesionController implements Initializable {
         if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
             return "/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml";
         } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {
-            return "/grafica/academicoevaluador/FXMLMenuPrincipalAcademicoEvaluador.fxml";
+            return "/grafica/academico/FXMLMenuPrincipalAcademicoEvaluador.fxml";
         } else if (PROFESOR_EE.equals(tipoUsuario.getIdTipo())) {
             return "/grafica/profesoree/FXMLMenuPrincipalProfesorEE.fxml";
         } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
