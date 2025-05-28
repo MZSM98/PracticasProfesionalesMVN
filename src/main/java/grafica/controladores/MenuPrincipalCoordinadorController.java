@@ -61,7 +61,6 @@ public class MenuPrincipalCoordinadorController implements InterfazMenuPrincipal
         }        
     }
     
-    
     @FXML
     private void abrirGestionProyecto(){
         
@@ -82,15 +81,28 @@ public class MenuPrincipalCoordinadorController implements InterfazMenuPrincipal
     }
     
     @FXML
+    void abrirGestionEstudiantes(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLGestionarEstudiante.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Gestionar Estudiante");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException ex) {
+            LOG.error("Error al cargar la ventana", ex);
+        }
+    }
+    
+    @FXML
     private void cerrarSesion() {
-        
         Stage currentStage = (Stage) labelCerrarSesion.getScene().getWindow();
         currentStage.close();
         parentStage.show();
     }
     
     public void setParentStage(Stage parentStage) {
-        
         this.parentStage = parentStage;
     }
 }
