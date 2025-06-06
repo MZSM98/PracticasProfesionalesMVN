@@ -3,6 +3,8 @@ package grafica.controladores;
 import accesoadatos.dto.EstudianteDTO;
 import accesoadatos.dto.PeriodoEscolarDTO;
 import accesoadatos.dto.SeccionDTO;
+import grafica.utils.AlertaUtil;
+import grafica.utils.ConstantesUtil;
 import grafica.validadores.EstudianteValidador;
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -26,9 +29,9 @@ import logica.interfaces.InterfazPeriodoEscolarDAO;
 import logica.interfaces.InterfazSeccionDAO;
 import org.apache.log4j.Logger;
 
-public class RegistrarEstudianteController implements Initializable {
+public class RegistroEstudianteController implements Initializable {
     
-    private static final Logger LOG = Logger.getLogger(RegistrarEstudianteController.class);
+    private static final Logger LOG = Logger.getLogger(RegistroEstudianteController.class);
     @FXML
     private Button botonCancelar;
     
@@ -60,6 +63,7 @@ public class RegistrarEstudianteController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         interfazEstudianteDAO = new EstudianteDAO();
         interfazPeriodoEscolarDAO = new PeriodoEscolarDAO();
         interfazSeccionDAO = new SeccionDAO();
@@ -68,12 +72,14 @@ public class RegistrarEstudianteController implements Initializable {
 
     @FXML
     void cancelarRegistroEstudiante(ActionEvent event) {
+        
         Stage ventanaActual = (Stage) ((Node) event.getSource()).getScene().getWindow();
         ventanaActual.close();
     }
 
     @FXML
     void registrarEstudiante(ActionEvent event) {
+        
         try {
             EstudianteDTO estudiante = new EstudianteDTO();
             estudiante.setMatricula(textMatricula.getText().trim());
@@ -114,50 +120,69 @@ public class RegistrarEstudianteController implements Initializable {
     }
     
     private void registrarEstudiante(EstudianteDTO estudiante){
+        
         try {
+            
             interfazEstudianteDAO.insertarEstudiante(estudiante);
         } catch (SQLException ex) {
+            
             LOG.error(ex);
         } catch (IOException ex) {
+            
             LOG.error(ex);
         }
     }
     
     private void editarEstudiante(EstudianteDTO estudiante) {
+        
         try {
+            
             interfazEstudianteDAO.editarEstudiante(estudiante);
-            Stage stage = (Stage) botonCancelar.getScene().getWindow();
-            stage.close();  
+            salirAMenuPrincipal();
         } catch (SQLException ex) {
+            
             LOG.error(ex);
         } catch (IOException ex) {
+            
             LOG.error(ex);
         }
     }
     
     public void poblarInformacionComboPeriodoySeccion(){
+        
         ObservableList<PeriodoEscolarDTO> listaPeriodos;
         ObservableList<SeccionDTO> listaSecciones;
+        
         try {
+            
             listaPeriodos = FXCollections.observableArrayList(interfazPeriodoEscolarDAO.listarPeriodos());
             comboPeriodoEscolar.setItems(listaPeriodos);
             
             listaSecciones = FXCollections.observableArrayList(interfazSeccionDAO.listarSecciones());
             comboSeccionEstudiante.setItems(listaSecciones);
-
         } catch (SQLException ex) {
+            
             LOG.error(ex);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException ex) {
+            
             LOG.error(ex);
         }
     }
     
     private void limpiarCampos(){
+        
         textMatricula.setText("");
         textNombreEstudiante.setText("");
         textAvanceCrediticio.setText("");
         textPromedio.setText("");
         comboPeriodoEscolar.setValue(null);
         comboSeccionEstudiante.setValue(null);
+    }
+    
+    private void salirAMenuPrincipal (){
+        
+        Stage stage = (Stage) botonCancelar.getScene().getWindow();
+        stage.close();  
     }
 }

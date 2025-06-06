@@ -9,7 +9,7 @@ public class ProyectoValidador {
     
     private ProyectoValidador(){
         
-        throw new IllegalAccessError (ConstantesUtil.ALERTA_CLASE_UTILERIA);
+        throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
     }
     
     public static void validarTituloProyecto(String tituloProyecto){

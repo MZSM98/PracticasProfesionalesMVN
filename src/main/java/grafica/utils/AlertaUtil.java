@@ -7,7 +7,7 @@ public class AlertaUtil {
     
     private AlertaUtil(){
         
-        throw new IllegalAccessError(ConstantesUtil.ALERTA_CLASE_UTILERIA);
+        throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
     }
     
     public static void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {

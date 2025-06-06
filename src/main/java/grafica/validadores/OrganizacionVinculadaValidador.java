@@ -8,7 +8,7 @@ public class OrganizacionVinculadaValidador {
     
     private OrganizacionVinculadaValidador(){
         
-        throw new IllegalAccessError (ConstantesUtil.ALERTA_CLASE_UTILERIA);
+        throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
     }
     
     public static void validarRfcMoral(String rfcMoral) {

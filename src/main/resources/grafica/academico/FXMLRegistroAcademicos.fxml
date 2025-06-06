@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPaneRegistroCoordinador" prefHeight="172.0" prefWidth="471.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="grafica.controladores.RegistroAcademicoEvaluadorController">
+<AnchorPane id="AnchorPaneRegistroCoordinador" prefHeight="172.0" prefWidth="471.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="grafica.controladores.RegistroAcademicosController">
     <children>
       <Pane prefHeight="214.0" prefWidth="486.0">
          <children>

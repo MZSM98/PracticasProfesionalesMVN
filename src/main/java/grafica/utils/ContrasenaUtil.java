@@ -9,7 +9,7 @@ public class ContrasenaUtil {
     
     private ContrasenaUtil(){
         
-        throw new IllegalAccessError(ConstantesUtil.ALERTA_CLASE_UTILERIA);
+        throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
     }
     
     public static final String crearContrasenaPorDefecto(AcademicoEvaluadorDTO academicoEvaluador){

@@ -10,7 +10,7 @@ public class RestriccionCamposUtil {
     
     private RestriccionCamposUtil() {
         
-        throw new IllegalAccessError(ConstantesUtil.ALERTA_CLASE_UTILERIA);
+        throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
     }
     
     public static void aplicarRestriccionLongitud(TextField textField, int maxLength) {

@@ -68,7 +68,7 @@ public class InicioDeSesionController implements Initializable {
         interfazUsuarioDAO = new UsuarioDAO();
         interfazTipoUsuarioDAO = new TipoUsuarioDAO();
         poblarComboTipoUsuario();
-        aplicarRestriccionesACampos();
+        aplicarRestriccionesLongitudACampos();
     }    
 
     @FXML
@@ -85,34 +85,35 @@ public class InicioDeSesionController implements Initializable {
         usuarioDTO.setUsuario(textUsuario.getText().trim());
         usuarioDTO.setContrasena(textContrasena.getText().trim());
         usuarioDTO.setTipoUsuario(comboTipoUsuario.getValue());
-        textUsuario.lengthProperty();
         
         if(!validarCamposInicioSesion(usuarioDTO)){
             
             return;
         }
-
         try {
-                UsuarioDTO usuarioBusqueda = interfazUsuarioDAO.buscarUsuario(usuarioDTO.getUsuario());
-                usuarioDTO.setSalt(usuarioBusqueda.getSalt());
+            
+            UsuarioDTO usuarioBusqueda = interfazUsuarioDAO.buscarUsuario(usuarioDTO.getUsuario());
+            usuarioDTO.setSalt(usuarioBusqueda.getSalt());
 
-                if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
+            if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
 
-                    abrirMenuPrincipal(event, obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
-                    limpiarCampos();
+                abrirMenuPrincipal(event, obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
+                limpiarCampos();
+            } else {
 
-                } else {
-
-                    AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, ConstantesUtil.ALERTA_CREDENCIALES_INVALIDAS, Alert.AlertType.WARNING);
-                }
- 
-        } catch (SQLException sqle) {
+                AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, ConstantesUtil.ALERTA_CREDENCIALES_INVALIDAS, Alert.AlertType.WARNING);
+            }
+        }catch (IllegalArgumentException ioe){
+            
+            LOG.error(ConstantesUtil.LOG_DATOS_NO_VALIDOS, ioe);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_DATOS_INVALIDOS, Alert.AlertType.NONE); 
+        }catch (SQLException sqle) {
             
             LOG.error(ConstantesUtil.ALERTA_ERROR_BD,sqle);
             AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
-        } catch (IOException ex) {
+        } catch (IOException ioe) {
             
-            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA,ex);
+            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA,ioe);
             AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
         }
     }
@@ -167,6 +168,7 @@ public class InicioDeSesionController implements Initializable {
     
 
     private String obtenerRecursoVetana(TipoUsuarioDTO tipoUsuario){
+        
         if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
             return "/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml";
         } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {
@@ -176,7 +178,7 @@ public class InicioDeSesionController implements Initializable {
         } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
             return "/grafica/estudiante/FXMLMenuPrincipalEstudiante.fxml";
         } else {
-            throw new AssertionError("No existe tipo de usuario");
+            throw new IllegalArgumentException("No existe tipo de usuario");
         }
     }
 
@@ -195,12 +197,13 @@ public class InicioDeSesionController implements Initializable {
     }
     
     private void limpiarCampos() {
+        
         comboTipoUsuario.setValue(null);
         textUsuario.setText("");
         textContrasena.setText("");
     }
 
-    private void aplicarRestriccionesACampos(){
+    private void aplicarRestriccionesLongitudACampos(){
         
         RestriccionCamposUtil.aplicarRestriccionLongitud(textContrasena, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
         RestriccionCamposUtil.aplicarRestriccionLongitud(textUsuario, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);

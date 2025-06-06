@@ -58,12 +58,14 @@ public class GestionOrganizacionVinculadaController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         organizacionVinculadaDAO = new OrganizacionVinculadaDAO();
         configurarColumnas();
         cargarOrganizacionesVinculadas();
     }
     
     private void configurarColumnas() {
+        
         columnRFC.setCellValueFactory(new PropertyValueFactory<>("rfcMoral"));
         columnNombre.setCellValueFactory(new PropertyValueFactory<>("nombreOV"));
         columnTelefono.setCellValueFactory(new PropertyValueFactory<>("telefonoOV"));

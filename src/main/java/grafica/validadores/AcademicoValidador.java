@@ -1,19 +1,22 @@
 package grafica.validadores;
 
 import accesoadatos.dto.AcademicoEvaluadorDTO;
+import grafica.utils.ConstantesUtil;
 
 public class AcademicoValidador {
     
-    public static void validarNumeroDeTrabajador(String numeroDeTrabajador, int longitudExacta) {
+    private AcademicoValidador(){
+        
+        throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
+    }
+    
+    public static void validarNumeroDeTrabajador(String numeroDeTrabajador) {
         
         if (numeroDeTrabajador.isEmpty()) {
             
             throw new IllegalArgumentException("El número de trabajador es obligatorio");
         }
-        
-        String formatoRfcMoral = "^[A-Z]{2}[0-9]{7}$";
-    
-        if (!numeroDeTrabajador.matches(formatoRfcMoral)) {
+        if (!numeroDeTrabajador.matches(ConstantesUtil.REGEX_NUMERO_TRABAJADOR)) {
             
             throw new IllegalArgumentException("RFC inválido");
         }
@@ -25,14 +28,10 @@ public class AcademicoValidador {
             
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
-        
-        String formatoNombre = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
-        
-        if (!nombreAcademico.matches(formatoNombre)){
+        if (!nombreAcademico.matches(ConstantesUtil.REGEX_SOLO_LETRAS)){
             
-            throw new IllegalArgumentException("El nombre sólo puede contener letras");
+            throw new IllegalArgumentException(ConstantesUtil.ALERTA_NOMBRES_PERSONALES);
         }
-        
         if (nombreAcademico.length() > longitudMaxima) {
             
             throw new IllegalArgumentException("El nombre no puede exceder los " + longitudMaxima + " caracteres");
@@ -42,7 +41,7 @@ public class AcademicoValidador {
    
     public static void validarAcademico(AcademicoEvaluadorDTO academicoEvaluadorDTO) {
         
-        validarNumeroDeTrabajador(academicoEvaluadorDTO.getNumeroDeTrabajador(),9);
+        validarNumeroDeTrabajador(academicoEvaluadorDTO.getNumeroDeTrabajador());
         validarNombre(academicoEvaluadorDTO.getNombreAcademico(), 100);
     }
 }

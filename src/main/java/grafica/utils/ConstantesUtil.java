@@ -5,13 +5,13 @@ public class ConstantesUtil {
     
     private ConstantesUtil(){
         
-        throw new IllegalAccessError(ALERTA_CLASE_UTILERIA);
+        throw new UnsupportedOperationException(ALERTA_CLASE_UTILERIA);
     }
     
     public static final int RESTRICCION_LONGITUD_TEXTAREA = 1000;
     public static final int RESTRICCION_LONGITUD_TEXTFIELD = 1000;
-    public static final int LONGITUD_NOMBRES= 100 ;
-    public static final int LONGITUD_DESCRIPCIONES=255;
+    public static final int LONGITUD_NOMBRES = 100 ;
+    public static final int LONGITUD_DESCRIPCIONES = 255;
     public static final int LONGITUD_DIRECCION = 200;
     public static final int LONGITUD_TELEFONO = 10;
     
@@ -26,6 +26,7 @@ public class ConstantesUtil {
     public static final String REGEX_SOLO_LETRAS = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
     public static final String REGEX_RFC_MORAL = "^[A-Z]{3}[0-9]{6}[A-Z][0-9]{2}$";
     public static final String REGEX_RFC_FISICO = "^[A-Z]{4}[0-9]{6}[A-Z][0-9]{2}$";
+    public static final String REGEX_NUMERO_TRABAJADOR = "^[A-Z]{3}[0-9]{6}$";
     public static final String REGEX_TELEFONO = "\\d+";
     public static final String REGEX_ESPACIOS_MULTIPLES = "\\s+";
     public static final String REGEX_LONGITUD_NOMBRES = ".{3,100}";
@@ -68,6 +69,8 @@ public class ConstantesUtil {
     public static final String ALERTA_TELEFONO_OBLIGATORIO = "El número de telefono es obligatorio";
     public static final String ALERTA_FORMATO_TELEFONO = "El telefono sólo puede contener números";
     public static final String ALERTA_CAMBIO_ESTADO = "Estado de la organización cambiado a:";
+    public static final String ALERTA_TIPO_USUARIO_NO_VALIDO = "El tipo de usuario no existe";
+    public static final String ALERTA_SELECCION_EDITAR = "Por favor selecciona un registro para editar";
     
     public static final String LOG_ACTUALIZACION_FALLIDA = "Error al actualizar el registro";
     public static final String LOG_ERROR_VENTANA = "No se pudo cargar la ventana";

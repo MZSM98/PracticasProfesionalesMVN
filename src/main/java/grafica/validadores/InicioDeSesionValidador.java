@@ -8,7 +8,7 @@ public class InicioDeSesionValidador {
     
     private InicioDeSesionValidador (){
         
-        throw new IllegalAccessError(ConstantesUtil.ALERTA_CLASE_UTILERIA);
+        throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
     }
     
     private static void validarTipoUsuario(TipoUsuarioDTO tipoUsuario) {

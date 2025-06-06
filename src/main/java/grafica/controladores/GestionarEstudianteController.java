@@ -71,7 +71,7 @@ public class GestionarEstudianteController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLRegistrarEstudiante.fxml"));
             Parent root = loader.load();
             
-            RegistrarEstudianteController controlador = loader.getController();
+            RegistroEstudianteController controlador = loader.getController();
             controlador.setModoEdicion(Boolean.TRUE);
             controlador.llenarCamposEditablesEstudiante(estudianteSeleccionado);
             
@@ -95,7 +95,7 @@ public class GestionarEstudianteController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLRegistrarEstudiante.fxml"));
             Parent root = loader.load();
-            RegistrarEstudianteController controlador = loader.getController();
+            RegistroEstudianteController controlador = loader.getController();
             controlador.poblarInformacionComboPeriodoySeccion();
             
             Stage stage = new Stage();
