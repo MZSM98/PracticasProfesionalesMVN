@@ -1,24 +1,15 @@
 package com.pdc.aplicacion;
 
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class PracticasProfesionales extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        
-        Parent root = FXMLLoader.load(getClass().getResource("/grafica/iniciodesesion/FXMLInicioDeSesion.fxml"));
-               
-        Scene scene = new Scene(root);
-        
-        stage.setTitle("Inicio de Sesión");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        ManejadorDeVistas.getInstancia().setEscenarioPrincipal(stage);
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.INICIO_SESION);
     }
     
     public static void main(String[] args) {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="295.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.profesoree.ProfesorEEMenuPrincipalController">
+   <children>
+      <Button fx:id="botonGestionar" layoutX="55.0" layoutY="135.0" mnemonicParsing="false" onAction="#abrirVentanaGestionEstudiante" text="Gestionar" />
+      <Button fx:id="botonConsultarCalificaciones" layoutX="250.0" layoutY="135.0" mnemonicParsing="false" onAction="#abrirVentanaConsultaCalificaciones" text="Consultar" />
+      <Button fx:id="botonConsultarEvaluaciones" layoutX="437.0" layoutY="135.0" mnemonicParsing="false" onAction="#abrirVentanaEvaluaciones" text="Consultar" />
+      <Label fx:id="labelTitulo" layoutX="118.0" layoutY="39.0" text="Gestión De Prácticas Profesionales">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelEstudiante" layoutX="61.0" layoutY="107.0" text="Estudiante" />
+      <Label fx:id="labelCalificaciones" layoutX="247.0" layoutY="107.0" text="Calificaciones" />
+      <Label fx:id="labelEvaluacionesPresentacion" layoutX="385.0" layoutY="107.0" text="Evaluaciones de presentación" />
+      <Label fx:id="labelCerrarSesion" layoutX="497.0" layoutY="274.0" onMouseClicked="#cerrarSesion" text="Cerrar Sesión" textFill="#0095ff" underline="true">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+   </children>
+</AnchorPane>
