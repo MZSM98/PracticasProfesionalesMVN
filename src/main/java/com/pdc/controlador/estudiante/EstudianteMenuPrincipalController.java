@@ -1,5 +1,6 @@
 package com.pdc.controlador.estudiante;
 
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,9 +14,8 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import com.pdc.dao.interfaz.IMenuPrincipal;
 
-public class EstudianteMenuPrincipalController implements Initializable, IMenuPrincipal {
+public class EstudianteMenuPrincipalController implements Initializable {
     private static final Logger LOG = Logger.getLogger(EstudianteMenuPrincipalController.class);
 
     
@@ -31,131 +31,42 @@ public class EstudianteMenuPrincipalController implements Initializable, IMenuPr
     
     @FXML
     void abrirVentanaConsultarCronograma(ActionEvent event) {
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/estudiante/FXMLConsultaCronogramaEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Consultar cronograma");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();                     
-        } catch (IOException ex) {
-            LOG.error("Error al cargar la ventana", ex);            
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_CONSULTA_CRONOGRAMA);
     }
 
     @FXML
     void abrirVentanaProyectoAsignado(ActionEvent event) {
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/estudiante/FXMLConsultaProyectoAsignadoEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Consulta proyecto asignado");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();                     
-        } catch (IOException ex) {
-            
-            LOG.error("Error al cargar la ventana", ex);            
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_CONSULTA_PROYECTO_ASIGNADO);
     }
 
     @FXML
     void abrirVentanaRegistrarAutoevaluacion(ActionEvent event) {
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/estudiante/FXMLRegistroAutoevaluacionEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Registrar autoevaluacion");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();                     
-        } catch (IOException ex) {
-            
-            LOG.error("Error al cargar la ventana", ex);            
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO_AUTOEVALUACION);
     }
 
     @FXML
     void abrirVentanaRegistrarSolicitudProyecto(ActionEvent event) {
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/estudiante/FXMLRegistroSolicitudProyectoEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Registrar solicitud de proyecto");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();                     
-        } catch (IOException ex) {
-            
-            LOG.error("Error al cargar la ventana", ex);            
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO_SOLICITUD_PROYECTO);
     }
 
     @FXML
     void abrirVentanaActualizarPerfil(ActionEvent event) {
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/estudiante/FXMLActualizacionPerfilEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Actualizar perfil");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();                     
-        } catch (IOException ex) {
-            
-            LOG.error("Error al cargar la ventana", ex);            
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_ACTUALIZACION_PERFIL);
     }
 
     @FXML
     void abrirVentanaEvaluacionPresentacion(ActionEvent event) {
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/estudiante/FXMLEvaluacionPresentacionEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Registrar evaluacion de presentación");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();                     
-        } catch (IOException ex) {
-            
-            LOG.error("Error al cargar la ventana", ex);            
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_EVALUACION_PRESENTACION);
     }
 
     @FXML
     void abrirVentanaRegistrarReporteMensual(ActionEvent event) {
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/estudiante/FXMLRegistroReporteMensualEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Registrar reporte mensual");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();                     
-        } catch (IOException ex) {
-            
-            LOG.error("Error al cargar la ventana", ex);            
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO_REPORTE_MENSUAL);
     }
 
-    @Override
-    public void setParentStage(Stage parentStage) {
-        this.parentStage = parentStage;
-    }
-     
     @FXML
     private void cerrarSesion() {
-        Stage currentStage = (Stage) labelCerrarSesion.getScene().getWindow();
-        currentStage.close();
-        parentStage.show();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.INICIO_SESION);
     }   
 }

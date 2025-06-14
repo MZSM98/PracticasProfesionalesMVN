@@ -12,11 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -31,7 +27,6 @@ import org.apache.log4j.Logger;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.RestriccionCamposUtil;
-import com.pdc.dao.interfaz.IMenuPrincipal;
 import com.pdc.dao.interfaz.IUsuarioDAO;
 import com.pdc.dao.interfaz.ITipoUsuarioDAO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
@@ -99,7 +94,7 @@ public class InicioDeSesionController implements Initializable {
             if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
 
                 abrirMenuPrincipal(obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
-                limpiarCampos();
+                
             } else {
 
                 AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, ConstantesUtil.ALERTA_CREDENCIALES_INVALIDAS, Alert.AlertType.WARNING);
@@ -172,13 +167,6 @@ public class InicioDeSesionController implements Initializable {
             AlertaUtil.mostrarAlerta(ConstantesUtil.ALERTA_DATOS_INVALIDOS, iae.getMessage(), Alert.AlertType.WARNING);
             return false;
         } 
-    }
-    
-    private void limpiarCampos() {
-        
-        comboTipoUsuario.setValue(null);
-        textUsuario.setText("");
-        textContrasena.setText("");
     }
 
     private void aplicarRestriccionesLongitudACampos(){

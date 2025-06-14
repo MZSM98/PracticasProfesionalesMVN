@@ -3,6 +3,7 @@ package com.pdc.controlador.coordinador;
 
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,10 +15,9 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import com.pdc.dao.interfaz.IMenuPrincipal;
 
 
-public class CoordinadorMenuPrincipalController implements IMenuPrincipal{
+public class CoordinadorMenuPrincipalController {
     
     private static final Logger LOG = Logger.getLogger(CoordinadorGestionOrganizacionVinculadaController.class);
     
@@ -105,12 +105,8 @@ public class CoordinadorMenuPrincipalController implements IMenuPrincipal{
     
     @FXML
     private void cerrarSesion() {
-        Stage currentStage = (Stage) labelCerrarSesion.getScene().getWindow();
-        currentStage.close();
-        parentStage.show();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.INICIO_SESION);
     }
     
-    public void setParentStage(Stage parentStage) {
-        this.parentStage = parentStage;
-    }
 }

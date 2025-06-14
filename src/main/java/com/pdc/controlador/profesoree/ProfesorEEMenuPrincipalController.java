@@ -1,5 +1,6 @@
 package com.pdc.controlador.profesoree;
 
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,10 +11,9 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import com.pdc.dao.interfaz.IMenuPrincipal;
 
 
-public class ProfesorEEMenuPrincipalController implements IMenuPrincipal{
+public class ProfesorEEMenuPrincipalController{
     
     private static final Logger LOG = Logger.getLogger(ProfesorEEMenuPrincipalController.class);
     
@@ -72,14 +72,8 @@ public class ProfesorEEMenuPrincipalController implements IMenuPrincipal{
     
     @FXML
     private void cerrarSesion() {
-        Stage currentStage = (Stage) labelCerrarSesion.getScene().getWindow();
-        currentStage.close();
-        parentStage.show();
-    }
-    
-    @Override
-    public void setParentStage(Stage parentStage) {
-        this.parentStage = parentStage;
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.INICIO_SESION);
     }
 
 }
