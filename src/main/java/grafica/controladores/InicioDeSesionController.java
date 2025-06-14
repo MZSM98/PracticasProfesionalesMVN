@@ -23,17 +23,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import logica.dao.TipoUsuarioDAO;
-import logica.dao.UsuarioDAO;
+import logica.dao.TipoUsuarioDAOImpl;
+import logica.dao.UsuarioDAOImpl;
 import grafica.validadores.InicioDeSesionValidador;
-import logica.interfaces.InterfazTipoUsuarioDAO;
-import logica.interfaces.InterfazUsuarioDAO;
 
 import org.apache.log4j.Logger;
 import grafica.utils.AlertaUtil;
-import logica.interfaces.InterfazMenuPrincipal;
 import grafica.utils.ConstantesUtil;
 import grafica.utils.RestriccionCamposUtil;
+import logica.interfaces.IMenuPrincipal;
+import logica.interfaces.IUsuarioDAO;
+import logica.interfaces.ITipoUsuarioDAO;
 
 public class InicioDeSesionController implements Initializable {
     
@@ -59,14 +59,14 @@ public class InicioDeSesionController implements Initializable {
     @FXML
     private Button botonIniciarSesion;
 
-    private InterfazUsuarioDAO interfazUsuarioDAO;
-    private InterfazTipoUsuarioDAO interfazTipoUsuarioDAO;
+    private IUsuarioDAO interfazUsuarioDAO;
+    private ITipoUsuarioDAO interfazTipoUsuarioDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         botonIniciarSesion.setDefaultButton(Boolean.TRUE);
-        interfazUsuarioDAO = new UsuarioDAO();
-        interfazTipoUsuarioDAO = new TipoUsuarioDAO();
+        interfazUsuarioDAO = new UsuarioDAOImpl();
+        interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
         poblarComboTipoUsuario();
         aplicarRestriccionesLongitudACampos();
     }    
@@ -106,7 +106,7 @@ public class InicioDeSesionController implements Initializable {
         }catch (IllegalArgumentException ioe){
             
             LOG.error(ConstantesUtil.LOG_DATOS_NO_VALIDOS, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_DATOS_INVALIDOS, Alert.AlertType.NONE); 
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_DATOS_INVALIDOS, Alert.AlertType.WARNING); 
         }catch (SQLException sqle) {
             
             LOG.error(ConstantesUtil.ALERTA_ERROR_BD,sqle);
@@ -133,7 +133,7 @@ public class InicioDeSesionController implements Initializable {
             AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
         }
             
-        InterfazMenuPrincipal controlador = loader.getController();
+        IMenuPrincipal controlador = loader.getController();
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         controlador.setParentStage(currentStage);
         currentStage.close();
@@ -162,7 +162,7 @@ public class InicioDeSesionController implements Initializable {
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION,ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.NONE);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.WARNING);
         }
     }
     

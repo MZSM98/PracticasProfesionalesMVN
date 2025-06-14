@@ -12,10 +12,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import logica.interfaces.InterfazMenuPrincipal;
 import org.apache.log4j.Logger;
+import logica.interfaces.IMenuPrincipal;
 
-public class MenuPrincipalEstudianteController implements Initializable, InterfazMenuPrincipal {
+public class MenuPrincipalEstudianteController implements Initializable, IMenuPrincipal {
     private static final Logger LOG = Logger.getLogger(MenuPrincipalEstudianteController.class);
 
     

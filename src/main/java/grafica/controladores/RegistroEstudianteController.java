@@ -21,13 +21,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import logica.dao.EstudianteDAO;
-import logica.dao.PeriodoEscolarDAO;
-import logica.dao.SeccionDAO;
-import logica.interfaces.InterfazEstudianteDAO;
-import logica.interfaces.InterfazPeriodoEscolarDAO;
-import logica.interfaces.InterfazSeccionDAO;
+import logica.dao.EstudianteDAOImpl;
+import logica.dao.PeriodoEscolarDAOImpl;
+import logica.dao.SeccionDAOImpl;
 import org.apache.log4j.Logger;
+import logica.interfaces.IPeriodoEscolarDAO;
+import logica.interfaces.ISeccionDAO;
+import logica.interfaces.IEstudianteDAO;
 
 public class RegistroEstudianteController implements Initializable {
     
@@ -55,18 +55,18 @@ public class RegistroEstudianteController implements Initializable {
     
     private boolean modoEdicion;
     
-    private InterfazEstudianteDAO interfazEstudianteDAO;
+    private IEstudianteDAO interfazEstudianteDAO;
     
-    private InterfazPeriodoEscolarDAO interfazPeriodoEscolarDAO;
+    private IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
     
-    private InterfazSeccionDAO interfazSeccionDAO;
+    private ISeccionDAO interfazSeccionDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        interfazEstudianteDAO = new EstudianteDAO();
-        interfazPeriodoEscolarDAO = new PeriodoEscolarDAO();
-        interfazSeccionDAO = new SeccionDAO();
+        interfazEstudianteDAO = new EstudianteDAOImpl();
+        interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
+        interfazSeccionDAO = new SeccionDAOImpl();
         poblarInformacionComboPeriodoySeccion();
     }    
 

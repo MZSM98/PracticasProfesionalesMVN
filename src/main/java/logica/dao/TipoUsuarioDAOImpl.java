@@ -9,9 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import logica.interfaces.InterfazTipoUsuarioDAO;
+import logica.interfaces.ITipoUsuarioDAO;
 
-public class TipoUsuarioDAO implements InterfazTipoUsuarioDAO {
+public class TipoUsuarioDAOImpl implements ITipoUsuarioDAO {
     
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;

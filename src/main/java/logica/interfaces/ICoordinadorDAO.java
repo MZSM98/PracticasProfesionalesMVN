@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 
-public interface InterfazCoordinadorDAO {
+public interface ICoordinadorDAO {
 
     boolean insertarCoordinador(CoordinadorDTO coordinador) throws SQLException, IOException;
     

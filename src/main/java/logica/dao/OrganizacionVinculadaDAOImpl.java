@@ -1,6 +1,5 @@
 package logica.dao;
 
-import logica.interfaces.InterfazOrganizacionVinculadaDAO;
 import accesoadatos.dto.OrganizacionVinculadaDTO;
 import accesoadatos.ConexionBD;
 import java.io.IOException;
@@ -10,8 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import logica.interfaces.IOrganizacionVinculadaDAO;
 
-public class OrganizacionVinculadaDAO implements InterfazOrganizacionVinculadaDAO {
+public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
 
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada = null;

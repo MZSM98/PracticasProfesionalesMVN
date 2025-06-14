@@ -7,9 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import logica.interfaces.InterfazMenuPrincipal;
+import logica.interfaces.IMenuPrincipal;
 
-public class MenuPrincipalAcademicoEvaluadorController implements Initializable, InterfazMenuPrincipal {
+public class MenuPrincipalAcademicoEvaluadorController implements Initializable, IMenuPrincipal {
 
     @FXML
     private Label labelCerrarSesion;

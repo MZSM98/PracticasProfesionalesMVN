@@ -1,34 +1,33 @@
-
 package logica.dao;
 
-import logica.interfaces.InterfazCoordinadorDAO;
-import accesoadatos.dto.CoordinadorDTO;
+import accesoadatos.dto.AutoEvaluacionDTO;
 import accesoadatos.ConexionBD;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Date;
+import logica.interfaces.IAutoEvaluacionDAO;
 
-public class CoordinadorDAO implements InterfazCoordinadorDAO {
+public class AutoEvaluacionDAOImpl implements IAutoEvaluacionDAO {
     
     Connection conexionBD;
     PreparedStatement declaracionPreparada;
     ResultSet resultadoDeOperacion;
     
     @Override
-    public boolean insertarCoordinador(CoordinadorDTO coordinador) throws SQLException, IOException {
-        String insertarSQL = "INSERT INTO coordinador (numeroDeTrabajador, nombreCoordinador, telefono) VALUES (?, ?, ?)";
+    public boolean insertarAutoEvaluacion(AutoEvaluacionDTO autoEvaluacion) throws SQLException, IOException {
+        String insertarSQL = "INSERT INTO autoevaluacion (fechaDeEvaluacion, puntaje, totalHoras) VALUES (?, ?, ?)";
         boolean insercionExitosa = false;
         
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
-            declaracionPreparada.setString(1, coordinador.getNumeroDeTrabajador());
-            declaracionPreparada.setString(2, coordinador.getNombreCoordinador());
-            declaracionPreparada.setString(3, coordinador.getTelefono());
+            declaracionPreparada.setDate(1, autoEvaluacion.getFechaDeEvaluacion());
+            declaracionPreparada.setInt(2, autoEvaluacion.getPuntaje());
+            declaracionPreparada.setInt(3, autoEvaluacion.getTotalHoras());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
@@ -39,14 +38,14 @@ public class CoordinadorDAO implements InterfazCoordinadorDAO {
     }
 
     @Override
-    public boolean eliminarCoordinador(String numeroDeTrabajador) throws SQLException, IOException {
-        String eliminarSQL = "DELETE FROM coordinador WHERE numeroDeTrabajador = ?";
+    public boolean eliminarAutoEvaluacion(Date fechaEvaluacion) throws SQLException, IOException {
+        String eliminarSQL = "DELETE FROM autoevaluacion WHERE fechaDeEvaluacion = ?";
         boolean eliminacionExitosa = false;
         
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
-            declaracionPreparada.setString(1, numeroDeTrabajador);
+            declaracionPreparada.setDate(1, fechaEvaluacion);
             declaracionPreparada.executeUpdate();
             eliminacionExitosa = true;
         } finally {
@@ -57,16 +56,16 @@ public class CoordinadorDAO implements InterfazCoordinadorDAO {
     }
 
     @Override
-    public boolean editarCoordinador(CoordinadorDTO coordinador) throws SQLException, IOException {
-        String actualizarSQL = "UPDATE coordinador SET nombreCoordinador = ?, telefono = ? WHERE numeroDeTrabajador = ?";
+    public boolean editarAutoEvaluacion(AutoEvaluacionDTO autoEvaluacion) throws SQLException, IOException {
+        String actualizarSQL = "UPDATE autoevaluacion SET puntaje = ?, totalHoras = ? WHERE fechaDeEvaluacion = ?";
         boolean actualizacionExitosa = false;
         
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
-            declaracionPreparada.setString(1, coordinador.getNombreCoordinador());
-            declaracionPreparada.setString(2, coordinador.getTelefono());
-            declaracionPreparada.setString(3, coordinador.getNumeroDeTrabajador());
+            declaracionPreparada.setInt(1, autoEvaluacion.getPuntaje());
+            declaracionPreparada.setInt(2, autoEvaluacion.getTotalHoras());
+            declaracionPreparada.setDate(3, autoEvaluacion.getFechaDeEvaluacion());
             declaracionPreparada.executeUpdate();
             actualizacionExitosa = true;
         } finally {
@@ -77,27 +76,28 @@ public class CoordinadorDAO implements InterfazCoordinadorDAO {
     }
 
     @Override
-    public CoordinadorDTO buscarCoordinador(String numeroDeTrabajador) throws SQLException, IOException {
-        String consultaSQL = "SELECT numeroDeTrabajador, nombreCoordinador, telefono FROM coordinador WHERE numeroDeTrabajador = ?";
-        CoordinadorDTO coordinador = null;
+    public AutoEvaluacionDTO buscarAutoEvaluacion(Date fechaEvaluacion) throws SQLException, IOException {
+        String consultaSQL = "SELECT fechaDeEvaluacion, puntaje, totalHoras FROM autoevaluacion WHERE fechaDeEvaluacion = ?";
+        AutoEvaluacionDTO autoEvaluacion = null;
         
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            declaracionPreparada.setString(1, numeroDeTrabajador);
+            declaracionPreparada.setDate(1, fechaEvaluacion);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             if (resultadoDeOperacion.next()) {
-                coordinador = new CoordinadorDTO();
-                coordinador.setNumeroDeTrabajador(resultadoDeOperacion.getString("numeroDeTrabajador"));
-                coordinador.setNombreCoordinador(resultadoDeOperacion.getString("nombreCoordinador"));
-                coordinador.setTelefono(resultadoDeOperacion.getString("telefono"));
+                autoEvaluacion = new AutoEvaluacionDTO();
+                autoEvaluacion.setFechaDeEvaluacion(resultadoDeOperacion.getDate("fechaDeEvaluacion"));
+                autoEvaluacion.setPuntaje(resultadoDeOperacion.getInt("puntaje"));
+                autoEvaluacion.setTotalHoras(resultadoDeOperacion.getInt("totalHoras"));
             }
         } finally {
             if (resultadoDeOperacion != null) resultadoDeOperacion.close();
             if (declaracionPreparada != null) declaracionPreparada.close();
             if (conexionBD != null) conexionBD.close();
         }
-        return coordinador;
+        return autoEvaluacion;
     }
+
 }

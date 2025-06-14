@@ -9,9 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import logica.interfaces.InterfazPeriodoEscolarDAO;
+import logica.interfaces.IPeriodoEscolarDAO;
 
-public class PeriodoEscolarDAO implements InterfazPeriodoEscolarDAO {
+public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
 
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;

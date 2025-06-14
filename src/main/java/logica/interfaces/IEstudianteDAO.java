@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.io.IOException;
 import java.util.List;
 
-public interface InterfazEstudianteDAO {
+public interface IEstudianteDAO {
     
     boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException;
     

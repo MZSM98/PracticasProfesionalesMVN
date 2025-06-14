@@ -4,7 +4,7 @@ import accesoadatos.dto.ResponsableOrganizacionVinculadaDTO;
 import java.sql.SQLException;
 import java.io.IOException;
 
-public interface InterfazResponsableOrganizacionVinculadaDAO {
+public interface IResponsableOrganizacionVinculadaDAO {
     
     boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException;
     

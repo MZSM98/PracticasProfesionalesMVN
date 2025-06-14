@@ -1,33 +1,31 @@
 package logica.dao;
 
-import accesoadatos.dto.ResponsableOrganizacionVinculadaDTO;
+import accesoadatos.dto.ReporteParcialDTO;
 import accesoadatos.ConexionBD;
-
 import java.io.IOException;
 import java.sql.SQLException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import logica.interfaces.InterfazResponsableOrganizacionVinculadaDAO;
+import java.sql.Date;
+import logica.interfaces.IReporteParcialDAO;
 
-public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableOrganizacionVinculadaDAO {
+public class ReporteParcialDAOImpl implements IReporteParcialDAO {
 
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada;
-    private ResultSet resultadoDeOperacion;
+    Connection conexionBD;
+    PreparedStatement declaracionPreparada;
+    ResultSet resultadoDeOperacion;
 
     @Override
-    public boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
-        String insertarSQL = "INSERT INTO responsableov (rfc, puesto, nombreResponsable) VALUES (?, ?, ?)";
+    public boolean insertarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException {
+        String insertarSQL = "INSERT INTO reporteparcial (fechaDeReporte, horasReportadas) VALUES (?, ?)";
         boolean insercionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
-            declaracionPreparada.setString(1, responsable.getRfc());
-            declaracionPreparada.setString(2, responsable.getCargo());
-            declaracionPreparada.setString(3, responsable.getNombreResponsable());
+            declaracionPreparada.setDate(1, reporte.getFechaDeReporte());
+            declaracionPreparada.setInt(2, reporte.getHorasReportadas());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
@@ -38,14 +36,14 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
     }
 
     @Override
-    public boolean eliminarResponsableOV(String rfc) throws SQLException, IOException {
-        String eliminarSQL = "DELETE FROM responsableov WHERE rfc = ?";
+    public boolean eliminarReporteParcial(Date fechaDeReporte) throws SQLException, IOException {
+        String eliminarSQL = "DELETE FROM reporteparcial WHERE fechaDeReporte = ?";
         boolean eliminacionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
-            declaracionPreparada.setString(1, rfc);
+            declaracionPreparada.setDate(1, fechaDeReporte);
             declaracionPreparada.executeUpdate();
             eliminacionExitosa = true;
         } finally {
@@ -56,16 +54,15 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
     }
 
     @Override
-    public boolean editarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
-        String actualizarSQL = "UPDATE responsableov SET puesto = ?, nombreResponsable = ? WHERE rfc = ?";
+    public boolean editarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException {
+        String actualizarSQL = "UPDATE reporteparcial SET horasReportadas = ? WHERE fechaDeReporte = ?";
         boolean actualizacionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
-            declaracionPreparada.setString(1, responsable.getCargo());
-            declaracionPreparada.setString(2, responsable.getNombreResponsable());
-            declaracionPreparada.setString(3, responsable.getRfc());
+            declaracionPreparada.setInt(1, reporte.getHorasReportadas());
+            declaracionPreparada.setDate(2, reporte.getFechaDeReporte());
             declaracionPreparada.executeUpdate();
             actualizacionExitosa = true;
         } finally {
@@ -76,27 +73,27 @@ public class ResponsableOrganizacionVinculadaDAO implements InterfazResponsableO
     }
 
     @Override
-    public ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfc) throws SQLException, IOException {
-        String consultaSQL = "SELECT rfc, puesto, nombreResponsable FROM responsableov WHERE rfc = ?";
-        ResponsableOrganizacionVinculadaDTO responsable = null;
+    public ReporteParcialDTO buscarReporteParcial(Date fechaDeReporte) throws SQLException, IOException {
+        String consultaSQL = "SELECT fechaDeReporte, horasReportadas FROM reporteparcial WHERE fechaDeReporte = ?";
+        ReporteParcialDTO reporte = null;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            declaracionPreparada.setString(1, rfc);
+            declaracionPreparada.setDate(1, fechaDeReporte);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
-                responsable = new ResponsableOrganizacionVinculadaDTO();
-                responsable.setRfc(resultadoDeOperacion.getString("rfc"));
-                responsable.setCargo(resultadoDeOperacion.getString("puesto"));
-                responsable.setNombreResponsable(resultadoDeOperacion.getString("nombreResponsable"));
+                reporte = new ReporteParcialDTO();
+                reporte.setFechaDeReporte(resultadoDeOperacion.getDate("fechaDeReporte"));
+                reporte.setHorasReportadas(resultadoDeOperacion.getInt("horasReportadas"));
             }
         } finally {
             if (resultadoDeOperacion != null) resultadoDeOperacion.close();
             if (declaracionPreparada != null) declaracionPreparada.close();
             if (conexionBD != null) conexionBD.close();
         }
-        return responsable;
+        return reporte;
     }
 }
+    

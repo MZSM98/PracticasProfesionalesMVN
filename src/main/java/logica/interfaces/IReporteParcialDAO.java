@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.io.IOException;
 import java.sql.Date;
 
-public interface InterfazReporteParcialDAO {
+public interface IReporteParcialDAO {
     
     boolean insertarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException;
     

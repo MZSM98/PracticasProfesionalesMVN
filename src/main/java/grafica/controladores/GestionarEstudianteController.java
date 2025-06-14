@@ -22,9 +22,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import logica.dao.EstudianteDAO;
-import logica.interfaces.InterfazEstudianteDAO;
+import logica.dao.EstudianteDAOImpl;
 import org.apache.log4j.Logger;
+import logica.interfaces.IEstudianteDAO;
 
 public class GestionarEstudianteController implements Initializable {
     private static final Logger LOG = Logger.getLogger(GestionarEstudianteController.class);
@@ -50,11 +50,11 @@ public class GestionarEstudianteController implements Initializable {
     @FXML
     private TableView<EstudianteDTO> tableEstudiantes;
     
-    private InterfazEstudianteDAO interfazEstudianteDAO;
+    private IEstudianteDAO interfazEstudianteDAO;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        interfazEstudianteDAO = new EstudianteDAO();
+        interfazEstudianteDAO = new EstudianteDAOImpl();
         configurarColumnasTablaEstudiante();
         poblarTablaEstudiante();
     }    

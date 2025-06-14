@@ -1,31 +1,33 @@
 package logica.dao;
 
-import logica.interfaces.InterfazReporteParcialDAO;
-import accesoadatos.dto.ReporteParcialDTO;
+import accesoadatos.dto.ResponsableOrganizacionVinculadaDTO;
 import accesoadatos.ConexionBD;
+
 import java.io.IOException;
 import java.sql.SQLException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Date;
+import logica.interfaces.IResponsableOrganizacionVinculadaDAO;
 
-public class ReporteParcialDAO implements InterfazReporteParcialDAO {
+public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrganizacionVinculadaDAO {
 
-    Connection conexionBD;
-    PreparedStatement declaracionPreparada;
-    ResultSet resultadoDeOperacion;
+    private Connection conexionBD;
+    private PreparedStatement declaracionPreparada;
+    private ResultSet resultadoDeOperacion;
 
     @Override
-    public boolean insertarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException {
-        String insertarSQL = "INSERT INTO reporteparcial (fechaDeReporte, horasReportadas) VALUES (?, ?)";
+    public boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
+        String insertarSQL = "INSERT INTO responsableov (rfc, puesto, nombreResponsable) VALUES (?, ?, ?)";
         boolean insercionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
-            declaracionPreparada.setDate(1, reporte.getFechaDeReporte());
-            declaracionPreparada.setInt(2, reporte.getHorasReportadas());
+            declaracionPreparada.setString(1, responsable.getRfc());
+            declaracionPreparada.setString(2, responsable.getCargo());
+            declaracionPreparada.setString(3, responsable.getNombreResponsable());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
@@ -36,14 +38,14 @@ public class ReporteParcialDAO implements InterfazReporteParcialDAO {
     }
 
     @Override
-    public boolean eliminarReporteParcial(Date fechaDeReporte) throws SQLException, IOException {
-        String eliminarSQL = "DELETE FROM reporteparcial WHERE fechaDeReporte = ?";
+    public boolean eliminarResponsableOV(String rfc) throws SQLException, IOException {
+        String eliminarSQL = "DELETE FROM responsableov WHERE rfc = ?";
         boolean eliminacionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
-            declaracionPreparada.setDate(1, fechaDeReporte);
+            declaracionPreparada.setString(1, rfc);
             declaracionPreparada.executeUpdate();
             eliminacionExitosa = true;
         } finally {
@@ -54,15 +56,16 @@ public class ReporteParcialDAO implements InterfazReporteParcialDAO {
     }
 
     @Override
-    public boolean editarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException {
-        String actualizarSQL = "UPDATE reporteparcial SET horasReportadas = ? WHERE fechaDeReporte = ?";
+    public boolean editarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
+        String actualizarSQL = "UPDATE responsableov SET puesto = ?, nombreResponsable = ? WHERE rfc = ?";
         boolean actualizacionExitosa = false;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
-            declaracionPreparada.setInt(1, reporte.getHorasReportadas());
-            declaracionPreparada.setDate(2, reporte.getFechaDeReporte());
+            declaracionPreparada.setString(1, responsable.getCargo());
+            declaracionPreparada.setString(2, responsable.getNombreResponsable());
+            declaracionPreparada.setString(3, responsable.getRfc());
             declaracionPreparada.executeUpdate();
             actualizacionExitosa = true;
         } finally {
@@ -73,27 +76,27 @@ public class ReporteParcialDAO implements InterfazReporteParcialDAO {
     }
 
     @Override
-    public ReporteParcialDTO buscarReporteParcial(Date fechaDeReporte) throws SQLException, IOException {
-        String consultaSQL = "SELECT fechaDeReporte, horasReportadas FROM reporteparcial WHERE fechaDeReporte = ?";
-        ReporteParcialDTO reporte = null;
+    public ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfc) throws SQLException, IOException {
+        String consultaSQL = "SELECT rfc, puesto, nombreResponsable FROM responsableov WHERE rfc = ?";
+        ResponsableOrganizacionVinculadaDTO responsable = null;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            declaracionPreparada.setDate(1, fechaDeReporte);
+            declaracionPreparada.setString(1, rfc);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
-                reporte = new ReporteParcialDTO();
-                reporte.setFechaDeReporte(resultadoDeOperacion.getDate("fechaDeReporte"));
-                reporte.setHorasReportadas(resultadoDeOperacion.getInt("horasReportadas"));
+                responsable = new ResponsableOrganizacionVinculadaDTO();
+                responsable.setRfc(resultadoDeOperacion.getString("rfc"));
+                responsable.setCargo(resultadoDeOperacion.getString("puesto"));
+                responsable.setNombreResponsable(resultadoDeOperacion.getString("nombreResponsable"));
             }
         } finally {
             if (resultadoDeOperacion != null) resultadoDeOperacion.close();
             if (declaracionPreparada != null) declaracionPreparada.close();
             if (conexionBD != null) conexionBD.close();
         }
-        return reporte;
+        return responsable;
     }
 }
-    

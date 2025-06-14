@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface InterfazProyectoDAO {
+public interface IProyectoDAO {
     
     boolean insertarProyecto(ProyectoDTO proyecto) throws SQLException, IOException;
     boolean eliminarProyecto(int proyectoID) throws SQLException, IOException;

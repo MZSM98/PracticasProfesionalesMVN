@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.io.IOException;
 import java.sql.Date;
 
-public interface InterfazAutoEvaluacionDAO {
+public interface IAutoEvaluacionDAO {
 
     boolean insertarAutoEvaluacion(AutoEvaluacionDTO autoEvaluacion) throws SQLException, IOException;
     

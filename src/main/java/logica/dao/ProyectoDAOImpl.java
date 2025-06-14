@@ -1,6 +1,5 @@
 package logica.dao;
 
-import logica.interfaces.InterfazProyectoDAO;
 import accesoadatos.dto.ProyectoDTO;
 import accesoadatos.ConexionBD;
 
@@ -11,8 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import logica.interfaces.IProyectoDAO;
 
-public class ProyectoDAO implements InterfazProyectoDAO {
+public class ProyectoDAOImpl implements IProyectoDAO {
 
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;

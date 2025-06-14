@@ -1,6 +1,8 @@
 package grafica.validadores;
 
 import accesoadatos.dto.AcademicoEvaluadorDTO;
+import accesoadatos.dto.ProfesorEEDTO;
+import accesoadatos.dto.UsuarioDTO;
 import grafica.utils.ConstantesUtil;
 
 public class AcademicoValidador {
@@ -18,7 +20,7 @@ public class AcademicoValidador {
         }
         if (!numeroDeTrabajador.matches(ConstantesUtil.REGEX_NUMERO_TRABAJADOR)) {
             
-            throw new IllegalArgumentException("RFC inválido");
+            throw new IllegalArgumentException("Numero de trabajador no válido");
         }
     }
     
@@ -38,10 +40,27 @@ public class AcademicoValidador {
         }
     }
     
+    public static void validarSeccion(String seccion, int longitudMaxima) {
+        if (seccion.isEmpty()) {
+            throw new IllegalArgumentException("La sección es obligatoria");
+        }
+        if (seccion.length() > longitudMaxima) {
+            throw new IllegalArgumentException("La sección no puede exceder los " + longitudMaxima + " caracteres");
+        }
+    }
+    
    
-    public static void validarAcademico(AcademicoEvaluadorDTO academicoEvaluadorDTO) {
-        
-        validarNumeroDeTrabajador(academicoEvaluadorDTO.getNumeroDeTrabajador());
-        validarNombre(academicoEvaluadorDTO.getNombreAcademico(), 100);
+    public static void validarAcademico(UsuarioDTO academico) {
+            if(academico instanceof AcademicoEvaluadorDTO){
+                AcademicoEvaluadorDTO academicoEvaluador = (AcademicoEvaluadorDTO) academico;
+                validarNumeroDeTrabajador(academicoEvaluador.getNumeroDeTrabajador());
+                validarNombre(academicoEvaluador.getNombreAcademico(), 100);
+            }else if(academico instanceof ProfesorEEDTO){
+                ProfesorEEDTO profesorExperienciaEducativa = (ProfesorEEDTO) academico;
+                validarNumeroDeTrabajador(profesorExperienciaEducativa.getNumeroTrabajador());
+                validarNombre(profesorExperienciaEducativa.getNombreProfesor(), 100);
+                validarSeccion(profesorExperienciaEducativa.getSeccion(), 2);
+            }
+
     }
 }

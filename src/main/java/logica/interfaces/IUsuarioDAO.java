@@ -4,7 +4,7 @@ import accesoadatos.dto.UsuarioDTO;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public interface InterfazUsuarioDAO {
+public interface IUsuarioDAO {
     
     public UsuarioDTO buscarUsuario(String usuario) throws SQLException, IOException;
     public boolean insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException;

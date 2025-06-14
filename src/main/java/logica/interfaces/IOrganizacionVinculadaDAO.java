@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.io.IOException;
 import java.util.List;
 
-public interface InterfazOrganizacionVinculadaDAO {
+public interface IOrganizacionVinculadaDAO {
     
     boolean insertarOrganizacionVinculada(OrganizacionVinculadaDTO organizacion) throws SQLException, IOException;
     boolean eliminarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException;

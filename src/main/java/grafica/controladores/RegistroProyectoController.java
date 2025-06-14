@@ -22,10 +22,10 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import grafica.utils.AlertaUtil;
 import grafica.validadores.ProyectoValidador;
-import logica.dao.ProyectoDAO;
-import logica.dao.OrganizacionVinculadaDAO;
-import logica.interfaces.InterfazProyectoDAO;
-import logica.interfaces.InterfazOrganizacionVinculadaDAO;
+import logica.dao.ProyectoDAOImpl;
+import logica.dao.OrganizacionVinculadaDAOImpl;
+import logica.interfaces.IProyectoDAO;
+import logica.interfaces.IOrganizacionVinculadaDAO;
 
 public class RegistroProyectoController implements Initializable {    
     
@@ -55,16 +55,16 @@ public class RegistroProyectoController implements Initializable {
     @FXML
     private Button botonGuardarProyecto;
     
-    private InterfazProyectoDAO interfazProyectoDAO;
-    private InterfazOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
+    private IProyectoDAO interfazProyectoDAO;
+    private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
     private ProyectoDTO proyectoDTO;
     
     private boolean modoEdicion = false;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        interfazProyectoDAO = new ProyectoDAO();
-        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAO();
+        interfazProyectoDAO = new ProyectoDAOImpl();
+        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         textProyectoID.setDisable(true);
         cargarPeriodosEscolares();
         cargarOrganizacionesVinculadas();

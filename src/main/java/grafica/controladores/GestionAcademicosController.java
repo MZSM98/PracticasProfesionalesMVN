@@ -25,15 +25,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import logica.dao.AcademicoEvaluadorDAO;
-import logica.dao.ProfesorEEDAO;
-import logica.dao.TipoUsuarioDAO;
-import logica.interfaces.InterfazAcademicoEvaluadorDAO;
-import logica.interfaces.InterfazProfesorEEDAO;
-import logica.interfaces.InterfazTipoUsuarioDAO;
+import logica.dao.AcademicoEvaluadorDAOImpl;
+import logica.dao.ProfesorEEDAOImpl;
+import logica.dao.TipoUsuarioDAOImpl;
 import org.apache.log4j.Logger;
 import grafica.utils.AlertaUtil;
 import grafica.utils.ConstantesUtil;
+import logica.interfaces.IAcademicoEvaluadorDAO;
+import logica.interfaces.IProfesorEEDAO;
+import logica.interfaces.ITipoUsuarioDAO;
 
 public class GestionAcademicosController implements Initializable{
     
@@ -58,16 +58,16 @@ public class GestionAcademicosController implements Initializable{
     @FXML
     private ComboBox<TipoUsuarioDTO> comboTipoAcademico;
     
-    private InterfazAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
-    private InterfazProfesorEEDAO interfazProfesorEEDAO;
-    private InterfazTipoUsuarioDAO interfazTipoUsuarioDAO;
+    private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
+    private IProfesorEEDAO interfazProfesorEEDAO;
+    private ITipoUsuarioDAO interfazTipoUsuarioDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-       interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAO();
-       interfazProfesorEEDAO = new ProfesorEEDAO();
-       interfazTipoUsuarioDAO = new TipoUsuarioDAO();
+       interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAOImpl();
+       interfazProfesorEEDAO = new ProfesorEEDAOImpl();
+       interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
        configurarComboBox();
        configurarColumnas();
        cargarListaAcademico();

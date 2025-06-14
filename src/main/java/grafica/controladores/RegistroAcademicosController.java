@@ -13,14 +13,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import logica.dao.AcademicoEvaluadorDAO;
-import logica.dao.ProfesorEEDAO;
-import logica.interfaces.InterfazAcademicoEvaluadorDAO;
+import logica.dao.AcademicoEvaluadorDAOImpl;
+import logica.dao.ProfesorEEDAOImpl;
 import org.apache.log4j.Logger;
 import grafica.utils.AlertaUtil;
 import grafica.utils.ConstantesUtil;
-import logica.funcionalidades.AcademicoValidador;
-import logica.interfaces.InterfazProfesorEEDAO;
+import grafica.validadores.AcademicoValidador;
+import logica.interfaces.IAcademicoEvaluadorDAO;
+import logica.interfaces.IProfesorEEDAO;
 
 public class RegistroAcademicosController {
     
@@ -48,16 +48,16 @@ public class RegistroAcademicosController {
     
     private TipoUsuarioDTO tipoUsuario;
     
-    private InterfazAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
+    private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
     
-    private InterfazProfesorEEDAO interfazProfesorEEDAO;
+    private IProfesorEEDAO interfazProfesorEEDAO;
     
     private boolean modoEdicion;
     
     public void initialize() {
         
-        interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAO();
-        interfazProfesorEEDAO = new ProfesorEEDAO();
+        interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAOImpl();
+        interfazProfesorEEDAO = new ProfesorEEDAOImpl();
     }
 
     @FXML

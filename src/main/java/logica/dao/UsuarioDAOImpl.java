@@ -12,10 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Objects;
-import logica.interfaces.InterfazUsuarioDAO;
+import logica.interfaces.IUsuarioDAO;
 
 
-public class UsuarioDAO implements InterfazUsuarioDAO{
+public class UsuarioDAOImpl implements IUsuarioDAO{
     
     @Override
     public UsuarioDTO buscarUsuario(String usuario) throws SQLException, IOException{

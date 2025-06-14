@@ -1,6 +1,6 @@
 package grafica.controladores;
 
-import logica.dao.OrganizacionVinculadaDAO;
+import logica.dao.OrganizacionVinculadaDAOImpl;
 import accesoadatos.dto.OrganizacionVinculadaDTO;
 import accesoadatos.dto.OrganizacionVinculadaDTO.EstadoOrganizacionVinculada;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import grafica.validadores.OrganizacionVinculadaValidador;
 import grafica.utils.AlertaUtil;
 import grafica.utils.ConstantesUtil;
 import grafica.utils.RestriccionCamposUtil;
-import logica.interfaces.InterfazOrganizacionVinculadaDAO;
+import logica.interfaces.IOrganizacionVinculadaDAO;
 
 public class RegistroOrganizacionVinculadaController {    
     
@@ -41,14 +41,14 @@ public class RegistroOrganizacionVinculadaController {
     @FXML
     private Button botonRegistrarOrganizacionVinculada;
     
-    private InterfazOrganizacionVinculadaDAO organizacionVinculadaDAO;
+    private IOrganizacionVinculadaDAO organizacionVinculadaDAO;
     private OrganizacionVinculadaDTO organizacionVinculadaDTO;
     
     private boolean modoEdicion = false;
     
     public void initialize() {
         
-        organizacionVinculadaDAO = new OrganizacionVinculadaDAO();
+        organizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         aplicarRestriccionesACampos();
     }
     

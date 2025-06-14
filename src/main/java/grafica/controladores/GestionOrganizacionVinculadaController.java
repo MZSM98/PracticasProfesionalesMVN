@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import accesoadatos.dto.OrganizacionVinculadaDTO;
 import accesoadatos.dto.OrganizacionVinculadaDTO.EstadoOrganizacionVinculada;
-import logica.dao.OrganizacionVinculadaDAO;
+import logica.dao.OrganizacionVinculadaDAOImpl;
 import grafica.utils.AlertaUtil;
 import grafica.utils.ConstantesUtil;
 
@@ -53,13 +53,13 @@ public class GestionOrganizacionVinculadaController implements Initializable {
     @FXML
     private TableColumn<OrganizacionVinculadaDTO, String> columnEstado;
     
-    private OrganizacionVinculadaDAO organizacionVinculadaDAO;
+    private OrganizacionVinculadaDAOImpl organizacionVinculadaDAO;
     private ObservableList<OrganizacionVinculadaDTO> listaOrganizacionesVinculadas;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        organizacionVinculadaDAO = new OrganizacionVinculadaDAO();
+        organizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         configurarColumnas();
         cargarOrganizacionesVinculadas();
     }
@@ -125,7 +125,7 @@ public class GestionOrganizacionVinculadaController implements Initializable {
         
         try {
             
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/organizacionvinculada/FXMLRegistroOV.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/organizacionvinculada/FXMLRegistroOrganizacionVinculada.fxml"));
             Parent root = loader.load();
             
             RegistroOrganizacionVinculadaController controlador = loader.getController();

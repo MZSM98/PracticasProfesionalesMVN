@@ -1,6 +1,5 @@
 package logica.dao;
 
-import logica.interfaces.InterfazEstudianteDAO;
 import accesoadatos.dto.EstudianteDTO;
 import accesoadatos.ConexionBD;
 import accesoadatos.dto.UsuarioDTO;
@@ -13,27 +12,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import logica.interfaces.InterfazPeriodoEscolarDAO;
-import logica.interfaces.InterfazSeccionDAO;
-import logica.interfaces.InterfazTipoUsuarioDAO;
-import logica.interfaces.InterfazUsuarioDAO;
+import logica.interfaces.IPeriodoEscolarDAO;
+import logica.interfaces.ISeccionDAO;
+import logica.interfaces.IEstudianteDAO;
+import logica.interfaces.IUsuarioDAO;
+import logica.interfaces.ITipoUsuarioDAO;
 
-public class EstudianteDAO implements InterfazEstudianteDAO {
+public class EstudianteDAOImpl implements IEstudianteDAO {
 
     private static final Integer ESTUDIANTE = 4;
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
-    private InterfazSeccionDAO interfazSeccionDAO;
-    private InterfazPeriodoEscolarDAO interfazPeriodoEscolarDAO;
-    private InterfazUsuarioDAO interfazUsuarioDAO;
-    private InterfazTipoUsuarioDAO interfazTipoUsuarioDAO;
+    private ISeccionDAO interfazSeccionDAO;
+    private IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
+    private IUsuarioDAO interfazUsuarioDAO;
+    private ITipoUsuarioDAO interfazTipoUsuarioDAO;
     
-    public EstudianteDAO(){
-        interfazSeccionDAO = new SeccionDAO();
-        interfazPeriodoEscolarDAO = new PeriodoEscolarDAO();
-        interfazUsuarioDAO = new UsuarioDAO();
-        interfazTipoUsuarioDAO = new TipoUsuarioDAO();
+    public EstudianteDAOImpl(){
+        interfazSeccionDAO = new SeccionDAOImpl();
+        interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
+        interfazUsuarioDAO = new UsuarioDAOImpl();
+        interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
     }
 
     @Override

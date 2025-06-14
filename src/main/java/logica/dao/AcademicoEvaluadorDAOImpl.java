@@ -1,6 +1,5 @@
     
 package logica.dao;
-import logica.interfaces.InterfazAcademicoEvaluadorDAO;
 import accesoadatos.dto.AcademicoEvaluadorDTO;
 import accesoadatos.ConexionBD;
 import accesoadatos.dto.UsuarioDTO;
@@ -13,19 +12,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import logica.interfaces.InterfazUsuarioDAO;
 import grafica.utils.ContrasenaUtil;
+import logica.interfaces.IAcademicoEvaluadorDAO;
+import logica.interfaces.IUsuarioDAO;
 
-public class AcademicoEvaluadorDAO implements InterfazAcademicoEvaluadorDAO {
+public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
     
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
     
-    private InterfazUsuarioDAO interfazUsuarioDAO;
+    private IUsuarioDAO interfazUsuarioDAO;
     
-    public AcademicoEvaluadorDAO(){
-        interfazUsuarioDAO = new UsuarioDAO();
+    public AcademicoEvaluadorDAOImpl(){
+        interfazUsuarioDAO = new UsuarioDAOImpl();
     }
     
     @Override

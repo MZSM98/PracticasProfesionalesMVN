@@ -1,6 +1,5 @@
 package logica.dao;
 
-import logica.interfaces.InterfazCredencialesIngresoDAO;
 import accesoadatos.dto.CredencialesIngresoDTO;
 import accesoadatos.ConexionBD;
 import java.io.IOException;
@@ -8,8 +7,9 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import logica.interfaces.ICredencialesIngresoDAO;
 
-public class CredencialesIngresoDAO implements InterfazCredencialesIngresoDAO {
+public class CredencialesIngresoDAOImpl implements ICredencialesIngresoDAO {
 
     Connection conexionBD;
     PreparedStatement declaracionPreparada;

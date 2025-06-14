@@ -4,7 +4,7 @@ import accesoadatos.dto.CredencialesIngresoDTO;
 import java.sql.SQLException;
 import java.io.IOException;
 
-public interface InterfazCredencialesIngresoDAO {
+public interface ICredencialesIngresoDAO {
     
     boolean insertarCredencialesIngreso(CredencialesIngresoDTO credenciales) throws SQLException, IOException;
     

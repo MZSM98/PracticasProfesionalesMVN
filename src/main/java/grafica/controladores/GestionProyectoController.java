@@ -27,10 +27,10 @@ import grafica.utils.AlertaUtil;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import logica.dao.ProyectoDAO;
-import logica.dao.OrganizacionVinculadaDAO;
-import logica.interfaces.InterfazProyectoDAO;
-import logica.interfaces.InterfazOrganizacionVinculadaDAO;
+import logica.dao.ProyectoDAOImpl;
+import logica.dao.OrganizacionVinculadaDAOImpl;
+import logica.interfaces.IProyectoDAO;
+import logica.interfaces.IOrganizacionVinculadaDAO;
 
 public class GestionProyectoController implements Initializable {
     
@@ -60,14 +60,14 @@ public class GestionProyectoController implements Initializable {
     @FXML
     private TableColumn<ProyectoDTO, String> columnEstadoProyecto;
     
-    private InterfazProyectoDAO interfazProyectoDAO;
-    private InterfazOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
+    private IProyectoDAO interfazProyectoDAO;
+    private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
     private ObservableList<ProyectoDTO> listaProyectos;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        interfazProyectoDAO = new ProyectoDAO();
-        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAO();
+        interfazProyectoDAO = new ProyectoDAOImpl();
+        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         configurarColumnas();
         cargarProyectos();
         

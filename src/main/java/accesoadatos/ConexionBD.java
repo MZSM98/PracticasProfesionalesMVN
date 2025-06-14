@@ -42,6 +42,7 @@ public class ConexionBD {
     }
     
     public Connection getConexionBaseDatos() {
+        
         return conexionBaseDatos;
     }
 }
