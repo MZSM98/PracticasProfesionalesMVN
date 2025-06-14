@@ -34,6 +34,7 @@ import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.dao.interfaz.IMenuPrincipal;
 import com.pdc.dao.interfaz.IUsuarioDAO;
 import com.pdc.dao.interfaz.ITipoUsuarioDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class InicioDeSesionController implements Initializable {
     
@@ -97,7 +98,7 @@ public class InicioDeSesionController implements Initializable {
 
             if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
 
-                abrirMenuPrincipal(event, obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
+                abrirMenuPrincipal(obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
                 limpiarCampos();
             } else {
 
@@ -119,31 +120,8 @@ public class InicioDeSesionController implements Initializable {
     }
     
 
-    private void abrirMenuPrincipal(ActionEvent event, String resource){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
-
-        Parent root = null;
-        
-        try {      
-            
-            root = loader.load();
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
-        }
-            
-        IMenuPrincipal controlador = loader.getController();
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        controlador.setParentStage(currentStage);
-        currentStage.close();
-        
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setTitle(ConstantesUtil.MENU_PRINCIPAL);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+    private void abrirMenuPrincipal(ManejadorDeVistas.Vista vista){ 
+        ManejadorDeVistas.getInstancia().cambiarVista(vista);
     }
     
     private void poblarComboTipoUsuario(){
@@ -167,16 +145,16 @@ public class InicioDeSesionController implements Initializable {
     }
     
 
-    private String obtenerRecursoVetana(TipoUsuarioDTO tipoUsuario){
+    private ManejadorDeVistas.Vista obtenerRecursoVetana(TipoUsuarioDTO tipoUsuario){
         
         if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
-            return "/grafica/principalcoordinador/FXMLMenuPrincipalCoordinador.fxml";
+            return ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL;
         } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {
-            return "/grafica/academico/FXMLMenuPrincipalAcademicoEvaluador.fxml";
+            return ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_MENU_PRINCIPAL;
         } else if (PROFESOR_EE.equals(tipoUsuario.getIdTipo())) {
-            return "/grafica/profesoree/FXMLMenuPrincipalProfesorEE.fxml";
+            return ManejadorDeVistas.Vista.PROFESOREE_MENU_PRINCIPAL;
         } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
-            return "/grafica/estudiante/FXMLMenuPrincipalEstudiante.fxml";
+            return ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL;
         } else {
             throw new IllegalArgumentException("No existe tipo de usuario");
         }

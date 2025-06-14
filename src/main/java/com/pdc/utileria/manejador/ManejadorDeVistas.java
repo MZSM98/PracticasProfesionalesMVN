@@ -12,7 +12,7 @@ import java.util.Map;
 public class ManejadorDeVistas {
 
     public enum Vista {
-        INICIO_SESION("/com/pdc/vista/iniciodesesion/FXMLInicioDeSesion.fxml", false),
+        INICIO_SESION("/com/pdc/vista/iniciodesesion/InicioDeSesion.fxml", false),
         
         PROFESOREE_MENU_PRINCIPAL("/com/pdc/vista/profesoree/ProfesorEEMenuPrincipal.fxml", false),
         PROFESOREE_CONSULTA_EVALUACION_PRESENTACION("/com/pdc/vista/profesoree/ProfesorEEConsultaEvaluacionPresentacion.fxml", false),
