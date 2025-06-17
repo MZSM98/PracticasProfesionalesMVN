@@ -83,11 +83,11 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         } catch (SQLException sqle) {
             
             LOG.error("Error al cargar las organizaciones vinculadas: " + sqle.getMessage());
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, "No se pudo cargar la información, contacte al administrador: ", Alert.AlertType.ERROR);            
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, "No se pudo cargar la información, contacte al administrador: ", Alert.AlertType.ERROR);            
         } catch (IOException ioe){
             
             LOG.error("No se lograron cargar los registros" + ioe.getMessage());
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, "No se pudo cargar la información, contacte al adminsitrador", Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, "No se pudo cargar la información, contacte al adminsitrador", Alert.AlertType.ERROR);
         }
     }
         
@@ -108,7 +108,7 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         } catch (IOException ioe) {
             
             LOG.error("Error al cargar la ventana de registro OV: " + ioe.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "Ha ocurrido un error, intentelo más tarde", Alert.AlertType.ERROR);            
+            AlertaUtil.mostrarAlertaVentana();
         }        
     }
     
@@ -156,7 +156,7 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         
         if (organizacionSeleccionada == null) {
             
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, "Por favor, seleccione una organización para cambiar su estado", Alert.AlertType.WARNING);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, "Por favor, seleccione una organización para cambiar su estado", Alert.AlertType.WARNING);
             return;
         }
         
@@ -173,16 +173,16 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
             
             if (actualizacionExitosa) {
                 
-                AlertaUtil.mostrarAlerta(ConstantesUtil.EXITO, "Estado de la organización cambiado a: " + nuevoEstado, Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlerta(AlertaUtil.EXITO, "Estado de la organización cambiado a: " + nuevoEstado, Alert.AlertType.INFORMATION);
                 cargarOrganizacionesVinculadas();                
             } else {
                 
-                AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, "No se pudo cambiar el estado de la organización", Alert.AlertType.ERROR);
+                AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, "No se pudo cambiar el estado de la organización", Alert.AlertType.ERROR);
             }
         } catch (SQLException e) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD + e.getMessage());
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD + e.getMessage());
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException e){
             
             LOG.error("Error al cambiar estado de la organización: " + e.getMessage());

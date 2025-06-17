@@ -15,9 +15,6 @@ public class ConstantesUtil {
     public static final int LONGITUD_DIRECCION = 200;
     public static final int LONGITUD_TELEFONO = 10;
     
-    public static final String ERROR = "Error";
-    public static final String ADVERTENCIA = "Advertencia";
-    public static final String EXITO = "Exito";
     public static final String ACTUALIZAR = "Actualizar";
     public static final String MENU_PRINCIPAL = "Menu Principal";
     public static final String ESPACIO = " ";
@@ -35,12 +32,7 @@ public class ConstantesUtil {
     public static final String REGEX_USUARIO_VALIDO = "^[a-zA-Z0-9]{9}$";
     
     public static final String ALERTA_CLASE_UTILERIA = "Clase de utilería...";
-    public static final String ALERTA_ERROR_BD = "Error de conexión con la base de datos";
-    public static final String ALERTA_ERROR_CARGAR_VENTANA = "No se pudo cargar la ventana, contacte con un administrador";
-    public static final String ALERTA_ERROR_CARGAR_INFORMACION = "No se pudo cargar la información, contacte con un administrador";
     public static final String ALERTA_DATOS_INVALIDOS = "Datos inválidos o Incompletos";
-    public static final String ALERTA_REGISTRO_EXITOSO = "Registro Exitoso";
-    public static final String ALERTA_REGISTRO_FALLIDO = "Error al guardar el registro";
     public static final String ALERTA_ACTUALIZACION_EXITOSA = "Registro actualizado exitosamente";
     public static final String ALERTA_ACTUALIZACION_FALLIDA = "Falló la actualización del registro, intente más tarde";
     public static final String ALERTA_REGISTRO_RFC_MORAL_DUPLICADO = "Esa Organización vinculada ya se encuentra registrada";

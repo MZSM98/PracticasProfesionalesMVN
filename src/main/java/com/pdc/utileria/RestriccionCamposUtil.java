@@ -95,12 +95,9 @@ public class RestriccionCamposUtil {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 
-                if (newValue != null) {
-                    
-                    if (!newValue.matches("\\d*") || newValue.length() > maxLength) {
+                if (newValue != null && (!newValue.matches("\\d*") || newValue.length() > maxLength)) {
                         
-                        textField.setText(oldValue);
-                    }
+                    textField.setText(oldValue);
                 }
             }
         });
@@ -113,12 +110,9 @@ public class RestriccionCamposUtil {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 
-                if (newValue != null) {
+                if (newValue != null &&(!newValue.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]*") || newValue.length() > maxLength)) {
                     
-                    if (!newValue.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]*") || newValue.length() > maxLength) {
-                        
-                        textField.setText(oldValue);
-                    }
+                    textField.setText(oldValue);
                 }
             }
         });
@@ -131,30 +125,9 @@ public class RestriccionCamposUtil {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 
-                if (newValue != null) {
+                if (newValue != null && (!newValue.matches("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]*") || newValue.length() > maxLength)) {
                     
-                    if (!newValue.matches("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]*") || newValue.length() > maxLength) {
-                        
-                        textField.setText(oldValue);
-                    }
-                }
-            }
-        });
-    }
-
-    public static void aplicarRestriccionEmail(TextField textField, int maxLength) {
-        
-        textField.textProperty().addListener(new ChangeListener<String>() {
-            
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                
-                if (newValue != null) {
-                    
-                    if (!newValue.matches("[a-zA-Z0-9@._-]*") || newValue.length() > maxLength) {
-                        
-                        textField.setText(oldValue);
-                    }
+                    textField.setText(oldValue);
                 }
             }
         });
