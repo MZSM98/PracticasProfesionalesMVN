@@ -13,18 +13,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import com.pdc.dao.implementacion.AcademicoEvaluadorDAOImpl;
 import com.pdc.dao.implementacion.ProfesorEEDAOImpl;
 import com.pdc.dao.implementacion.TipoUsuarioDAOImpl;
@@ -34,6 +29,7 @@ import com.pdc.utileria.ConstantesUtil;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
 import com.pdc.dao.interfaz.IProfesorEEDAO;
 import com.pdc.dao.interfaz.ITipoUsuarioDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorGestionAcademicoController implements Initializable{
     
@@ -108,12 +104,12 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             comboTipoAcademico.getSelectionModel().selectFirst();
         } catch (SQLException sqle) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.NONE);
+            
         }
     }
     
@@ -131,12 +127,12 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             tableGestionAcademicos.setItems(listaObservableUsuarioDTO);
         } catch (SQLException sqle) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException ioe){
             
             LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.ERROR);
         }
     }
     
@@ -155,12 +151,12 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             tableGestionAcademicos.setItems(listaObservableUsuarioDTO);
         } catch (SQLException e) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, e);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, e);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException e){
             
             LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION,e);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }    
 
@@ -168,32 +164,22 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     private void abrirRegistrarAcademico(ActionEvent event) {
         
         try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/academico/FXMLRegistroAcademicos.fxml"));
-            Parent root = loader.load();          
-            
-            CoordinadorRegistroAcademicoController controlador = loader.getController();
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            CoordinadorRegistroAcademicoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
             TipoUsuarioDTO tipoUsuarioSeleccionado = comboTipoAcademico.getSelectionModel().getSelectedItem();
             controlador.asignarTipoUsuario(tipoUsuarioSeleccionado);
-            
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Registro académico evaluador");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
 
             if (tipoUsuarioSeleccionado.getIdTipo().equals(ACADEMICO_EVALUADOR)) {
-                
                 cargarListaAcademico();
             } else if (tipoUsuarioSeleccionado.getIdTipo().equals(PROFESOR_EE)) {
-                
                 cargarListaProfesorEvaluador();
             }
 
         } catch (IOException e) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, e);
-            AlertaUtil.mostrarAlerta (ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaVentana();
         }
     }
 
@@ -204,38 +190,30 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         
         if (academicoSeleccionado == null) {
             
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, ConstantesUtil.ALERTA_SELECCION_EDITAR, Alert.AlertType.WARNING);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, ConstantesUtil.ALERTA_SELECCION_EDITAR, Alert.AlertType.WARNING);
             return;
         }
         try {
             
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/academico/FXMLRegistroAcademicos.fxml"));
-            Parent root = loader.load();
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            CoordinadorRegistroAcademicoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
             
-            CoordinadorRegistroAcademicoController controlador = loader.getController();
             controlador.cambiarAModoEdicion(true);
                 
             TipoUsuarioDTO tipoUsuarioSeleccionado = comboTipoAcademico.getSelectionModel().getSelectedItem();
             controlador.asignarTipoUsuario(tipoUsuarioSeleccionado);
             controlador.llenarCamposEditablesAcademico(academicoSeleccionado);
             
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Editar Académico");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-            
             if (tipoUsuarioSeleccionado.getIdTipo().equals(ACADEMICO_EVALUADOR)) {
-                
                 cargarListaAcademico();
             } else if (tipoUsuarioSeleccionado.getIdTipo().equals(PROFESOR_EE)) {
-                
                 cargarListaProfesorEvaluador();
             }
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaVentana();
         }
     }
 
@@ -257,9 +235,8 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     
     @FXML
     void salirAMenuPrincipal(ActionEvent event) {
-        
-        Stage ventanaActual = (Stage) botonSalir.getScene().getWindow();
-        ventanaActual.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
     }
 
 }

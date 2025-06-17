@@ -21,6 +21,7 @@ import com.pdc.utileria.ConstantesUtil;
 import com.pdc.validador.AcademicoValidador;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
 import com.pdc.dao.interfaz.IProfesorEEDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorRegistroAcademicoController {
     
@@ -141,16 +142,16 @@ public class CoordinadorRegistroAcademicoController {
                 
                 interfazProfesorEEDAO.insertarProfesorEE((ProfesorEEDTO) academico);
             }
-            AlertaUtil.mostrarAlerta(ConstantesUtil.EXITO, ConstantesUtil.ALERTA_REGISTRO_EXITOSO, Alert.AlertType.CONFIRMATION);
+            AlertaUtil.mostrarAlertaRegistroExitoso();
             limpiarCampos();
         } catch (SQLException sqle) {
             
-            LOG.error (ConstantesUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error (AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
-            LOG.error(ConstantesUtil.ALERTA_REGISTRO_FALLIDO, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_REGISTRO_FALLIDO, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_REGISTRO_FALLIDO, ioe);
+            AlertaUtil.mostrarAlertaRegistroFallido();
         }
     }
     
@@ -168,12 +169,12 @@ public class CoordinadorRegistroAcademicoController {
             volverAGestionAcademico();
         } catch (SQLException sqle) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
-             AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
             LOG.error(ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ACTUALIZACION_FALLIDA, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaActualizacionFallida();
         }
     }
     
@@ -216,9 +217,8 @@ public class CoordinadorRegistroAcademicoController {
     
     @FXML
     private void volverAGestionAcademico() {
-        
-        Stage stage = (Stage) botonCancelar.getScene().getWindow();
-        stage.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ACADEMICO);
     }
 
 }

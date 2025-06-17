@@ -28,79 +28,22 @@ public class CoordinadorMenuPrincipalController {
     
     @FXML    
     private void abrirGestionOrganizacionVinculada(ActionEvent event){
-        
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/organizacionvinculada/FXMLGestionOrganizacionVinculada.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Gestión De Organizaciones");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();                     
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
-        }        
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ORGANIZACION_VINCULADA);
     }
     
     @FXML    
     private void abrirGestionAcademico(ActionEvent event){
-        
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/academico/FXMLGestionAcademicos.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Gestión Académicos");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();            
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA + ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ACADEMICO);
     }
     
     @FXML
     private void abrirGestionProyecto(){
-        
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/proyecto/FXMLGestionProyecto.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Gestión Proyectos");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();            
-            
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
-        }     
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_PROYECTO);
     }
     
     @FXML
     void abrirGestionEstudiantes(ActionEvent event) {
-        
-        try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLGestionarEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Gestionar Estudiante");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_GESTION);
     }
     
     @FXML

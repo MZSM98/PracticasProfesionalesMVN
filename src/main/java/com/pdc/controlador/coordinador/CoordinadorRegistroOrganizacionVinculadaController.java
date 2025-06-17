@@ -11,13 +11,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import com.pdc.validador.OrganizacionVinculadaValidador;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorRegistroOrganizacionVinculadaController {    
     
@@ -108,7 +108,7 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
         } catch (IllegalArgumentException iae) {
             
             LOG.error (ConstantesUtil.ALERTA_DATOS_INVALIDOS, iae);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, iae.getMessage(), Alert.AlertType.WARNING);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, iae.getMessage(), Alert.AlertType.WARNING);
             return false;
         }
     }
@@ -120,20 +120,20 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
         try {
             
             organizacionVinculadaDAO.insertarOrganizacionVinculada(organizacionVinculadaDTO);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.EXITO, ConstantesUtil.ALERTA_REGISTRO_EXITOSO, Alert.AlertType.INFORMATION);
+            AlertaUtil.mostrarAlertaRegistroExitoso();
             limpiarCampos();            
         } catch(SQLIntegrityConstraintViolationException icve){
             
             LOG.error(ConstantesUtil.LOG_ERROR_REGISTRO_DUPLICADO,icve);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_REGISTRO_RFC_MORAL_DUPLICADO, Alert.AlertType.WARNING);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, ConstantesUtil.ALERTA_REGISTRO_RFC_MORAL_DUPLICADO, Alert.AlertType.WARNING);
         } catch (SQLException sqle) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
-            LOG.error(ConstantesUtil.ALERTA_REGISTRO_FALLIDO, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_REGISTRO_FALLIDO, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_REGISTRO_FALLIDO, ioe);
+            AlertaUtil.mostrarAlertaRegistroFallido();
         } 
     }
     
@@ -144,21 +144,21 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
             boolean actualizacionExitosa = organizacionVinculadaDAO.editarOrganizacionVinculada(organizacionVinculadaDTO);            
             if (actualizacionExitosa) {
                 
-                AlertaUtil.mostrarAlerta(ConstantesUtil.EXITO, ConstantesUtil.ALERTA_ACTUALIZACION_EXITOSA, Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlerta(AlertaUtil.EXITO, ConstantesUtil.ALERTA_ACTUALIZACION_EXITOSA, Alert.AlertType.INFORMATION);
                 cerrarVentana();
             } else {
                 
-                AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ACTUALIZACION_FALLIDA, Alert.AlertType.ERROR);
+                AlertaUtil.mostrarAlertaActualizacionFallida();
             }
             
         } catch (SQLException sqle) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ACTUALIZACION_FALLIDA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ACTUALIZACION_FALLIDA, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaActualizacionFallida();
         }
     }
     
@@ -169,9 +169,8 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
     }    
     
     private void cerrarVentana() {
-        
-        Stage stage = (Stage) botonCancelarRegistroOV.getScene().getWindow();
-        stage.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ORGANIZACION_VINCULADA);
     }    
     
     private void limpiarCampos() {

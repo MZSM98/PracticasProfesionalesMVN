@@ -24,6 +24,7 @@ import com.pdc.modelo.dto.OrganizacionVinculadaDTO.EstadoOrganizacionVinculada;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -110,6 +111,7 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
             LOG.error("Error al cargar la ventana de registro OV: " + ioe.getMessage());
             AlertaUtil.mostrarAlertaVentana();
         }        
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ORGANIZACION_VINCULADA);
     }
     
     @FXML
@@ -124,23 +126,11 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         }
         
         try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/organizacionvinculada/FXMLRegistroOrganizacionVinculada.fxml"));
-            Parent root = loader.load();
-            
-            CoordinadorRegistroOrganizacionVinculadaController controlador = loader.getController();
-            
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ORGANIZACION_VINCULADA);
+            CoordinadorRegistroOrganizacionVinculadaController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ORGANIZACION_VINCULADA);
             controlador.cambiarAModoEdicion(true);
             controlador.llenarCamposEditablesOrganizacionVinculada(organizacionSeleccionada);
-            
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Editar Organización");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-            
-            cargarOrganizacionesVinculadas();
-            
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ORGANIZACION_VINCULADA);
         } catch (IOException ioe) {
             
             LOG.error("Error al cargar la ventana de edición OV: " + ioe.getMessage());
@@ -192,9 +182,8 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
     
     @FXML
     private void salirAMenuPrincipal(ActionEvent event) {
-        
-        Stage ventanaActual = (Stage) botonSalir.getScene().getWindow();
-        ventanaActual.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
     }
     
 }

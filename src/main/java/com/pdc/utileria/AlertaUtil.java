@@ -20,7 +20,8 @@ public class AlertaUtil {
     public static final String ALERTA_CONFIRMAR_ELIMINAR= "¿Está seguro que desea eliminar este registro?";
     public static final String ALERTA_INFO_CANCELACION= "Se perderán todos los datos ingresados";
     public static final String ALERTA_HEADER_CANCELACION = "¿Está seguro que desea cancelar?";
-    
+    public static final String ALERTA_ACTUALIZACION_FALLIDA = "Falló la actualización del registro, intente más tarde";
+
     private AlertaUtil(){
         
         throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
@@ -48,6 +49,13 @@ public class AlertaUtil {
         fallido.setHeaderText(null);
         fallido.setContentText(ALERTA_REGISTRO_FALLIDO);
         fallido.showAndWait();
+    }
+    
+    public static void mostrarAlertaActualizacionFallida(){
+        Alert actualizacionFallida = new Alert(Alert.AlertType.ERROR);
+        actualizacionFallida.setTitle(ERROR);
+        actualizacionFallida.setHeaderText(null);
+        actualizacionFallida.setContentText(ALERTA_ACTUALIZACION_FALLIDA);
     }
     
     public static void mostrarAlertaEliminacionFallida(){

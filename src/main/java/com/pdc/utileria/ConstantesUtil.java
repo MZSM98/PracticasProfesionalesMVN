@@ -34,7 +34,6 @@ public class ConstantesUtil {
     public static final String ALERTA_CLASE_UTILERIA = "Clase de utilería...";
     public static final String ALERTA_DATOS_INVALIDOS = "Datos inválidos o Incompletos";
     public static final String ALERTA_ACTUALIZACION_EXITOSA = "Registro actualizado exitosamente";
-    public static final String ALERTA_ACTUALIZACION_FALLIDA = "Falló la actualización del registro, intente más tarde";
     public static final String ALERTA_REGISTRO_RFC_MORAL_DUPLICADO = "Esa Organización vinculada ya se encuentra registrada";
     public static final String ALERTA_REGISTRO_NUMERO_EMPLEADO_DUPLICADO = "Ese Academico ya se encuentra registrado";
     public static final String ALERTA_RFC_INVALIDO = "RFC no válido";

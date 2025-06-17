@@ -18,7 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.validador.ProyectoValidador;
@@ -26,6 +25,7 @@ import com.pdc.dao.implementacion.ProyectoDAOImpl;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.dao.interfaz.IProyectoDAO;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorRegistroProyectoController implements Initializable {    
     
@@ -275,9 +275,8 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     }
     
     private void cerrarVentana() {
-        
-        Stage stage = (Stage) botonCancelar.getScene().getWindow();
-        stage.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_PROYECTO);
     }
     
     private void limpiarCampos() {

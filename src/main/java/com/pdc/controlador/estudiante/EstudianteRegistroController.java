@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
 import com.pdc.dao.interfaz.ISeccionDAO;
 import com.pdc.dao.interfaz.IEstudianteDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class EstudianteRegistroController implements Initializable {
     
@@ -163,7 +164,7 @@ public class EstudianteRegistroController implements Initializable {
         } catch (SQLException ex) {
             
             LOG.error(ex);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ex) {
             
             LOG.error(ex);
@@ -181,8 +182,7 @@ public class EstudianteRegistroController implements Initializable {
     }
     
     private void salirAMenuPrincipal (){
-        
-        Stage stage = (Stage) botonCancelar.getScene().getWindow();
-        stage.close();  
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_GESTION);
     }
 }
