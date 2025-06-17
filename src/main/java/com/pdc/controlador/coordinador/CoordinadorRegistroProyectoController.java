@@ -23,8 +23,11 @@ import com.pdc.utileria.AlertaUtil;
 import com.pdc.validador.ProyectoValidador;
 import com.pdc.dao.implementacion.ProyectoDAOImpl;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
+import com.pdc.dao.implementacion.PeriodoEscolarDAOImpl;
 import com.pdc.dao.interfaz.IProyectoDAO;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
+import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
+import com.pdc.modelo.dto.PeriodoEscolarDTO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorRegistroProyectoController implements Initializable {    
@@ -41,7 +44,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     private TextField textResponsableProyecto;
     
     @FXML
-    private ComboBox<String> comboPeriodoEscolar;
+    private ComboBox<PeriodoEscolarDTO> comboPeriodoEscolar;
     
     @FXML
     private TextArea textDescripcionProyecto;
@@ -58,12 +61,14 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     private IProyectoDAO interfazProyectoDAO;
     private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
     private ProyectoDTO proyectoDTO;
+    private IPeriodoEscolarDAO interfazPeriodoEscolar;
     
     private boolean modoEdicion = false;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         interfazProyectoDAO = new ProyectoDAOImpl();
+        interfazPeriodoEscolar = new PeriodoEscolarDAOImpl();
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         textProyectoID.setDisable(true);
         cargarPeriodosEscolares();
@@ -71,13 +76,16 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     }
     
     private void cargarPeriodosEscolares() {
-        // Debo agregar después la lógica e implementación en base de datos para los periodos escolares
-        ObservableList<String> periodos = FXCollections.observableArrayList(
-            "Febrero 2025 - Junio 2025",
-            "Agosto 2025 - Diciembre 2025",
-            "Febrero 2026 - Junio 2026"
-        );
-        comboPeriodoEscolar.setItems(periodos);
+        try {
+        List<PeriodoEscolarDTO> periodosEscolares = interfazPeriodoEscolar.listarPeriodos();
+        comboPeriodoEscolar.setItems(FXCollections.observableArrayList(periodosEscolares));
+        }catch (SQLException sqle) {
+            
+            AlertaUtil.mostrarAlertaBaseDatos();
+        }catch (IOException ioe){
+            
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
+        }
     }
     
     private void cargarOrganizacionesVinculadas() {
@@ -145,7 +153,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         textProyectoID.setText(String.valueOf(proyectoDTO.getProyectoID()));
         textTituloProyecto.setText(proyectoDTO.getTituloProyecto());
         textDescripcionProyecto.setText(proyectoDTO.getDescripcionProyecto());
-        comboPeriodoEscolar.setValue(proyectoDTO.getPeriodoEscolar());
+        comboPeriodoEscolar.getSelectionModel().select(proyectoDTO.getPeriodoEscolar());
         
         try {
             
@@ -181,7 +189,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         
         proyectoDTO.setTituloProyecto(textTituloProyecto.getText().trim());
         proyectoDTO.setDescripcionProyecto(textDescripcionProyecto.getText().trim());
-        proyectoDTO.setPeriodoEscolar(comboPeriodoEscolar.getValue());
+        proyectoDTO.setPeriodoEscolar(comboPeriodoEscolar.getSelectionModel().getSelectedItem());
         OrganizacionVinculadaDTO organizacionSeleccionada = comboOrganizacionVinculada.getValue();
         
         if (organizacionSeleccionada != null) {

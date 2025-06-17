@@ -1,31 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="261.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorRegistroOrganizacionVinculadaController">
    <children>
-      <Pane prefHeight="271.0" prefWidth="456.0">
+      <Pane layoutX="-14.0" prefHeight="309.0" prefWidth="476.0">
          <children>
-            <Button fx:id="botonRegistrarOrganizacionVinculada" layoutX="372.0" layoutY="72.0" mnemonicParsing="false" onAction="#registrarOrganizacionVinculada" text="Guardar" />
-            <Button fx:id="botonCancelarRegistroOV" layoutX="372.0" layoutY="114.0" mnemonicParsing="false" onAction="#cancelarRegistroOrganizacionVinculada" prefHeight="25.0" prefWidth="59.0" text="Cancel" />
-            <Label layoutX="55.0" layoutY="76.0" text="RFC:" />
-            <Label layoutX="55.0" layoutY="118.0" text="Nombre:" />
-            <Label layoutX="53.0" layoutY="157.0" text="Telefono:" />
-            <Label layoutX="52.0" layoutY="197.0" text="Direccion:" />
-            <TextField fx:id="textRfcOV" layoutX="123.0" layoutY="72.0" prefHeight="25.0" prefWidth="223.0" />
-            <TextField fx:id="textNombreOV" layoutX="123.0" layoutY="114.0" prefHeight="25.0" prefWidth="223.0" />
-            <TextField fx:id="textTelefonoOV" layoutX="123.0" layoutY="153.0" prefHeight="25.0" prefWidth="223.0" />
-            <TextField fx:id="textDireccionOV" layoutX="123.0" layoutY="193.0" prefHeight="25.0" prefWidth="223.0" />
+            <Button fx:id="botonRegistrarOrganizacionVinculada" layoutX="393.0" layoutY="80.0" mnemonicParsing="false" onAction="#registrarOrganizacionVinculada" text="Guardar" />
+            <Button fx:id="botonCancelarRegistroOV" layoutX="393.0" layoutY="122.0" mnemonicParsing="false" onAction="#cancelarRegistroOrganizacionVinculada" prefHeight="25.0" prefWidth="59.0" text="Cancel" />
             <Label layoutX="96.0" layoutY="27.0" text="Datos de Organizacion Vinculada">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
+            <GridPane layoutX="57.0" layoutY="72.0" prefHeight="208.0" prefWidth="326.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.6666259765625" minWidth="10.0" prefWidth="89.33333841959636" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.3333740234375" minWidth="10.0" prefWidth="237.3333282470703" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="RFC:" />
+                  <TextField fx:id="textRfcOV" prefHeight="25.0" prefWidth="223.0" GridPane.columnIndex="1" />
+                  <Label text="Nombre:" GridPane.rowIndex="1" />
+                  <TextField fx:id="textNombreOV" prefHeight="25.0" prefWidth="223.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Telefono:" GridPane.rowIndex="2" />
+                  <TextField fx:id="textTelefonoOV" prefHeight="25.0" prefWidth="175.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Direccion:" GridPane.rowIndex="3" />
+                  <TextField fx:id="textDireccionOV" prefHeight="25.0" prefWidth="223.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Departamento:" GridPane.rowIndex="4" />
+                  <MenuButton fx:id="menuDepartamentos" mnemonicParsing="false" prefHeight="25.0" prefWidth="245.0" text="Departamento" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <items>
+                        <CheckMenuItem mnemonicParsing="false" text="Unspecified Action" />
+                        <CheckMenuItem mnemonicParsing="false" text="Unspecified Action" />
+                        <CheckMenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </MenuButton>
+               </children>
+            </GridPane>
          </children>
       </Pane>
    </children>

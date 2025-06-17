@@ -1,13 +1,18 @@
 package com.pdc.modelo.dto;
 
+import java.sql.Date;
+
 public class ProyectoDTO {
     
     private int proyectoID;
     private String tituloProyecto;
     private String descripcionProyecto;
-    private String periodoEscolar;
+    private PeriodoEscolarDTO periodoEscolar;
     private String rfcMoral;
     private String estadoProyecto;
+    private Date fechaInicio;
+    private Date fechaFinal;
+    private String responsable;
     
     public int getProyectoID() {
         return proyectoID;
@@ -33,11 +38,11 @@ public class ProyectoDTO {
         this.descripcionProyecto = descripcionProyecto;
     }
     
-    public String getPeriodoEscolar() {
+    public PeriodoEscolarDTO getPeriodoEscolar() {
         return periodoEscolar;
     }
     
-    public void setPeriodoEscolar(String periodoEscolar) {
+    public void setPeriodoEscolar(PeriodoEscolarDTO periodoEscolar) {
         this.periodoEscolar = periodoEscolar;
     }
     
@@ -52,10 +57,36 @@ public class ProyectoDTO {
     public String getEstadoProyecto() {
         return estadoProyecto;
     }
-
+    
     public void setEstadoProyecto(String estadoProyecto) {
         this.estadoProyecto = estadoProyecto;
     }
     
-    public enum EstadoProyecto {ACTIVO,INACTIVO}
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+    
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+    
+    public Date getFechaFinal() {
+        return fechaFinal;
+    }
+    
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
+    }
+    
+    public String getResponsable() {
+        return responsable;
+    }
+    
+    public void setResponsable(String responsable) {
+        this.responsable = responsable;
+    }
+    
+    public enum EstadoProyecto {
+        ACTIVO, INACTIVO
+    }
 }

@@ -55,7 +55,6 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
 
             while(resultadoDeOperacion.next()) {
                 PeriodoEscolarDTO periodoEscolar = new PeriodoEscolarDTO();
-                periodoEscolar.setIdPeriodoEscolar(resultadoDeOperacion.getInt("idperiodoescolar"));
                 periodoEscolar.setNombrePeriodoEscolar(resultadoDeOperacion.getString("nombreperiodoescolar"));
                 periodoEscolar.setFechaInicioPeriodoEscolar(resultadoDeOperacion.getDate("fechainicioperiodoescolar"));
                 periodoEscolar.setFechaFinPeriodoEscolar(resultadoDeOperacion.getDate("fechafinperiodoescolar"));

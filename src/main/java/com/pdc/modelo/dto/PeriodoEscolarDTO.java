@@ -45,7 +45,5 @@ public class PeriodoEscolarDTO {
     public String toString() {
         return nombrePeriodoEscolar;
     }
-    
-    
 
 }
