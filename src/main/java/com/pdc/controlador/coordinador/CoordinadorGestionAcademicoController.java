@@ -195,9 +195,9 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         }
         try {
             
-            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
-            CoordinadorRegistroAcademicoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
-            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_ACTUALIZA_ACADEMICO);
+            CoordinadorRegistroAcademicoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_ACTUALIZA_ACADEMICO);
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_ACTUALIZA_ACADEMICO);
             
             controlador.cambiarAModoEdicion(true);
                 

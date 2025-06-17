@@ -24,50 +24,17 @@ public class ProfesorEEMenuPrincipalController{
    
     @FXML
     void abrirVentanaConsultaCalificaciones(ActionEvent event) {
-        try {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLRegistrarCalificacionFinal.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Gestión de Estudiantes");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-        } catch (IOException ex) {
-            LOG.error("Error al cargar la ventana", ex);
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.PROFESOREE_REGISTRO_CALIFACION_FINAL);
     }
 
     @FXML
     void abrirVentanaEvaluaciones(ActionEvent event) {
-        try {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLRegistrarCalificacionFinal.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Consta de Evaluación de Presentaciones");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-        } catch (IOException ex) {
-            LOG.error("Error al cargar la ventana", ex);
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.PROFESOREE_CONSULTA_EVALUACION_PRESENTACION);
     }
 
     @FXML
     void abrirVentanaGestionEstudiante(ActionEvent event) {
-        try {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLGestionarEstudiante.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Gestionar Estudiante");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-        } catch (IOException ex) {
-            LOG.error("Error al cargar la ventana", ex);
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_GESTION);
     }
     
     @FXML
