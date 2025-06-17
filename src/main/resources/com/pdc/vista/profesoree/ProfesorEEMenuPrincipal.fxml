@@ -8,17 +8,17 @@
 
 <AnchorPane id="AnchorPane" prefHeight="295.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.profesoree.ProfesorEEMenuPrincipalController">
    <children>
-      <Button fx:id="botonGestionar" layoutX="55.0" layoutY="135.0" mnemonicParsing="false" onAction="#abrirVentanaGestionEstudiante" text="Gestionar" />
-      <Button fx:id="botonConsultarCalificaciones" layoutX="250.0" layoutY="135.0" mnemonicParsing="false" onAction="#abrirVentanaConsultaCalificaciones" text="Consultar" />
-      <Button fx:id="botonConsultarEvaluaciones" layoutX="437.0" layoutY="135.0" mnemonicParsing="false" onAction="#abrirVentanaEvaluaciones" text="Consultar" />
+      <Button fx:id="botonGestionar" layoutX="14.0" layoutY="137.0" mnemonicParsing="false" onAction="#abrirVentanaGestionEstudiante" prefHeight="25.0" prefWidth="172.0" text="Estudiantes" />
+      <Button fx:id="botonConsultarCalificaciones" layoutX="204.0" layoutY="137.0" mnemonicParsing="false" onAction="#abrirVentanaConsultaCalificaciones" prefHeight="25.0" prefWidth="172.0" text="Calificaciones" />
+      <Button fx:id="botonConsultarEvaluaciones" layoutX="394.0" layoutY="137.0" mnemonicParsing="false" onAction="#abrirVentanaEvaluaciones" text="Evaluaciones de presentación" />
       <Label fx:id="labelTitulo" layoutX="118.0" layoutY="39.0" text="Gestión De Prácticas Profesionales">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="labelEstudiante" layoutX="61.0" layoutY="107.0" text="Estudiante" />
-      <Label fx:id="labelCalificaciones" layoutX="247.0" layoutY="107.0" text="Calificaciones" />
-      <Label fx:id="labelEvaluacionesPresentacion" layoutX="385.0" layoutY="107.0" text="Evaluaciones de presentación" />
+      <Label fx:id="labelEstudiante" layoutX="75.0" layoutY="109.0" text="Gestionar" />
+      <Label fx:id="labelCalificaciones" layoutX="266.0" layoutY="109.0" text="Registrar" />
+      <Label fx:id="labelEvaluacionesPresentacion" layoutX="455.0" layoutY="109.0" text="Consultar" />
       <Label fx:id="labelCerrarSesion" layoutX="497.0" layoutY="274.0" onMouseClicked="#cerrarSesion" text="Cerrar Sesión" textFill="#0095ff" underline="true">
          <font>
             <Font name="System Bold" size="12.0" />

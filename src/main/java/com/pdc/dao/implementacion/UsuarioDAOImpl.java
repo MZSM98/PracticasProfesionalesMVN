@@ -71,7 +71,30 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
 
     @Override
     public boolean editarUsuario(UsuarioDTO usuario) throws SQLException, IOException{
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String actualizarSQL = "UPDATE usuario SET contrasena = SHA2(?, 256), salt = ? WHERE usuario = ?";
+        boolean actualizacionExitosa = false;
+        Connection conexionBD = null;
+        PreparedStatement declaracionPreparada = null;
+
+        String nuevoSalt = generateSalt();
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
+
+            declaracionPreparada.setString(1, usuario.getContrasena().concat(nuevoSalt));
+            declaracionPreparada.setString(2, nuevoSalt); 
+            declaracionPreparada.setString(3, usuario.getUsuario()); 
+
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+            actualizacionExitosa = (filasAfectadas > 0); 
+
+        } finally {
+            if (declaracionPreparada != null) declaracionPreparada.close();  
+            if (conexionBD != null) conexionBD.close();
+        }
+
+        return actualizacionExitosa;
     }
 
     @Override
