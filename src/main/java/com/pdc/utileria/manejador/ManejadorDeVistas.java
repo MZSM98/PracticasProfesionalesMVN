@@ -19,7 +19,7 @@ public class ManejadorDeVistas {
         PROFESOREE_REGISTRO_CALIFACION_FINAL("/com/pdc/vista/profesoree/ProfesorEERegistroCalificacionFinal.fxml", false,""),
 
         ESTUDIANTE_MENU_PRINCIPAL("/com/pdc/vista/estudiante/EstudianteMenuPrincipal.fxml", false,""),
-        ESTUDIANTE_ACTUALIZACION_PERFIL("/com/pdc/vista/estudiante/EstudianteMenuPrincipal.fxml", false,""),
+        ESTUDIANTE_ACTUALIZACION_PERFIL("/com/pdc/vista/estudiante/EstudianteActualizacionPerfil.fxml", false,""),
         ESTUDIANTE_CONSULTA_CRONOGRAMA("/com/pdc/vista/estudiante/EstudianteConsultaCronograma.fxml", false,""),
         ESTUDIANTE_CONSULTA_PROYECTO_ASIGNADO("/com/pdc/vista/estudiante/EstudianteConsultaProyectoAsignado.fxml", false,""),
         ESTUDIANTE_EVALUACION_PRESENTACION("/com/pdc/vista/estudiante/EstudianteEvaluacionPresentacion.fxml", false,""),

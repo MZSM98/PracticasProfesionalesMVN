@@ -14,6 +14,7 @@ public class AlertaUtil {
     public static final String ALERTA_ERROR_VENTANA = "No se pudo abrir la ventana, intente más tarde";
     public static final String ALERTA_ERROR_BD = "Error de conexión con la base de datos";
     public static final String ALERTA_REGISTRO_EXITOSO = "Registro Exitoso";
+    public static final String ALERTA_ACTUALIZACION_EXITOSA ="Datos actualizados exitosamente.";
     public static final String ALERTA_REGISTRO_FALLIDO = "Error al guardar el registro";
     public static final String ALERTA_ELIMINACION_FALLIDA = "No se pudo eliminar el registro, intente más tarde";
     public static final String ALERTA_ERROR_CARGAR_INFORMACION = "No se pudo cargar la información, contacte con un administrador";
@@ -40,6 +41,14 @@ public class AlertaUtil {
         exito.setTitle(EXITO);
         exito.setHeaderText(null);
         exito.setContentText(ALERTA_REGISTRO_EXITOSO);
+        exito.showAndWait();
+    }
+    
+    public static void mostrarAlertaActualizacionExitosa(){
+        Alert exito = new Alert(Alert.AlertType.INFORMATION);
+        exito.setTitle(EXITO);
+        exito.setHeaderText(null);
+        exito.setContentText(ALERTA_ACTUALIZACION_EXITOSA);
         exito.showAndWait();
     }
     
