@@ -142,16 +142,16 @@ public class CoordinadorRegistroAcademicoController {
                 
                 interfazProfesorEEDAO.insertarProfesorEE((ProfesorEEDTO) academico);
             }
-            AlertaUtil.mostrarAlerta(ConstantesUtil.EXITO, ConstantesUtil.ALERTA_REGISTRO_EXITOSO, Alert.AlertType.CONFIRMATION);
+            AlertaUtil.mostrarAlertaRegistroExitoso();
             limpiarCampos();
         } catch (SQLException sqle) {
             
-            LOG.error (ConstantesUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error (AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
-            LOG.error(ConstantesUtil.ALERTA_REGISTRO_FALLIDO, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_REGISTRO_FALLIDO, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_REGISTRO_FALLIDO, ioe);
+            AlertaUtil.mostrarAlertaRegistroFallido();
         }
     }
     
@@ -169,12 +169,12 @@ public class CoordinadorRegistroAcademicoController {
             volverAGestionAcademico();
         } catch (SQLException sqle) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
-             AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
             LOG.error(ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ACTUALIZACION_FALLIDA, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaActualizacionFallida();
         }
     }
     

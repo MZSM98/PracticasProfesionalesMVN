@@ -13,18 +13,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import com.pdc.dao.implementacion.AcademicoEvaluadorDAOImpl;
 import com.pdc.dao.implementacion.ProfesorEEDAOImpl;
 import com.pdc.dao.implementacion.TipoUsuarioDAOImpl;
@@ -109,12 +104,12 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             comboTipoAcademico.getSelectionModel().selectFirst();
         } catch (SQLException sqle) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.NONE);
+            
         }
     }
     
@@ -132,12 +127,12 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             tableGestionAcademicos.setItems(listaObservableUsuarioDTO);
         } catch (SQLException sqle) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException ioe){
             
             LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.ERROR);
         }
     }
     
@@ -156,12 +151,12 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             tableGestionAcademicos.setItems(listaObservableUsuarioDTO);
         } catch (SQLException e) {
             
-            LOG.error(ConstantesUtil.ALERTA_ERROR_BD, e);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, e);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
         } catch (IOException e){
             
             LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION,e);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }    
 
@@ -184,7 +179,7 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         } catch (IOException e) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, e);
-            AlertaUtil.mostrarAlerta (ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaVentana();
         }
     }
 
@@ -195,7 +190,7 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         
         if (academicoSeleccionado == null) {
             
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ADVERTENCIA, ConstantesUtil.ALERTA_SELECCION_EDITAR, Alert.AlertType.WARNING);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, ConstantesUtil.ALERTA_SELECCION_EDITAR, Alert.AlertType.WARNING);
             return;
         }
         try {
@@ -218,7 +213,7 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_CARGAR_VENTANA, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaVentana();
         }
     }
 

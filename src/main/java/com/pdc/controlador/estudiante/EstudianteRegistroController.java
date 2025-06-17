@@ -163,7 +163,7 @@ public class EstudianteRegistroController implements Initializable {
         } catch (SQLException ex) {
             
             LOG.error(ex);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ERROR, ConstantesUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ex) {
             
             LOG.error(ex);
