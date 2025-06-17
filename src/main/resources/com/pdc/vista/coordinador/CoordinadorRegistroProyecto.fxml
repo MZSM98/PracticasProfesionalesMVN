@@ -2,36 +2,73 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="351.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorRegistroProyectoController">
+<AnchorPane id="AnchorPane" prefHeight="565.0" prefWidth="473.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorRegistroProyectoController">
    <children>
-      <Pane prefHeight="351.0" prefWidth="621.0">
+      <Pane prefHeight="565.0" prefWidth="551.0">
          <children>
-            <Label layoutX="242.0" layoutY="31.0" text="Datos de Proyecto">
+            <Label layoutX="194.0" layoutY="44.0" text="Datos de Proyecto">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <Label layoutX="48.0" layoutY="90.0" text="Titulo:" />
-            <Label layoutX="46.0" layoutY="246.0" text="Organización" />
-            <Label layoutX="48.0" layoutY="128.0" text="Periodo Escolar:" />
-            <Label layoutX="48.0" layoutY="185.0" text="Descripcion:" />
-            <Label layoutX="47.0" layoutY="284.0" text="Responsable" />
-            <TextField fx:id="textTituloProyecto" layoutX="142.0" layoutY="86.0" prefHeight="25.0" prefWidth="358.0" />
-            <ComboBox fx:id="comboPeriodoEscolar" layoutX="142.0" layoutY="126.0" prefHeight="25.0" prefWidth="358.0" />
-            <TextArea fx:id="textDescripcionProyecto" layoutX="142.0" layoutY="164.0" prefHeight="59.0" prefWidth="358.0" />
-            <ComboBox fx:id="comboOrganizacionVinculada" layoutX="145.0" layoutY="242.0" prefHeight="25.0" prefWidth="358.0" />
-            <TextField fx:id="textResponsableProyecto" editable="false" layoutX="145.0" layoutY="280.0" prefHeight="25.0" prefWidth="358.0" />
-            <Button fx:id="botonGuardarProyecto" layoutX="534.0" layoutY="86.0" mnemonicParsing="false" onAction="#guardarProyecto" text="Guardar" />
-            <Button fx:id="botonCancelar" layoutX="534.0" layoutY="124.0" mnemonicParsing="false" onAction="#cancelarRegistro" text="Cancelar" />
-            <Label layoutX="24.0" layoutY="18.0" text="ID de Proyecto:" />
-            <TextField fx:id="textProyectoID" layoutX="113.0" layoutY="14.0" prefHeight="25.0" prefWidth="61.0" />
+            <Label layoutX="23.0" layoutY="23.0" text="ID de Proyecto:" />
+            <TextField fx:id="textProyectoID" layoutX="112.0" layoutY="19.0" prefHeight="25.0" prefWidth="59.0" />
+            <GridPane layoutX="55.0" layoutY="86.0" prefHeight="419.0" prefWidth="439.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.0" minWidth="10.0" prefWidth="95.33333333333333" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="367.33335367838544" minWidth="10.0" prefWidth="343.3333333333333" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Titulo:" />
+                  <TextField fx:id="textTituloProyecto" prefHeight="25.0" prefWidth="358.0" GridPane.columnIndex="1" />
+                  <Label text="Periodo Escolar:" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="comboPeriodoEscolar" prefHeight="25.0" prefWidth="358.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Descripcion:" GridPane.rowIndex="2" />
+                  <TextArea fx:id="textDescripcionProyecto" prefHeight="37.0" prefWidth="343.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Organización" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="comboOrganizacionVinculada" prefHeight="25.0" prefWidth="358.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Fecha Inicio" GridPane.rowIndex="4" />
+                  <DatePicker fx:id="dateInicioProyecto" prefHeight="25.0" prefWidth="164.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="Fecha Final" GridPane.rowIndex="5" />
+                  <DatePicker fx:id="dateFinalProyecto" prefHeight="25.0" prefWidth="164.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label text="Responsable" GridPane.rowIndex="6" />
+                  <ComboBox fx:id="comboResponsable" prefHeight="25.0" prefWidth="365.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+               </children>
+            </GridPane>
+            <GridPane layoutX="55.0" layoutY="514.0" prefHeight="30.0" prefWidth="439.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="10.0" prefWidth="158.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.33331298828125" minWidth="10.0" prefWidth="59.66668701171875" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.33331298828125" minWidth="10.0" prefWidth="159.33331298828125" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="botonGuardarProyecto" mnemonicParsing="false" onAction="#guardarProyecto" prefHeight="25.0" prefWidth="181.0" text="Guardar" />
+                  <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#cancelarRegistro" prefHeight="25.0" prefWidth="167.0" text="Cancelar" GridPane.columnIndex="2" />
+               </children>
+            </GridPane>
          </children>
       </Pane>
    </children>

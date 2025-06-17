@@ -23,7 +23,6 @@ import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO.EstadoOrganizacionVinculada;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.utileria.AlertaUtil;
-import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 import java.net.URL;
@@ -185,5 +184,4 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
     }
-    
 }
