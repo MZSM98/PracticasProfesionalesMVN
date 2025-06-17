@@ -1,5 +1,9 @@
 package com.pdc.controlador.iniciodesesion;
 
+import com.pdc.dao.implementacion.AcademicoEvaluadorDAOImpl;
+import com.pdc.dao.implementacion.CoordinadorDAOImpl;
+import com.pdc.dao.implementacion.EstudianteDAOImpl;
+import com.pdc.dao.implementacion.ProfesorEEDAOImpl;
 import com.pdc.modelo.dto.TipoUsuarioDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import java.io.IOException;
@@ -21,6 +25,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import com.pdc.dao.implementacion.TipoUsuarioDAOImpl;
 import com.pdc.dao.implementacion.UsuarioDAOImpl;
+import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
+import com.pdc.dao.interfaz.ICoordinadorDAO;
+import com.pdc.dao.interfaz.IEstudianteDAO;
+import com.pdc.dao.interfaz.IProfesorEEDAO;
 import com.pdc.validador.InicioDeSesionValidador;
 
 import org.apache.log4j.Logger;
@@ -57,6 +65,10 @@ public class InicioDeSesionController implements Initializable {
     private Button botonIniciarSesion;
 
     private IUsuarioDAO interfazUsuarioDAO;
+    private ICoordinadorDAO interfazCordinadorDao;
+    private IProfesorEEDAO interfazProfesorEEDAO;
+    private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
+    private IEstudianteDAO interfazEstudianteDAO;
     private ITipoUsuarioDAO interfazTipoUsuarioDAO;
     
     @Override
@@ -64,6 +76,11 @@ public class InicioDeSesionController implements Initializable {
         botonIniciarSesion.setDefaultButton(Boolean.TRUE);
         interfazUsuarioDAO = new UsuarioDAOImpl();
         interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
+        interfazCordinadorDao = new CoordinadorDAOImpl();
+        interfazProfesorEEDAO = new ProfesorEEDAOImpl();
+        interfazEstudianteDAO = new EstudianteDAOImpl();
+        interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAOImpl();
+        
         poblarComboTipoUsuario();
         aplicarRestriccionesLongitudACampos();
     }    
@@ -93,8 +110,8 @@ public class InicioDeSesionController implements Initializable {
             usuarioDTO.setSalt(usuarioBusqueda.getSalt());
 
             if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
-                ManejadorDeSesion.iniciarSesion(usuarioBusqueda);
-                abrirMenuPrincipal(obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
+                ManejadorDeSesion.iniciarSesion(obtenerTipoUsuario(usuarioBusqueda));
+                abrirMenuPrincipal(usuarioDTO.getTipoUsuario());
                 
             } else {
 
@@ -116,8 +133,40 @@ public class InicioDeSesionController implements Initializable {
     }
     
 
-    private void abrirMenuPrincipal(ManejadorDeVistas.Vista vista){ 
-        ManejadorDeVistas.getInstancia().cambiarVista(vista);
+    private void abrirMenuPrincipal(TipoUsuarioDTO tipoUsuario){ 
+        if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
+        } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_MENU_PRINCIPAL);
+        } else if (PROFESOR_EE.equals(tipoUsuario.getIdTipo())) {
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.PROFESOREE_MENU_PRINCIPAL);
+        } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
+        } else {
+            throw new IllegalArgumentException("No existe tipo de usuario");
+        }
+    }
+    
+    public UsuarioDTO obtenerTipoUsuario(UsuarioDTO usuario) throws SQLException, IOException{ 
+        final String numeroDeTrabajador = usuario.getUsuario();
+        UsuarioDTO usuarioFinal;
+        if (COORDINADOR.equals(usuario.getTipoUsuario().getIdTipo())) {
+            usuarioFinal = interfazCordinadorDao.buscarCoordinador(numeroDeTrabajador);
+        } else if (ACADEMICO_EVALUADOR.equals(usuario.getTipoUsuario().getIdTipo())) {
+            usuarioFinal = interfazAcademicoEvaluadorDAO.buscarAcademicoEvaluador(numeroDeTrabajador);
+        } else if (PROFESOR_EE.equals(usuario.getTipoUsuario().getIdTipo())) {
+            usuarioFinal = interfazProfesorEEDAO.buscarProfesorEE(numeroDeTrabajador);
+        } else if (ESTUDIANTE.equals(usuario.getTipoUsuario().getIdTipo())) {
+            usuarioFinal = interfazEstudianteDAO.buscarEstudiante(usuario.getUsuario());
+        } else {
+            throw new IllegalArgumentException("No existe tipo de usuario");
+        }
+        usuarioFinal.setUsuario(usuario.getUsuario());
+        usuarioFinal.setContrasena(usuario.getContrasena());
+        usuarioFinal.setTipoUsuario(usuario.getTipoUsuario());
+        usuarioFinal.setSalt(usuario.getSalt());
+        
+        return usuarioFinal;
     }
     
     private void poblarComboTipoUsuario(){
@@ -140,22 +189,6 @@ public class InicioDeSesionController implements Initializable {
         }
     }
     
-
-    private ManejadorDeVistas.Vista obtenerRecursoVetana(TipoUsuarioDTO tipoUsuario){
-        
-        if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
-            return ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL;
-        } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {
-            return ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_MENU_PRINCIPAL;
-        } else if (PROFESOR_EE.equals(tipoUsuario.getIdTipo())) {
-            return ManejadorDeVistas.Vista.PROFESOREE_MENU_PRINCIPAL;
-        } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
-            return ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL;
-        } else {
-            throw new IllegalArgumentException("No existe tipo de usuario");
-        }
-    }
-
     private boolean validarCamposInicioSesion(UsuarioDTO usuarioDTO) {
                
         try {
