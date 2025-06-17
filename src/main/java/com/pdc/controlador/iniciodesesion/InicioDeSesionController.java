@@ -29,6 +29,7 @@ import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.dao.interfaz.IUsuarioDAO;
 import com.pdc.dao.interfaz.ITipoUsuarioDAO;
+import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class InicioDeSesionController implements Initializable {
@@ -92,7 +93,7 @@ public class InicioDeSesionController implements Initializable {
             usuarioDTO.setSalt(usuarioBusqueda.getSalt());
 
             if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
-
+                ManejadorDeSesion.iniciarSesion(usuarioBusqueda);
                 abrirMenuPrincipal(obtenerRecursoVetana(usuarioDTO.getTipoUsuario()));
                 
             } else {

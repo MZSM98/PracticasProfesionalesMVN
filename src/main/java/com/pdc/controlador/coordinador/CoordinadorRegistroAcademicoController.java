@@ -21,6 +21,7 @@ import com.pdc.utileria.ConstantesUtil;
 import com.pdc.validador.AcademicoValidador;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
 import com.pdc.dao.interfaz.IProfesorEEDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorRegistroAcademicoController {
     
@@ -216,9 +217,8 @@ public class CoordinadorRegistroAcademicoController {
     
     @FXML
     private void volverAGestionAcademico() {
-        
-        Stage stage = (Stage) botonCancelar.getScene().getWindow();
-        stage.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ACADEMICO);
     }
 
 }

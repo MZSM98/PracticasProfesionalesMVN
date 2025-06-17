@@ -18,6 +18,7 @@ import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorRegistroOrganizacionVinculadaController {    
     
@@ -169,9 +170,8 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
     }    
     
     private void cerrarVentana() {
-        
-        Stage stage = (Stage) botonCancelarRegistroOV.getScene().getWindow();
-        stage.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ORGANIZACION_VINCULADA);
     }    
     
     private void limpiarCampos() {

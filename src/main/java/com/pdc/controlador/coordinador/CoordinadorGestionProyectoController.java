@@ -7,18 +7,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
@@ -31,6 +26,7 @@ import com.pdc.dao.implementacion.ProyectoDAOImpl;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.dao.interfaz.IProyectoDAO;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorGestionProyectoController implements Initializable {
     
@@ -131,21 +127,7 @@ public class CoordinadorGestionProyectoController implements Initializable {
         
     @FXML
     private void abrirRegistroProyecto(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/proyecto/FXMLRegistroProyecto.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Registro de Proyecto");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-            
-            cargarProyectos();
-        } catch (IOException ioe) {
-            LOG.error("Error al cargar la ventana de registro: " + ioe.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "Ha ocurrido un error, inténtelo más tarde", Alert.AlertType.ERROR);
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_PROYECTO);
     }
     
     @FXML
@@ -158,21 +140,10 @@ public class CoordinadorGestionProyectoController implements Initializable {
         }
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/proyecto/FXMLRegistroProyecto.fxml"));
-            Parent root = loader.load();
-            
-            CoordinadorRegistroProyectoController controlador = loader.getController();
-            
+            CoordinadorRegistroProyectoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_PROYECTO);       
             controlador.cambiarAModoEdicion(true);
             controlador.llenarCamposEditablesProyecto(proyectoSeleccionado);
-            
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Editar Proyecto");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-            
-            cargarProyectos();
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_PROYECTO);
         } catch (IOException ioe) {
             LOG.error("Error al cargar la ventana de edición: " + ioe.getMessage());
             AlertaUtil.mostrarAlerta("Error", "No se pudo abrir la ventana de edición, contacte con un administrador", Alert.AlertType.ERROR);
@@ -215,7 +186,7 @@ public class CoordinadorGestionProyectoController implements Initializable {
     
     @FXML
     private void salirAMenuPrincipal(ActionEvent event) {
-        Stage ventanaActual = (Stage) botonSalir.getScene().getWindow();
-        ventanaActual.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
     }
 }

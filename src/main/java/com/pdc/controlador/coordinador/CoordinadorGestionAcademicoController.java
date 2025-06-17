@@ -34,6 +34,7 @@ import com.pdc.utileria.ConstantesUtil;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
 import com.pdc.dao.interfaz.IProfesorEEDAO;
 import com.pdc.dao.interfaz.ITipoUsuarioDAO;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class CoordinadorGestionAcademicoController implements Initializable{
     
@@ -168,25 +169,15 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     private void abrirRegistrarAcademico(ActionEvent event) {
         
         try {
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/academico/FXMLRegistroAcademicos.fxml"));
-            Parent root = loader.load();          
-            
-            CoordinadorRegistroAcademicoController controlador = loader.getController();
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            CoordinadorRegistroAcademicoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
             TipoUsuarioDTO tipoUsuarioSeleccionado = comboTipoAcademico.getSelectionModel().getSelectedItem();
             controlador.asignarTipoUsuario(tipoUsuarioSeleccionado);
-            
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Registro académico evaluador");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
 
             if (tipoUsuarioSeleccionado.getIdTipo().equals(ACADEMICO_EVALUADOR)) {
-                
                 cargarListaAcademico();
             } else if (tipoUsuarioSeleccionado.getIdTipo().equals(PROFESOR_EE)) {
-                
                 cargarListaProfesorEvaluador();
             }
 
@@ -209,27 +200,19 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         }
         try {
             
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/academico/FXMLRegistroAcademicos.fxml"));
-            Parent root = loader.load();
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            CoordinadorRegistroAcademicoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
             
-            CoordinadorRegistroAcademicoController controlador = loader.getController();
             controlador.cambiarAModoEdicion(true);
                 
             TipoUsuarioDTO tipoUsuarioSeleccionado = comboTipoAcademico.getSelectionModel().getSelectedItem();
             controlador.asignarTipoUsuario(tipoUsuarioSeleccionado);
             controlador.llenarCamposEditablesAcademico(academicoSeleccionado);
             
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Editar Académico");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-            
             if (tipoUsuarioSeleccionado.getIdTipo().equals(ACADEMICO_EVALUADOR)) {
-                
                 cargarListaAcademico();
             } else if (tipoUsuarioSeleccionado.getIdTipo().equals(PROFESOR_EE)) {
-                
                 cargarListaProfesorEvaluador();
             }
         } catch (IOException ioe) {
@@ -257,9 +240,8 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     
     @FXML
     void salirAMenuPrincipal(ActionEvent event) {
-        
-        Stage ventanaActual = (Stage) botonSalir.getScene().getWindow();
-        ventanaActual.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
     }
 
 }

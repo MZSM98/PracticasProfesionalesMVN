@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -25,6 +24,8 @@ import javafx.stage.Stage;
 import com.pdc.dao.implementacion.EstudianteDAOImpl;
 import org.apache.log4j.Logger;
 import com.pdc.dao.interfaz.IEstudianteDAO;
+import com.pdc.utileria.manejador.ManejadorDeSesion;
+import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class EstudianteGestionController implements Initializable {
     private static final Logger LOG = Logger.getLogger(EstudianteGestionController.class);
@@ -68,21 +69,11 @@ public class EstudianteGestionController implements Initializable {
             return;
         }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLRegistrarEstudiante.fxml"));
-            Parent root = loader.load();
-            
-            EstudianteRegistroController controlador = loader.getController();
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
+            EstudianteRegistroController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
             controlador.setModoEdicion(Boolean.TRUE);
             controlador.llenarCamposEditablesEstudiante(estudianteSeleccionado);
-            
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Editar Estudiante");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-            
-            poblarTablaEstudiante();
-            
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
         } catch (IOException ex) {
             LOG.error("Error al cargar la ventana: " + ex.getMessage());
             AlertaUtil.mostrarAlerta("Error", "No se pudo abrir la ventana.", Alert.AlertType.ERROR);
@@ -93,19 +84,10 @@ public class EstudianteGestionController implements Initializable {
     void abrirRegistrarAcademico(ActionEvent event) {
        
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/grafica/profesoree/FXMLRegistrarEstudiante.fxml"));
-            Parent root = loader.load();
-            EstudianteRegistroController controlador = loader.getController();
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
+            EstudianteRegistroController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
             controlador.poblarInformacionComboPeriodoySeccion();
-            
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Registrar Estudiante");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-            
-            poblarTablaEstudiante();
-            
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
         } catch (IOException ex) {
             LOG.error("Error al cargar la ventana de edición: " + ex.getMessage());
             AlertaUtil.mostrarAlerta("Error", "No se pudo abrir la ventana de edición.", Alert.AlertType.ERROR);
@@ -114,8 +96,15 @@ public class EstudianteGestionController implements Initializable {
 
     @FXML
     void salirAMenuPrincipal(ActionEvent event) {
-        Stage ventanaActual = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ventanaActual.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        final Integer COORDINADOR = 1;
+        final Integer PROFESOREE = 3;
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        if(COORDINADOR.equals(ManejadorDeSesion.getUsuario().getTipoUsuario().getIdTipo())){
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
+        }else if(PROFESOREE.equals(ManejadorDeSesion.getUsuario().getTipoUsuario().getIdTipo())){
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.PROFESOREE_MENU_PRINCIPAL);
+        }
     }
 
     private void configurarColumnasTablaEstudiante(){
