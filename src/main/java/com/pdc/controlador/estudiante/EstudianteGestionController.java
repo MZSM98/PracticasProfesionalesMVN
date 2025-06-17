@@ -11,16 +11,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import com.pdc.dao.implementacion.EstudianteDAOImpl;
 import org.apache.log4j.Logger;
 import com.pdc.dao.interfaz.IEstudianteDAO;
@@ -69,11 +64,11 @@ public class EstudianteGestionController implements Initializable {
             return;
         }
         try {
-            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
-            EstudianteRegistroController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_ACTUALIZAR);
+            EstudianteRegistroController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ESTUDIANTE_ACTUALIZAR);
             controlador.setModoEdicion(Boolean.TRUE);
             controlador.llenarCamposEditablesEstudiante(estudianteSeleccionado);
-            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_ACTUALIZAR);
         } catch (IOException ex) {
             LOG.error("Error al cargar la ventana: " + ex.getMessage());
             AlertaUtil.mostrarAlerta("Error", "No se pudo abrir la ventana.", Alert.AlertType.ERROR);

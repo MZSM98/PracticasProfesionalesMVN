@@ -73,9 +73,8 @@ public class EstudianteRegistroController implements Initializable {
 
     @FXML
     void cancelarRegistroEstudiante(ActionEvent event) {
-        
-        Stage ventanaActual = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ventanaActual.close();
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_GESTION);
     }
 
     @FXML

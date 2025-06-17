@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import com.pdc.validador.OrganizacionVinculadaValidador;
 import com.pdc.utileria.AlertaUtil;
