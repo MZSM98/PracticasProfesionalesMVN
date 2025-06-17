@@ -6,11 +6,8 @@ import java.io.IOException;
 
 public interface ICredencialesIngresoDAO {
     
-    boolean insertarCredencialesIngreso(CredencialesIngresoDTO credenciales) throws SQLException, IOException;
-    
-    boolean eliminarCredencialesIngreso(String usuario) throws SQLException, IOException;
-    
-    boolean editarCredencialesIngreso(CredencialesIngresoDTO credenciales) throws SQLException, IOException;
-    
-    CredencialesIngresoDTO buscarCredencialesIngreso(String usuario) throws SQLException, IOException;
+    public boolean insertarCredencialesIngreso(CredencialesIngresoDTO credenciales) throws SQLException, IOException;
+    public boolean eliminarCredencialesIngreso(String usuario) throws SQLException, IOException;
+    public boolean editarCredencialesIngreso(CredencialesIngresoDTO credenciales) throws SQLException, IOException;
+    public CredencialesIngresoDTO buscarCredencialesIngreso(String usuario) throws SQLException, IOException;
 }

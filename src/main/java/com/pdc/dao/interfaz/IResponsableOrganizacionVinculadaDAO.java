@@ -6,12 +6,8 @@ import java.io.IOException;
 
 public interface IResponsableOrganizacionVinculadaDAO {
     
-    boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException;
-    
-    boolean eliminarResponsableOV(String rfc) throws SQLException, IOException;
-    
-    boolean editarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException;
-    
-    ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfc) throws SQLException, IOException;
-    
+    public boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException;
+    public boolean eliminarResponsableOV(String rfc) throws SQLException, IOException;
+    public boolean editarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException;
+    public ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfc) throws SQLException, IOException;
 }

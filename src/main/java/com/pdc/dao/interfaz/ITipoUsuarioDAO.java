@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ITipoUsuarioDAO {
     
-        List<TipoUsuarioDTO> listaTipoUsuario() throws SQLException, IOException;
-        TipoUsuarioDTO buscarTipoUsuario(Integer idtipo) throws SQLException, IOException;
+    public List<TipoUsuarioDTO> listaTipoUsuario() throws SQLException, IOException;
+    public TipoUsuarioDTO buscarTipoUsuario(Integer idtipo) throws SQLException, IOException;
 }

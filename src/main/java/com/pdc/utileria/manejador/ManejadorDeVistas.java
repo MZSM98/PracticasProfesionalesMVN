@@ -117,12 +117,10 @@ public class ManejadorDeVistas {
                     escenarioPrincipal.setMaximized(false);
                 }
                 escenarioPrincipal.sizeToScene();
-                // Se asignan valores para la siguiente ventana
                 escenarioPrincipal.setScene(escena);
                 escenarioPrincipal.setTitle(titulo);
                 escenarioPrincipal.setResizable(vista.isResizable());
                 
-                // Centrar la ventana en la pantalla
                 escenarioPrincipal.centerOnScreen();
                 
                 escenarioPrincipal.show();
@@ -132,48 +130,39 @@ public class ManejadorDeVistas {
         }
     }
 
-    // Obtener el controlador de una vista específica
     public <T> T obtenerControlador(Vista vista) throws IOException {
-        // Si ya está en caché, devolver el controlador cacheado
         if (controladoresCache.containsKey(vista)) {
             return (T) controladoresCache.get(vista);
         }
 
-        // Si no está en caché, cargar la vista (esto también guardará el controlador)
         cargarVista(vista);
         return (T) controladoresCache.get(vista);
     }
 
-    // Limpiar caché de vistas
     public void limpiarCache() {
         vistasCache.clear();
         controladoresCache.clear();
     }
 
-    // Limpiar caché de una vista específica
     public void limpiarCacheVista(Vista vista) {
         vistasCache.remove(vista);
         controladoresCache.remove(vista);
     }
 
-    // Verificar si una vista está en caché
     public boolean estaEnCache(Vista vista) {
         return vistasCache.containsKey(vista);
     }
 
-    // Cerrar la aplicación
     public void cerrarAplicacion() {
         if (escenarioPrincipal != null) {
             escenarioPrincipal.close();
         }
     }
 
-    // Obtener el escenario principal
     public Stage obtenerEscenarioPrincipal() {
         return escenarioPrincipal;
     }
     
-        // Abrir una vista en una nueva ventana
     public Stage abrirVistaEnNuevaVentana(Vista vista) {
         try {
             Parent root = cargarVista(vista);

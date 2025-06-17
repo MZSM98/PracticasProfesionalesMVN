@@ -11,5 +11,4 @@ public interface IUsuarioDAO {
     public boolean editarUsuario(UsuarioDTO usuario) throws SQLException, IOException;
     public boolean eliminarUsuario(UsuarioDTO usuario) throws SQLException, IOException;
     public boolean autenticarUsuario(UsuarioDTO usuario) throws SQLException, IOException;
-
 }

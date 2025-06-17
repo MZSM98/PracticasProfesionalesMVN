@@ -8,7 +8,6 @@ public class ProfesorEERegistroCalificacionFinalController implements Initializa
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
     
 }

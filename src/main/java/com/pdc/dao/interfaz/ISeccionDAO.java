@@ -9,5 +9,4 @@ public interface ISeccionDAO {
     
     public SeccionDTO buscarSeccion(Integer idSeccion) throws SQLException, IOException;
     public List<SeccionDTO> listarSecciones() throws SQLException, IOException;
-    
 }

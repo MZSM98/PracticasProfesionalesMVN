@@ -9,5 +9,4 @@ public interface IPeriodoEscolarDAO {
     
     public PeriodoEscolarDTO buscarPeriodoEscolar(Integer idPeriodoEscolar)  throws SQLException, IOException ;
     public List<PeriodoEscolarDTO> listarPeriodos() throws SQLException, IOException ;
-    
 }

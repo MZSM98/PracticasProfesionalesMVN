@@ -7,12 +7,8 @@ import java.sql.Date;
 
 public interface IAutoEvaluacionDAO {
 
-    boolean insertarAutoEvaluacion(AutoEvaluacionDTO autoEvaluacion) throws SQLException, IOException;
-    
-    boolean eliminarAutoEvaluacion(Date fechaEvaluacion) throws SQLException, IOException;
-    
-    boolean editarAutoEvaluacion(AutoEvaluacionDTO autoEvaluacion) throws SQLException, IOException;
-    
-    AutoEvaluacionDTO buscarAutoEvaluacion(Date fechaEvaluacion) throws SQLException, IOException;
-    
+    public boolean insertarAutoEvaluacion(AutoEvaluacionDTO autoEvaluacion) throws SQLException, IOException;
+    public boolean eliminarAutoEvaluacion(Date fechaEvaluacion) throws SQLException, IOException;
+    public boolean editarAutoEvaluacion(AutoEvaluacionDTO autoEvaluacion) throws SQLException, IOException;
+    public AutoEvaluacionDTO buscarAutoEvaluacion(Date fechaEvaluacion) throws SQLException, IOException;
 }

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IOrganizacionVinculadaDAO {
     
-    boolean insertarOrganizacionVinculada(OrganizacionVinculadaDTO organizacion) throws SQLException, IOException;
-    boolean eliminarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException;
-    boolean editarOrganizacionVinculada(OrganizacionVinculadaDTO organizacion) throws SQLException, IOException;
-    OrganizacionVinculadaDTO buscarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException;
+    public boolean insertarOrganizacionVinculada(OrganizacionVinculadaDTO organizacion) throws SQLException, IOException;
+    public boolean eliminarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException;
+    public boolean editarOrganizacionVinculada(OrganizacionVinculadaDTO organizacion) throws SQLException, IOException;
+    public OrganizacionVinculadaDTO buscarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException;
     public List<OrganizacionVinculadaDTO> listarOrganizacionesVinculadas() throws SQLException, IOException;
 }

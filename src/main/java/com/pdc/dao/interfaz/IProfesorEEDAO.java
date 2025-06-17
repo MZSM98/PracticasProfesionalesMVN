@@ -7,14 +7,9 @@ import java.util.List;
 
 public interface IProfesorEEDAO {
     
-    boolean insertarProfesorEE(ProfesorEEDTO profesor) throws SQLException, IOException;
-    
-    boolean eliminarProfesorEE(String numeroTrabajador) throws SQLException, IOException;
-    
-    boolean editarProfesorEE(ProfesorEEDTO profesor) throws SQLException, IOException;
-    
-    ProfesorEEDTO buscarProfesorEE(String numeroTrabajador) throws SQLException, IOException;
-    
-    List<ProfesorEEDTO> listaProfesorEE() throws SQLException, IOException;
-
+    public boolean insertarProfesorEE(ProfesorEEDTO profesor) throws SQLException, IOException;
+    public boolean eliminarProfesorEE(String numeroTrabajador) throws SQLException, IOException;
+    public boolean editarProfesorEE(ProfesorEEDTO profesor) throws SQLException, IOException;
+    public ProfesorEEDTO buscarProfesorEE(String numeroTrabajador) throws SQLException, IOException;
+    public List<ProfesorEEDTO> listaProfesorEE() throws SQLException, IOException;
 }

@@ -7,11 +7,10 @@ import java.util.List;
 
 public interface IProyectoDAO {
     
-    boolean insertarProyecto(ProyectoDTO proyecto) throws SQLException, IOException;
-    boolean eliminarProyecto(int proyectoID) throws SQLException, IOException;
-    boolean editarProyecto(ProyectoDTO proyecto) throws SQLException, IOException;
-    List<ProyectoDTO> buscarProyectosPorNombre(String titulo) throws SQLException, IOException;
-    List<ProyectoDTO> listarProyectos() throws SQLException, IOException;
-    ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException, IOException;
-    
+    public boolean insertarProyecto(ProyectoDTO proyecto) throws SQLException, IOException;
+    public boolean eliminarProyecto(int proyectoID) throws SQLException, IOException;
+    public boolean editarProyecto(ProyectoDTO proyecto) throws SQLException, IOException;
+    public List<ProyectoDTO> buscarProyectosPorNombre(String titulo) throws SQLException, IOException;
+    public List<ProyectoDTO> listarProyectos() throws SQLException, IOException;
+    public ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException, IOException;
 }

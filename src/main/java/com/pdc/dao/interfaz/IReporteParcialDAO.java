@@ -7,12 +7,8 @@ import java.sql.Date;
 
 public interface IReporteParcialDAO {
     
-    boolean insertarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException;
-    
-    boolean eliminarReporteParcial(Date fechaDeReporte) throws SQLException, IOException;
-    
-    boolean editarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException;
-    
-    ReporteParcialDTO buscarReporteParcial(Date fechaDeReporte) throws SQLException, IOException;
-    
+    public boolean insertarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException;
+    public boolean eliminarReporteParcial(Date fechaDeReporte) throws SQLException, IOException;
+    public boolean editarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException;
+    public ReporteParcialDTO buscarReporteParcial(Date fechaDeReporte) throws SQLException, IOException;
 }
