@@ -172,7 +172,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         try {
             
             OrganizacionVinculadaDTO organizacion = 
-                    interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(proyectoDTO.getOrganizacion());
+                    interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(proyectoDTO.getOrganizacion().getRfcMoral());
             ResponsableOrganizacionVinculadaDTO responsable = 
                     interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(organizacion.getRfcMoral());
                 
@@ -211,8 +211,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         proyectoDTO.setFechaInicio(Date.valueOf(dateInicioProyecto.getValue()));
         proyectoDTO.setFechaFinal(Date.valueOf(dateFinalProyecto.getValue()));
         proyectoDTO.setResponsable(comboResponsableProyecto.getSelectionModel().getSelectedItem());
-        OrganizacionVinculadaDTO organizacionSeleccionada = comboOrganizacionVinculada.getValue();
-        proyectoDTO.setRfcMoral(organizacionSeleccionada.getRfcMoral());
+        proyectoDTO.setOrganizacion(comboOrganizacionVinculada.getSelectionModel().getSelectedItem());
         
         if (!validarCampos(proyectoDTO)) {
             return;

@@ -84,16 +84,8 @@ public class CoordinadorGestionProyectoController implements Initializable {
         columnEstadoProyecto.setCellValueFactory(new PropertyValueFactory<>("estadoProyecto"));
         
         columnOrganizacionVinculada.setCellValueFactory(cellData -> {
-            String rfcMoral = cellData.getValue().getOrganizacion();
-            try {
-                OrganizacionVinculadaDTO organizacion = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
-                return new javafx.beans.property.SimpleStringProperty(
-                    organizacion != null ? organizacion.getNombreOV() : rfcMoral
-                );
-            } catch (SQLException | IOException e) {
-                LOG.error("Error al obtener nombre de organización: " + e.getMessage());
-                return new javafx.beans.property.SimpleStringProperty(rfcMoral);
-            }
+            OrganizacionVinculadaDTO organizacion = cellData.getValue().getOrganizacion();
+            return new SimpleStringProperty(organizacion != null ? organizacion.getNombreOV() : "");
         });
     }
     

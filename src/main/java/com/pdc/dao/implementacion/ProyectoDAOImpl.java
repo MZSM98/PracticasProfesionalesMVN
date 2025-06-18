@@ -14,16 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 import com.pdc.dao.interfaz.IProyectoDAO;
 import com.pdc.dao.interfaz.IResponsableOrganizacionVinculadaDAO;
+import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.PeriodoEscolarDTO;
+import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 
 public class ProyectoDAOImpl implements IProyectoDAO {
 
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
-    private IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
-    private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
-    private IResponsableOrganizacionVinculadaDAO interfazResponsableOrganizacionVinculadaDAO;
+    private final IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
+    private final IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
+    private final IResponsableOrganizacionVinculadaDAO interfazResponsableOrganizacionVinculadaDAO;
+    public static final String RESPONSABLE = "responsable";
+    public static final String FECHA_INICIO = "fechaInicio";
+    public static final String FECHA_FINAL = "fechaFinal";
+    public static final String ESTADO_PROYECTO = "estadoProyecto";
+    public static final String DESCRIPCION = "descripcion";
+    public static final String RFC_MORAL = "rfcMoral";
+    public static final String ID_PERIODO_ESCOLAR = "idperiodoescolar";
+    public static final String PROYECTO_ID = "proyectoID";
+    public static final String TITULO = "titulo";
+    public static final String RFC = "rfc";
     
     public ProyectoDAOImpl(){
         interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
@@ -124,19 +136,27 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             while (resultadoDeOperacion.next()) {
                 
                 ProyectoDTO proyecto = new ProyectoDTO();
-                proyecto.setProyectoID(resultadoDeOperacion.getInt("proyectoID"));
-                proyecto.setTituloProyecto(resultadoDeOperacion.getString("titulo"));
-                Integer idPeriodoEscolar = resultadoDeOperacion.getInt("idperiodoescolar");
+                proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
+                proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
+                
+                Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
                 PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
                 proyecto.setPeriodoEscolar(periodoEscolar);
-                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString("descripcion"));
-                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculaDAO.
-                proyecto.setRfcMoral(resultadoDeOperacion.getString("rfcMoral"));
-                proyecto.setEstadoProyecto(resultadoDeOperacion.getString("estadoProyecto"));
-                proyecto.setFechaInicio(resultadoDeOperacion.getDate("fechaInicio"));
-                proyecto.setFechaFinal(resultadoDeOperacion.getDate("fechaFinal"));
-                proyecto.setResponsable(resultadoDeOperacion.getString("responsable"));
+                
+                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
+                
+                String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
+                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
+                proyecto.setOrganizacion(organizacionVinculada);
+                
+                proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
+                proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
+                proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
+                
+                ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
+                proyecto.setResponsable(responsable);
                 proyectosEncontrados.add(proyecto);
+
             }
         } finally {
             
@@ -162,17 +182,23 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             while (resultadoDeOperacion.next()) {
                 
                 ProyectoDTO proyecto = new ProyectoDTO();
-                proyecto.setProyectoID(resultadoDeOperacion.getInt("proyectoID"));
-                proyecto.setTituloProyecto(resultadoDeOperacion.getString("titulo"));
-                Integer idPeriodoEscolar = resultadoDeOperacion.getInt("idperiodoescolar");
+                proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
+                proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
+                
+                Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
                 PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
                 proyecto.setPeriodoEscolar(periodoEscolar);
-                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString("descripcion"));
-                proyecto.setRfcMoral(resultadoDeOperacion.getString("rfcMoral"));
-                proyecto.setEstadoProyecto(resultadoDeOperacion.getString("estadoProyecto"));
-                proyecto.setFechaInicio(resultadoDeOperacion.getDate("fechaInicio"));
-                proyecto.setFechaFinal(resultadoDeOperacion.getDate("fechaFinal"));
-                proyecto.setResponsable(resultadoDeOperacion.getString("responsable"));
+                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
+                
+                String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
+                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
+                proyecto.setOrganizacion(organizacionVinculada);
+                proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
+                proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
+                proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
+                ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
+                proyecto.setResponsable(responsable);
+                
                 listaProyectos.add(proyecto);
             }
         } finally {
@@ -199,17 +225,20 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             if (resultadoDeOperacion.next()) {
                 
                 proyecto = new ProyectoDTO();
-                proyecto.setProyectoID(resultadoDeOperacion.getInt("proyectoID"));
-                proyecto.setTituloProyecto(resultadoDeOperacion.getString("titulo"));
-                Integer idPeriodoEscolar = resultadoDeOperacion.getInt("idperiodoescolar");
+                proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
+                proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
+                Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
                 PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
                 proyecto.setPeriodoEscolar(periodoEscolar);
-                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString("descripcion"));
-                proyecto.setRfcMoral(resultadoDeOperacion.getString("rfcMoral"));
-                proyecto.setEstadoProyecto(resultadoDeOperacion.getString("estadoProyecto"));
-                proyecto.setFechaInicio(resultadoDeOperacion.getDate("fechaInicio"));
-                proyecto.setFechaFinal(resultadoDeOperacion.getDate("fechaFinal"));
-                proyecto.setResponsable(resultadoDeOperacion.getString("responsable"));
+                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
+                String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
+                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
+                proyecto.setOrganizacion(organizacionVinculada);
+                proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
+                proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
+                proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
+                ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
+                proyecto.setResponsable(responsable);
             }
         } finally {
             
