@@ -91,7 +91,7 @@ public class AlertaUtil {
         return confirmacion.showAndWait().orElse(ButtonType.NO) == ButtonType.YES;
     }
     
-    public static void mostrarAlertaVentana(){
+    public static void mostrarAlertaErrorVentana(){
         Alert errorVentana = new Alert (Alert.AlertType.ERROR);
         errorVentana.setTitle(ERROR);
         errorVentana.setHeaderText(null);

@@ -34,6 +34,7 @@ public class ManejadorDeVistas {
         COORDINADOR_GESTION_ACADEMICO("/com/pdc/vista/coordinador/CoordinadorGestionAcademico.fxml", false,""),
         COORDINADOR_GESTION_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorGestionOrganizacionVinculada.fxml", false,""),
         COORDINADOR_GESTION_PROYECTO("/com/pdc/vista/coordinador/CoordinadorGestionProyecto.fxml", false,""),
+        COORDINADOR_GESTION_RESPONSABLE_ORGANIZACION ("/com/pdc/vista/coordinador/CoordinadorGestionResponsableOrganizacion.fxml",false,""),
         COORDINADOR_REGISTRO_ACADEMICO("/com/pdc/vista/coordinador/CoordinadorRegistroAcademico.fxml", false,"Registro académicos"),
         COORDINADOR_ACTUALIZA_ACADEMICO("/com/pdc/vista/coordinador/CoordinadorRegistroAcademico.fxml", false,"Actualización de académicos"),
         COORDINADOR_REGISTRO_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorRegistroOrganizacionVinculada.fxml", false,""),
@@ -103,7 +104,7 @@ public class ManejadorDeVistas {
 
             return root;
         } catch (IOException e) {
-            AlertaUtil.mostrarAlertaVentana();
+            AlertaUtil.mostrarAlertaErrorVentana();
             
             return null;
         }
@@ -134,7 +135,7 @@ public class ManejadorDeVistas {
                 escenarioPrincipal.show();
             }
         } catch (IOException e) {
-            AlertaUtil.mostrarAlertaVentana();
+            AlertaUtil.mostrarAlertaErrorVentana();
         }
     }
 
@@ -184,7 +185,7 @@ public class ManejadorDeVistas {
 
             return nuevaVentana;
         } catch (IOException ioe) {
-            AlertaUtil.mostrarAlertaVentana();
+            AlertaUtil.mostrarAlertaErrorVentana();
 
             return null;
         }

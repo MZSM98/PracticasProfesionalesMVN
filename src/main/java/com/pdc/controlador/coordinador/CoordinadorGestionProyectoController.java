@@ -64,6 +64,7 @@ public class CoordinadorGestionProyectoController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         interfazProyectoDAO = new ProyectoDAOImpl();
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         configurarColumnas();
@@ -75,6 +76,7 @@ public class CoordinadorGestionProyectoController implements Initializable {
     }
     
     private void configurarColumnas() {
+        
         columnProyectoID.setCellValueFactory(new PropertyValueFactory<>("proyectoID"));
         columnTituloProyecto.setCellValueFactory(new PropertyValueFactory<>("tituloProyecto"));
         columnPeriodoEscolar.setCellValueFactory(cellData -> {
@@ -90,6 +92,7 @@ public class CoordinadorGestionProyectoController implements Initializable {
     }
     
     private void cargarProyectos() {
+        
         try {
             List<ProyectoDTO> proyectos = interfazProyectoDAO.listarProyectos();
             listaProyectos = FXCollections.observableArrayList(proyectos);
@@ -104,6 +107,7 @@ public class CoordinadorGestionProyectoController implements Initializable {
     }
     
     private void buscarProyectosPorTitulo(String titulo) {
+        
         try {
             if (titulo == null || titulo.trim().isEmpty()) {
                 cargarProyectos();
@@ -124,11 +128,13 @@ public class CoordinadorGestionProyectoController implements Initializable {
         
     @FXML
     private void abrirRegistroProyecto(ActionEvent event) {
+        
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_PROYECTO);
     }
     
     @FXML
     private void editarProyecto(ActionEvent event) {
+        
         ProyectoDTO proyectoSeleccionado = tableProyectos.getSelectionModel().getSelectedItem();
         
         if (proyectoSeleccionado == null) {
@@ -149,6 +155,7 @@ public class CoordinadorGestionProyectoController implements Initializable {
     
     @FXML
     private void cambiarEstadoProyecto(ActionEvent event) {
+        
         ProyectoDTO proyectoSeleccionado = tableProyectos.getSelectionModel().getSelectedItem();
         
         if (proyectoSeleccionado == null) {
@@ -173,9 +180,11 @@ public class CoordinadorGestionProyectoController implements Initializable {
                 AlertaUtil.mostrarAlerta("Error", "No se pudo cambiar el estado del proyecto", Alert.AlertType.ERROR);
             }
         } catch (SQLException e) {
+            
             LOG.error("Error de conexión con la base de datos: " + e.getMessage());
             AlertaUtil.mostrarAlerta("Error", "Error al conectar con la base de datos: ", Alert.AlertType.ERROR);
         } catch (IOException e) {
+            
             LOG.error("Error al cambiar estado del proyecto: " + e.getMessage());
             AlertaUtil.mostrarAlerta("Error", "Error al actualizar el registro", Alert.AlertType.ERROR);
         }

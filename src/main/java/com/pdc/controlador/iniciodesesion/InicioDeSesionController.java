@@ -128,7 +128,7 @@ public class InicioDeSesionController implements Initializable {
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA,ioe);
-            AlertaUtil.mostrarAlertaVentana();
+            AlertaUtil.mostrarAlertaErrorVentana();
         }
     }
     

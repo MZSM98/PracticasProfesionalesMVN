@@ -36,8 +36,6 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     private static final Logger LOG = Logger.getLogger(CoordinadorGestionAcademicoController.class);
     private static final Integer ACADEMICO_EVALUADOR = 2;
     private static final Integer PROFESOR_EE = 3;
-    @FXML
-    private Button botonSalir;
 
     @FXML
     private TableColumn<UsuarioDTO, String> columnNombre;
@@ -179,7 +177,7 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         } catch (IOException e) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, e);
-            AlertaUtil.mostrarAlertaVentana();
+            AlertaUtil.mostrarAlertaErrorVentana();
         }
     }
 
@@ -213,7 +211,7 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            AlertaUtil.mostrarAlertaVentana();
+            AlertaUtil.mostrarAlertaErrorVentana();
         }
     }
 

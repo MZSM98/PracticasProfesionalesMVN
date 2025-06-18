@@ -1,19 +1,11 @@
 package com.pdc.controlador.coordinador;
 
 
-import com.pdc.utileria.AlertaUtil;
-import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 
@@ -24,11 +16,14 @@ public class CoordinadorMenuPrincipalController {
     @FXML
     private Label labelCerrarSesion;    
     
-    private Stage parentStage;
-    
     @FXML    
     private void abrirGestionOrganizacionVinculada(ActionEvent event){
+        try{
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ORGANIZACION_VINCULADA);
+        }catch(NullPointerException npe){
+            LOG.error(npe);
+            
+        }
     }
     
     @FXML    

@@ -62,6 +62,7 @@ public class ConstantesUtil {
     public static final String ALERTA_CAMBIO_ESTADO = "Estado de la organización cambiado a:";
     public static final String ALERTA_TIPO_USUARIO_NO_VALIDO = "El tipo de usuario no existe";
     public static final String ALERTA_SELECCION_EDITAR = "Por favor selecciona un registro para editar";
+    public static final String ALERTA_SELECCION_ORGANIZACION_VINCULADA ="Por favor, seleccione una organización";
     
     public static final String LOG_ACTUALIZACION_FALLIDA = "Error al actualizar el registro";
     public static final String LOG_ERROR_VENTANA = "No se pudo cargar la ventana";
