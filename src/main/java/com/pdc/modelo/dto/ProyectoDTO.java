@@ -89,4 +89,11 @@ public class ProyectoDTO {
     public enum EstadoProyecto {
         ACTIVO, INACTIVO
     }
+
+    @Override
+    public String toString() {
+        return tituloProyecto;
+    }
+    
+    
 }

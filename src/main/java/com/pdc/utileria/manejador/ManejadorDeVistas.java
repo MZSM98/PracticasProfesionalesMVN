@@ -38,6 +38,9 @@ public class ManejadorDeVistas {
         COORDINADOR_ACTUALIZA_ACADEMICO("/com/pdc/vista/coordinador/CoordinadorRegistroAcademico.fxml", false,"Actualización de académicos"),
         COORDINADOR_REGISTRO_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorRegistroOrganizacionVinculada.fxml", false,""),
         COORDINADOR_REGISTRO_PROYECTO("/com/pdc/vista/coordinador/CoordinadorRegistroProyecto.fxml", false,""),
+        COORDINADOR_PROYECTO_ASIGNADO("/com/pdc/vista/coordinador/CoordinadorProyectoAsignado.fxml", false,""),
+        COORDINADOR_ASIGNAR_PROYECTO("/com/pdc/vista/coordinador/CoordinadorAsignarProyecto.fxml", false,""),
+        COORDINADOR_REASIGNAR_PROYECTO("/com/pdc/vista/coordinador/CoordinadorReasignarProyecto.fxml", false,""),
         COORDINADOR_REGISTRO_REPRESENTANTE_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorRegistroResponsableOrganizacionVinculada.fxml", false,""),
 
         ACADEMICO_EVALUADOR_MENU_PRINCIPAL("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorMenuPrincipal.fxml", false,""),

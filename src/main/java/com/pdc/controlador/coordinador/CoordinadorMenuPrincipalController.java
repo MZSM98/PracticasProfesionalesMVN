@@ -1,21 +1,12 @@
 package com.pdc.controlador.coordinador;
 
 
-import com.pdc.utileria.AlertaUtil;
-import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
-import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-
 
 public class CoordinadorMenuPrincipalController {
     
@@ -42,7 +33,12 @@ public class CoordinadorMenuPrincipalController {
     }
     
     @FXML
-    void abrirGestionEstudiantes(ActionEvent event) {
+    private void abrirProyectosAsignados(ActionEvent event) {
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_PROYECTO_ASIGNADO);
+    }
+    
+    @FXML
+    private void abrirGestionEstudiantes(ActionEvent event) {
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_GESTION);
     }
     
