@@ -8,11 +8,11 @@ public class ProyectoDTO {
     private String tituloProyecto;
     private String descripcionProyecto;
     private PeriodoEscolarDTO periodoEscolar;
-    private String rfcMoral;
+    private OrganizacionVinculadaDTO organizacion;
     private String estadoProyecto;
     private Date fechaInicio;
     private Date fechaFinal;
-    private String responsable;
+    private ResponsableOrganizacionVinculadaDTO responsable;
     
     public int getProyectoID() {
         return proyectoID;
@@ -46,12 +46,12 @@ public class ProyectoDTO {
         this.periodoEscolar = periodoEscolar;
     }
     
-    public String getRfcMoral() {
-        return rfcMoral;
+    public OrganizacionVinculadaDTO getOrganizacion() {
+        return organizacion;
     }
     
-    public void setRfcMoral(String rfcMoral) {
-        this.rfcMoral = rfcMoral;
+    public void setOrganizacion(OrganizacionVinculadaDTO organizacion) {
+        this.organizacion = organizacion;
     }
     
     public String getEstadoProyecto() {
@@ -78,11 +78,11 @@ public class ProyectoDTO {
         this.fechaFinal = fechaFinal;
     }
     
-    public String getResponsable() {
+    public ResponsableOrganizacionVinculadaDTO getResponsable() {
         return responsable;
     }
     
-    public void setResponsable(String responsable) {
+    public void setResponsable(ResponsableOrganizacionVinculadaDTO responsable) {
         this.responsable = responsable;
     }
     

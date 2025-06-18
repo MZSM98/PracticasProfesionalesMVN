@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import com.pdc.dao.interfaz.IResponsableOrganizacionVinculadaDAO;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrganizacionVinculadaDAO {
 
@@ -19,7 +21,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
 
     @Override
     public boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
-        String insertarSQL = "INSERT INTO responsableov (rfc, puesto, nombreResponsable) VALUES (?, ?, ?)";
+        String insertarSQL = "INSERT INTO responsableorganizacionvinculada (rfc, cargo, nombreResponsable, correoReponsable) VALUES (?, ?, ?, ?)";
         boolean insercionExitosa = false;
 
         try {
@@ -28,6 +30,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
             declaracionPreparada.setString(1, responsable.getRfc());
             declaracionPreparada.setString(2, responsable.getCargo());
             declaracionPreparada.setString(3, responsable.getNombreResponsable());
+            declaracionPreparada.setString(4, responsable.getCorreoResponsable());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
@@ -39,7 +42,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
 
     @Override
     public boolean eliminarResponsableOV(String rfc) throws SQLException, IOException {
-        String eliminarSQL = "DELETE FROM responsableov WHERE rfc = ?";
+        String eliminarSQL = "DELETE FROM responsableorganizacionvinculada WHERE rfc = ?";
         boolean eliminacionExitosa = false;
 
         try {
@@ -57,7 +60,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
 
     @Override
     public boolean editarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
-        String actualizarSQL = "UPDATE responsableov SET puesto = ?, nombreResponsable = ? WHERE rfc = ?";
+        String actualizarSQL = "UPDATE responsableorganizacionvinculada SET cargo = ?, nombreResponsable = ? WHERE rfc = ?";
         boolean actualizacionExitosa = false;
 
         try {
@@ -76,27 +79,60 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
     }
 
     @Override
-    public ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfc) throws SQLException, IOException {
-        String consultaSQL = "SELECT rfc, puesto, nombreResponsable FROM responsableov WHERE rfc = ?";
+    public ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfcMoral) throws SQLException, IOException {
+        String consultaSQL = "SELECT rfc, cargo, nombreResponsable, correoResponsable, rfcMoral"
+                + " FROM responsableorganizacionvinculada WHERE rfcMoral = ?";
         ResponsableOrganizacionVinculadaDTO responsable = null;
 
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            declaracionPreparada.setString(1, rfc);
+            declaracionPreparada.setString(1, rfcMoral);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
+                
                 responsable = new ResponsableOrganizacionVinculadaDTO();
                 responsable.setRfc(resultadoDeOperacion.getString("rfc"));
-                responsable.setCargo(resultadoDeOperacion.getString("puesto"));
+                responsable.setCargo(resultadoDeOperacion.getString("cargo"));
                 responsable.setNombreResponsable(resultadoDeOperacion.getString("nombreResponsable"));
+                responsable.setCorreoResponsable(resultadoDeOperacion.getString("correoResponsable"));
+                responsable.setRfcMoral(resultadoDeOperacion.getString("rfcMoral"));
+            }
+        } finally {
+            
+            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
+            if (declaracionPreparada != null) declaracionPreparada.close();
+            if (conexionBD != null) conexionBD.close();
+        }
+        return responsable;
+    }
+    @Override
+    public List<ResponsableOrganizacionVinculadaDTO> listarResponsablesPorOrganizacion(String rfcMoral) throws SQLException, IOException {
+        String consultaSQL = "SELECT rfc, nombreResponsable, cargo, correoResponable, rfcMoral_OV"
+                + " FROM responsableorganizacionvinculada WHERE rfcMoral_OV = ?";
+        List<ResponsableOrganizacionVinculadaDTO> responsables = new ArrayList<>();
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+            declaracionPreparada.setString(1, rfcMoral);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            while (resultadoDeOperacion.next()) {
+                ResponsableOrganizacionVinculadaDTO responsable = new ResponsableOrganizacionVinculadaDTO();
+                responsable.setRfc(resultadoDeOperacion.getString("rfc"));
+                responsable.setNombreResponsable(resultadoDeOperacion.getString("nombreResponsable"));
+                responsable.setCargo(resultadoDeOperacion.getString("cargo"));
+                responsable.setCorreoResponsable(resultadoDeOperacion.getString("correoResponsable"));
+                responsable.setRfcMoral(resultadoDeOperacion.getString("rfcMoral_OV"));
+                responsables.add(responsable);
             }
         } finally {
             if (resultadoDeOperacion != null) resultadoDeOperacion.close();
             if (declaracionPreparada != null) declaracionPreparada.close();
             if (conexionBD != null) conexionBD.close();
         }
-        return responsable;
+        return responsables;
     }
 }

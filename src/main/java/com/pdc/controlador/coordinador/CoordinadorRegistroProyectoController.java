@@ -24,11 +24,16 @@ import com.pdc.validador.ProyectoValidador;
 import com.pdc.dao.implementacion.ProyectoDAOImpl;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.dao.implementacion.PeriodoEscolarDAOImpl;
+import com.pdc.dao.implementacion.ResponsableOrganizacionVinculadaDAOImpl;
 import com.pdc.dao.interfaz.IProyectoDAO;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
 import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
+import com.pdc.dao.interfaz.IResponsableOrganizacionVinculadaDAO;
 import com.pdc.modelo.dto.PeriodoEscolarDTO;
+import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
+import java.sql.Date;
+import javafx.scene.control.DatePicker;
 
 public class CoordinadorRegistroProyectoController implements Initializable {    
     
@@ -41,7 +46,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     private TextField textTituloProyecto;
     
     @FXML
-    private TextField textResponsableProyecto;
+    private ComboBox <ResponsableOrganizacionVinculadaDTO> comboResponsableProyecto;
     
     @FXML
     private ComboBox<PeriodoEscolarDTO> comboPeriodoEscolar;
@@ -51,6 +56,13 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     
     @FXML
     private ComboBox<OrganizacionVinculadaDTO> comboOrganizacionVinculada;
+    
+    @FXML
+    private DatePicker dateInicioProyecto;
+    
+    @FXML
+    private DatePicker dateFinalProyecto;
+    
       
     @FXML 
     private Button botonCancelar;
@@ -62,6 +74,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
     private ProyectoDTO proyectoDTO;
     private IPeriodoEscolarDAO interfazPeriodoEscolar;
+    private IResponsableOrganizacionVinculadaDAO interfazResponsableOrganizacionVinculadaDAO;
     
     private boolean modoEdicion = false;
     
@@ -70,6 +83,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         interfazProyectoDAO = new ProyectoDAOImpl();
         interfazPeriodoEscolar = new PeriodoEscolarDAOImpl();
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
+        interfazResponsableOrganizacionVinculadaDAO = new ResponsableOrganizacionVinculadaDAOImpl();
         textProyectoID.setDisable(true);
         cargarPeriodosEscolares();
         cargarOrganizacionesVinculadas();
@@ -158,24 +172,28 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         try {
             
             OrganizacionVinculadaDTO organizacion = 
-                interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(proyectoDTO.getRfcMoral());
-            
-            if (organizacion != null) {
+                    interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(proyectoDTO.getOrganizacion());
+            ResponsableOrganizacionVinculadaDTO responsable = 
+                    interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(organizacion.getRfcMoral());
                 
-                for (OrganizacionVinculadaDTO org : comboOrganizacionVinculada.getItems()) {
+            for (OrganizacionVinculadaDTO org : comboOrganizacionVinculada.getItems()) {
                     
-                    if (org.getRfcMoral().equals(organizacion.getRfcMoral())) {
+                if (org.getRfcMoral().equals(organizacion.getRfcMoral())) {
                         
                         comboOrganizacionVinculada.setValue(org);
-                        textResponsableProyecto.setText(organizacion.getNombreOV());
+                        comboResponsableProyecto.setValue(responsable);
                         break;
-                    }
                 }
             }
-        } catch (SQLException | IOException e) {
             
-            LOG.error("Error al cargar la organización del proyecto: " + e.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudieron cargar las organizaciones, contacte con un administrador", Alert.AlertType.ERROR);
+        }catch(SQLException sqle){
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD + sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        }catch(IOException ioe){
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     
@@ -190,12 +208,12 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         proyectoDTO.setTituloProyecto(textTituloProyecto.getText().trim());
         proyectoDTO.setDescripcionProyecto(textDescripcionProyecto.getText().trim());
         proyectoDTO.setPeriodoEscolar(comboPeriodoEscolar.getSelectionModel().getSelectedItem());
+        proyectoDTO.setFechaInicio(Date.valueOf(dateInicioProyecto.getValue()));
+        proyectoDTO.setFechaFinal(Date.valueOf(dateFinalProyecto.getValue()));
+        proyectoDTO.setResponsable(comboResponsableProyecto.getSelectionModel().getSelectedItem());
         OrganizacionVinculadaDTO organizacionSeleccionada = comboOrganizacionVinculada.getValue();
+        proyectoDTO.setRfcMoral(organizacionSeleccionada.getRfcMoral());
         
-        if (organizacionSeleccionada != null) {
-            
-            proyectoDTO.setRfcMoral(organizacionSeleccionada.getRfcMoral());
-        }
         if (!validarCampos(proyectoDTO)) {
             return;
         }
@@ -233,7 +251,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             if (exito) {
                 
                 AlertaUtil.mostrarAlerta("Éxito", "Proyecto registrado correctamente", Alert.AlertType.INFORMATION);
-                limpiarCampos();
+                cerrarVentana();
             } else {
                 
                 AlertaUtil.mostrarAlerta("Error", "No se pudo registrar el proyecto", Alert.AlertType.ERROR);
@@ -274,6 +292,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             LOG.error("Error al actualizar el proyecto", ioe);
             AlertaUtil.mostrarAlerta("Error", "Error al actualizar el proyecto", Alert.AlertType.ERROR);
         }
+        
     }
     
     @FXML
@@ -287,13 +306,4 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_PROYECTO);
     }
     
-    private void limpiarCampos() {
-        
-        textProyectoID.setText("");
-        textTituloProyecto.setText("");
-        textDescripcionProyecto.setText("");
-        comboPeriodoEscolar.setValue(null);
-        comboOrganizacionVinculada.setValue(null);
-        textResponsableProyecto.setText("");
-    }
 }

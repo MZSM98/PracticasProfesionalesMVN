@@ -1,5 +1,6 @@
 package com.pdc.dao.implementacion;
 
+import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
 import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.utileria.bd.ConexionBD;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.pdc.dao.interfaz.IProyectoDAO;
+import com.pdc.dao.interfaz.IResponsableOrganizacionVinculadaDAO;
 import com.pdc.modelo.dto.PeriodoEscolarDTO;
 
 public class ProyectoDAOImpl implements IProyectoDAO {
@@ -20,9 +22,13 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
     private IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
+    private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
+    private IResponsableOrganizacionVinculadaDAO interfazResponsableOrganizacionVinculadaDAO;
     
     public ProyectoDAOImpl(){
         interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
+        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
+        interfazResponsableOrganizacionVinculadaDAO = new ResponsableOrganizacionVinculadaDAOImpl();
     }
     
     @Override
@@ -38,10 +44,10 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
             declaracionPreparada.setInt(2, proyecto.getPeriodoEscolar().getIdPeriodoEscolar());
             declaracionPreparada.setString(3, proyecto.getDescripcionProyecto());
-            declaracionPreparada.setString(4, proyecto.getRfcMoral());
+            declaracionPreparada.setString(4, proyecto.getOrganizacion().getRfcMoral());
             declaracionPreparada.setDate(5, proyecto.getFechaInicio());
             declaracionPreparada.setDate(6, proyecto.getFechaFinal());
-            declaracionPreparada.setString(7, proyecto.getResponsable());
+            declaracionPreparada.setString(7, proyecto.getResponsable().getRfc());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
@@ -86,11 +92,11 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
             declaracionPreparada.setInt(2, proyecto.getPeriodoEscolar().getIdPeriodoEscolar());
             declaracionPreparada.setString(3, proyecto.getDescripcionProyecto());
-            declaracionPreparada.setString(4, proyecto.getRfcMoral());
+            declaracionPreparada.setString(4, proyecto.getOrganizacion().getRfcMoral());
             declaracionPreparada.setString(5, proyecto.getEstadoProyecto());
             declaracionPreparada.setDate(6, proyecto.getFechaInicio());
             declaracionPreparada.setDate(7, proyecto.getFechaFinal());
-            declaracionPreparada.setString(8, proyecto.getResponsable());
+            declaracionPreparada.setString(8, proyecto.getResponsable().getRfc());
             declaracionPreparada.setInt(9, proyecto.getProyectoID());
             declaracionPreparada.executeUpdate();
             actualizacionExitosa = true;
@@ -105,7 +111,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     @Override
     public List<ProyectoDTO> buscarProyectosPorNombre(String titulo) throws SQLException, IOException {
         
-        String consultaSQL = "SELECT proyectoID, titulo, periodoEscolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto WHERE titulo LIKE ?";
+        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto WHERE titulo LIKE ?";
         List<ProyectoDTO> proyectosEncontrados = new ArrayList<>();
 
         try {
@@ -124,6 +130,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
                 proyecto.setPeriodoEscolar(periodoEscolar);
                 proyecto.setDescripcionProyecto(resultadoDeOperacion.getString("descripcion"));
+                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculaDAO.
                 proyecto.setRfcMoral(resultadoDeOperacion.getString("rfcMoral"));
                 proyecto.setEstadoProyecto(resultadoDeOperacion.getString("estadoProyecto"));
                 proyecto.setFechaInicio(resultadoDeOperacion.getDate("fechaInicio"));
@@ -143,7 +150,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     @Override
     public List<ProyectoDTO> listarProyectos() throws SQLException, IOException {
         
-        String consultaTodoSQL = "SELECT proyectoID, titulo, periodoEscolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto";
+        String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
         try {
@@ -179,7 +186,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     
     public ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException, IOException {
         
-        String consultaSQL = "SELECT proyectoID, titulo, periodoEscolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto WHERE proyectoID = ?";
+        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto WHERE proyectoID = ?";
         ProyectoDTO proyecto = null;
 
         try {

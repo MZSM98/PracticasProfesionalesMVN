@@ -26,7 +26,9 @@ import com.pdc.dao.implementacion.ProyectoDAOImpl;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.dao.interfaz.IProyectoDAO;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
+import com.pdc.modelo.dto.PeriodoEscolarDTO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
+import javafx.beans.property.SimpleStringProperty;
 
 public class CoordinadorGestionProyectoController implements Initializable {
     
@@ -75,11 +77,14 @@ public class CoordinadorGestionProyectoController implements Initializable {
     private void configurarColumnas() {
         columnProyectoID.setCellValueFactory(new PropertyValueFactory<>("proyectoID"));
         columnTituloProyecto.setCellValueFactory(new PropertyValueFactory<>("tituloProyecto"));
-        columnPeriodoEscolar.setCellValueFactory(new PropertyValueFactory<>("periodoEscolar"));
+        columnPeriodoEscolar.setCellValueFactory(cellData -> {
+            PeriodoEscolarDTO periodo = cellData.getValue().getPeriodoEscolar(); 
+            return new SimpleStringProperty(periodo != null ? periodo.getNombrePeriodoEscolar() : "");
+        });        
         columnEstadoProyecto.setCellValueFactory(new PropertyValueFactory<>("estadoProyecto"));
         
         columnOrganizacionVinculada.setCellValueFactory(cellData -> {
-            String rfcMoral = cellData.getValue().getRfcMoral();
+            String rfcMoral = cellData.getValue().getOrganizacion();
             try {
                 OrganizacionVinculadaDTO organizacion = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
                 return new javafx.beans.property.SimpleStringProperty(
