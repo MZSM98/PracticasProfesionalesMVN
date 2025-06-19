@@ -3,7 +3,7 @@ package com.pdc.controlador.iniciodesesion;
 import com.pdc.dao.implementacion.AcademicoEvaluadorDAOImpl;
 import com.pdc.dao.implementacion.CoordinadorDAOImpl;
 import com.pdc.dao.implementacion.EstudianteDAOImpl;
-import com.pdc.dao.implementacion.ProfesorEEDAOImpl;
+import com.pdc.dao.implementacion.ProfesorExperienciaEducativaDAOImpl;
 import com.pdc.modelo.dto.TipoUsuarioDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import java.io.IOException;
@@ -28,7 +28,6 @@ import com.pdc.dao.implementacion.UsuarioDAOImpl;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
 import com.pdc.dao.interfaz.ICoordinadorDAO;
 import com.pdc.dao.interfaz.IEstudianteDAO;
-import com.pdc.dao.interfaz.IProfesorEEDAO;
 import com.pdc.validador.InicioDeSesionValidador;
 
 import org.apache.log4j.Logger;
@@ -39,6 +38,7 @@ import com.pdc.dao.interfaz.IUsuarioDAO;
 import com.pdc.dao.interfaz.ITipoUsuarioDAO;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
+import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 
 public class InicioDeSesionController implements Initializable {
     
@@ -66,7 +66,7 @@ public class InicioDeSesionController implements Initializable {
 
     private IUsuarioDAO interfazUsuarioDAO;
     private ICoordinadorDAO interfazCordinadorDao;
-    private IProfesorEEDAO interfazProfesorEEDAO;
+    private IProfesorExperienciaEducativaDAO interfazProfesorEEDAO;
     private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
     private IEstudianteDAO interfazEstudianteDAO;
     private ITipoUsuarioDAO interfazTipoUsuarioDAO;
@@ -77,7 +77,7 @@ public class InicioDeSesionController implements Initializable {
         interfazUsuarioDAO = new UsuarioDAOImpl();
         interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
         interfazCordinadorDao = new CoordinadorDAOImpl();
-        interfazProfesorEEDAO = new ProfesorEEDAOImpl();
+        interfazProfesorEEDAO = new ProfesorExperienciaEducativaDAOImpl();
         interfazEstudianteDAO = new EstudianteDAOImpl();
         interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAOImpl();
         

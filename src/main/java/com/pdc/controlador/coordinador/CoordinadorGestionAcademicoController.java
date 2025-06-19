@@ -21,15 +21,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.pdc.dao.implementacion.AcademicoEvaluadorDAOImpl;
-import com.pdc.dao.implementacion.ProfesorEEDAOImpl;
+import com.pdc.dao.implementacion.ProfesorExperienciaEducativaDAOImpl;
 import com.pdc.dao.implementacion.TipoUsuarioDAOImpl;
 import org.apache.log4j.Logger;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
-import com.pdc.dao.interfaz.IProfesorEEDAO;
 import com.pdc.dao.interfaz.ITipoUsuarioDAO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
+import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 
 public class CoordinadorGestionAcademicoController implements Initializable{
     
@@ -53,14 +53,14 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     private ComboBox<TipoUsuarioDTO> comboTipoAcademico;
     
     private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
-    private IProfesorEEDAO interfazProfesorEEDAO;
+    private IProfesorExperienciaEducativaDAO interfazProfesorEEDAO;
     private ITipoUsuarioDAO interfazTipoUsuarioDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
        interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAOImpl();
-       interfazProfesorEEDAO = new ProfesorEEDAOImpl();
+       interfazProfesorEEDAO = new ProfesorExperienciaEducativaDAOImpl();
        interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
        configurarComboBox();
        configurarColumnas();
