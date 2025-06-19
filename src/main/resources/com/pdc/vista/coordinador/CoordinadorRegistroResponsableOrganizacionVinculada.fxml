@@ -24,8 +24,8 @@
             <TextField fx:id="textNombreResponsable" layoutX="108.0" layoutY="163.0" prefHeight="25.0" prefWidth="294.0" />
             <TextField fx:id="textCargoResponsable" layoutX="108.0" layoutY="198.0" prefHeight="25.0" prefWidth="294.0" />
             <TextField fx:id="textCorreoResponsable" layoutX="108.0" layoutY="231.0" prefHeight="25.0" prefWidth="294.0" />
-            <Button fx:id="botonGuardarRepresentanteOrganizacion" layoutX="412.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Guardar" />
-            <Button fx:id="botonCancelarRegistro" layoutX="412.0" layoutY="163.0" mnemonicParsing="false" text="Cancelar" />
+            <Button fx:id="botonGuardarRepresentanteOrganizacion" layoutX="412.0" layoutY="129.0" mnemonicParsing="false" onAction="#registrarResponsableOrganizacion" prefHeight="25.0" prefWidth="61.0" text="Guardar" />
+            <Button fx:id="botonCancelarRegistro" layoutX="412.0" layoutY="163.0" mnemonicParsing="false" onAction="#cerrarVentana" text="Cancelar" />
          </children>
       </Pane>
    </children>

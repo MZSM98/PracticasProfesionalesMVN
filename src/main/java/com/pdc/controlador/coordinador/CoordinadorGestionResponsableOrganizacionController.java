@@ -1,8 +1,6 @@
 package com.pdc.controlador.coordinador;
 
-import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.dao.implementacion.ResponsableOrganizacionVinculadaDAOImpl;
-import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
 import com.pdc.dao.interfaz.IResponsableOrganizacionVinculadaDAO;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
@@ -41,9 +39,6 @@ public class CoordinadorGestionResponsableOrganizacionController implements Init
     @FXML
     private TableView <ResponsableOrganizacionVinculadaDTO> tableResponsablesOrganizacion;
     
-    @FXML
-    private ObservableList<ResponsableOrganizacionVinculadaDTO> listaResponsables;
-    
     private IResponsableOrganizacionVinculadaDAO interfazResponsableOrganizacionVinculadaDAO;
     private OrganizacionVinculadaDTO organizacionVinculadaDTO;
     
@@ -59,7 +54,7 @@ public class CoordinadorGestionResponsableOrganizacionController implements Init
         columnRfc.setCellValueFactory(new PropertyValueFactory<>("rfc"));
         columnNombreResponsable.setCellValueFactory(new PropertyValueFactory<>("nombreResponsable"));
         columnCorreoResponsable.setCellValueFactory(new PropertyValueFactory<>("correoResponsable"));
-        columnCargoResponsable.setCellValueFactory(new PropertyValueFactory<>("cargoResponsable"));
+        columnCargoResponsable.setCellValueFactory(new PropertyValueFactory<>("cargo"));
     }
     
     @FXML
@@ -67,36 +62,56 @@ public class CoordinadorGestionResponsableOrganizacionController implements Init
         
         this.organizacionVinculadaDTO = organizacionVinculadaDTO;
         
-        try {
+        ObservableList<ResponsableOrganizacionVinculadaDTO> listaResponsablesOrganizacion;
+        
+        try {            
             
-        List<ResponsableOrganizacionVinculadaDTO> responsables
-                = interfazResponsableOrganizacionVinculadaDAO.listarResponsablesPorOrganizacion(organizacionVinculadaDTO.getRfcMoral());
-            listaResponsables = FXCollections.observableArrayList(responsables);
-            tableResponsablesOrganizacion.setItems(listaResponsables);
-        }catch(SQLException sqle){
+            List<ResponsableOrganizacionVinculadaDTO> responsables =
+                    interfazResponsableOrganizacionVinculadaDAO.listarResponsablesPorOrganizacion(organizacionVinculadaDTO.getRfcMoral());
+            listaResponsablesOrganizacion = FXCollections.observableArrayList(responsables);
+            tableResponsablesOrganizacion.setItems(listaResponsablesOrganizacion);            
+        } catch (SQLException sqle) {
             
-            LOG.error(sqle);
+            LOG.error("Error al cargar las organizaciones vinculadas: " + sqle.getMessage());
             AlertaUtil.mostrarAlertaBaseDatos();
-        }catch (IOException ioe){
+        } catch (IOException ioe){
             
-            LOG.error(ioe);
+            LOG.error("No se lograron cargar los registros" + ioe.getMessage());
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     
+    @FXML
     private void abrirRegistrarResponsableOrganizacion(){
         
-        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_REPRESENTANTE_ORGANIZACION_VINCULADA);
+        try {
+            
+            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_RESPONSABLE_ORGANIZACION_VINCULADA);
+            CoordinadorRegistroResponsableOrganizacionVinculadaController controlador;
+            controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_RESPONSABLE_ORGANIZACION_VINCULADA);
+            controlador.establecerOrganizacionVinculada(organizacionVinculadaDTO);
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_RESPONSABLE_ORGANIZACION_VINCULADA);
+        } catch (IOException ioe) {
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, ioe);
+            AlertaUtil.mostrarAlertaErrorVentana();
+        }
+        
     }
     
+    @FXML
     private void abrirEditarResponsableOrganizacion(){
         
     }
     
-    private void salirAGestionOrganizacionVinculada(){
+    @FXML
+    private void cerrarVentana(){
         
+        ManejadorDeVistas.getInstancia().limpiarCache();
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ORGANIZACION_VINCULADA);
     }
     
+    @FXML
     private void eliminarResponsableOrganizacion(){
         
     }

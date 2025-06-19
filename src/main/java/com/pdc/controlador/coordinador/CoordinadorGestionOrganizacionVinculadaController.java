@@ -173,7 +173,6 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         }
         try {
             
-        ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_RESPONSABLE_ORGANIZACION);
         CoordinadorGestionResponsableOrganizacionController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_GESTION_RESPONSABLE_ORGANIZACION);
         controlador.cargarListaResponsablesOrganizacion(organizacionSeleccionada);
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_RESPONSABLE_ORGANIZACION);

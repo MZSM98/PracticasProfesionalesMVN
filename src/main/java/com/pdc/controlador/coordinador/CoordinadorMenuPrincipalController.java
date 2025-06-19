@@ -16,12 +16,7 @@ public class CoordinadorMenuPrincipalController {
     
     @FXML    
     private void abrirGestionOrganizacionVinculada(ActionEvent event){
-        try{
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ORGANIZACION_VINCULADA);
-        }catch(NullPointerException npe){
-            LOG.error(npe);
-            
-        }
     }
     
     @FXML    

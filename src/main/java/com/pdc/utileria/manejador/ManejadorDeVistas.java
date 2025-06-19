@@ -42,7 +42,7 @@ public class ManejadorDeVistas {
         COORDINADOR_PROYECTO_ASIGNADO("/com/pdc/vista/coordinador/CoordinadorProyectoAsignado.fxml", false,""),
         COORDINADOR_ASIGNAR_PROYECTO("/com/pdc/vista/coordinador/CoordinadorAsignarProyecto.fxml", false,""),
         COORDINADOR_REASIGNAR_PROYECTO("/com/pdc/vista/coordinador/CoordinadorReasignarProyecto.fxml", false,""),
-        COORDINADOR_REGISTRO_REPRESENTANTE_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorRegistroResponsableOrganizacionVinculada.fxml", false,""),
+        COORDINADOR_REGISTRO_RESPONSABLE_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorRegistroResponsableOrganizacionVinculada.fxml", false,""),
 
         ACADEMICO_EVALUADOR_MENU_PRINCIPAL("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorMenuPrincipal.fxml", false,""),
         ACADEMICO_EVALUADOR_CONSULTA_EVALUACION("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorConsultaListaEvaluacion.fxml", false,""),

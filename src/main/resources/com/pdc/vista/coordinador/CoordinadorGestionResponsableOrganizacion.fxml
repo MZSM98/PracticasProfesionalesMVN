@@ -24,7 +24,7 @@
       </Label>
       <Button fx:id="botonRegistrarResponsable" layoutX="623.0" layoutY="116.0" mnemonicParsing="false" onAction="#abrirRegistrarResponsableOrganizacion" text="Registrar" />
       <Button fx:id="botonEditarResponsable" layoutX="623.0" layoutY="152.0" mnemonicParsing="false" onAction="#abrirEditarResponsableOrganizacion" prefHeight="25.0" prefWidth="63.0" text="Editar" />
-      <Button fx:id="botonSalir" layoutX="623.0" layoutY="418.0" mnemonicParsing="false" onAction="#salirAGestionOrganizacionVinculada" prefHeight="25.0" prefWidth="63.0" text="Salir" />
+      <Button fx:id="botonSalir" layoutX="623.0" layoutY="418.0" mnemonicParsing="false" onAction="#cerrarVentana" prefHeight="25.0" prefWidth="63.0" text="Salir" />
       <Button fx:id="botonEliminar" layoutX="623.0" layoutY="188.0" mnemonicParsing="false" onAction="#eliminarResponsableOrganizacion" prefHeight="25.0" prefWidth="63.0" text="Eliminar" />
    </children>
 </AnchorPane>

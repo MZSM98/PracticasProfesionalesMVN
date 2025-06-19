@@ -35,9 +35,6 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
     @FXML
     private TextField textDireccionOV;
             
-    @FXML 
-    private Button botonCancelarRegistroOV;
-    
     @FXML
     private Button botonRegistrarOrganizacionVinculada;
     
@@ -121,7 +118,7 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
             
             organizacionVinculadaDAO.insertarOrganizacionVinculada(organizacionVinculadaDTO);
             AlertaUtil.mostrarAlertaRegistroExitoso();
-            limpiarCampos();            
+            cerrarVentana();
         } catch(SQLIntegrityConstraintViolationException icve){
             
             LOG.error(ConstantesUtil.LOG_ERROR_REGISTRO_DUPLICADO,icve);
@@ -172,14 +169,6 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ORGANIZACION_VINCULADA);
     }    
-    
-    private void limpiarCampos() {
-        
-        textRfcOV.setText("");
-        textNombreOV.setText("");
-        textTelefonoOV.setText("");
-        textDireccionOV.setText("");
-    }
     
     private void aplicarRestriccionesACampos(){
         
