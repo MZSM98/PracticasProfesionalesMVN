@@ -54,13 +54,6 @@ public class OrganizacionVinculadaDTO {
 
     @Override
     public String toString() {
-        return nombreOV;
-    }
-    
-    
-    @Override
-    public String toString() {
         return this.nombreOV != null ? this.nombreOV : "";
     }
-    
 }

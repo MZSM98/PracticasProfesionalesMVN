@@ -52,5 +52,4 @@ public class ResponsableOrganizacionVinculadaDTO {
     public String toString() {
         return this.nombreResponsable != null ? this.nombreResponsable : "";
     }
-    
 }

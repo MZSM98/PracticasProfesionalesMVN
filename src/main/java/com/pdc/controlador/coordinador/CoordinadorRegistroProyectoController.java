@@ -65,12 +65,12 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     
     @FXML
     private DatePicker dateFinalProyecto;
-      
-    @FXML
-    private Button botonGuardarProyecto;
     
     @FXML
     private Spinner<Integer> spinnerVacantes;
+     
+    @FXML
+    private Button botonGuardarProyecto;
     
     private IProyectoDAO interfazProyectoDAO;
     private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
@@ -90,8 +90,15 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         textProyectoID.setDisable(true);
         cargarPeriodosEscolares();
         cargarOrganizacionesVinculadas();
+        configurarSpinnerVacantes();
     }
     
+    private void configurarSpinnerVacantes(){
+        
+        SpinnerValueFactory<Integer> valueFactory;
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 6, 1, 1);
+        spinnerVacantes.setValueFactory(valueFactory);
+    }
     
     private void cargarPeriodosEscolares() {
         try {
