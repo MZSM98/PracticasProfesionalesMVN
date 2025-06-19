@@ -198,4 +198,42 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         }
         return listaProyectosAsignados;
     }
+
+    @Override
+    public ProyectoAsignadoDTO obtenerProyectoAsignadoPorMatricula(String matriculaEstudiante) throws SQLException, IOException {
+
+        String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE matriculaestudiante = ?";
+        ProyectoAsignadoDTO proyectoAsignado = null;
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+            declaracionPreparada.setString(1, matriculaEstudiante);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            if (resultadoDeOperacion.next()) {
+                proyectoAsignado = new ProyectoAsignadoDTO();
+                proyectoAsignado.setIdProyectoAsignado(resultadoDeOperacion.getInt(ID_PROYECTO_ASIGNADO));
+
+                Integer idProyecto = resultadoDeOperacion.getInt(ID_PROYECTO);
+                ProyectoDTO proyecto = interfazProyectoDAO.obtenerProyectoPorID(idProyecto);
+                proyectoAsignado.setProyecto(proyecto);
+
+                String matricula = resultadoDeOperacion.getString(MATRICULA_ESTUDIANTE);
+                EstudianteDTO estudiante = interfazEstudianteDAO.buscarEstudiante(matricula);
+                proyectoAsignado.setEstudiante(estudiante);
+            }
+        } finally {
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        }
+        return proyectoAsignado;
+    }
 }
