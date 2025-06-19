@@ -13,4 +13,6 @@ public interface IProyectoDAO {
     public List<ProyectoDTO> buscarProyectosPorNombre(String titulo) throws SQLException, IOException;
     public List<ProyectoDTO> listarProyectos() throws SQLException, IOException;
     public ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException, IOException;
+    public List<ProyectoDTO> listarProyectosPorOv(String rfcMoral) throws SQLException, IOException;
+
 }

@@ -6,16 +6,20 @@ import com.pdc.dao.interfaz.IProyectoAsignadoDAO;
 import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
+import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.apache.log4j.LogManager;
@@ -56,7 +60,20 @@ public class CoordinadorProyectoAsignadoController implements Initializable {
 
     @FXML
     private void accionReasignarProyecto(ActionEvent event) {
-        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REASIGNAR_PROYECTO);
+        ProyectoAsignadoDTO proyectoAsginado = tablaProyectoAsignado.getSelectionModel().getSelectedItem();
+        if(Objects.nonNull(proyectoAsginado)){
+            try {
+                ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REASIGNAR_PROYECTO);
+                CoordinadorReasignarProyectoController controller = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REASIGNAR_PROYECTO);
+                controller.asignarDatosVentana(proyectoAsginado);
+                ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REASIGNAR_PROYECTO);
+            } catch (IOException ex) {
+                LOG.error(ex);
+            }
+        }else{
+            AlertaUtil.mostrarAlerta("Advertencia", "Debe seleccionar un registro", Alert.AlertType.WARNING);
+        }
+
     }
 
     private void configurarTablaProyectoAsignado() {
@@ -88,5 +105,5 @@ public class CoordinadorProyectoAsignadoController implements Initializable {
             LOG.error(ex);
         }
     }
-    
+   
 }

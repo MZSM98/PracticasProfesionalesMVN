@@ -257,4 +257,57 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         }
         return proyecto;
     }
+    
+    @Override
+    public List<ProyectoDTO> listarProyectosPorOv(String rfcMoral) throws SQLException, IOException {
+
+        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto WHERE rfcMoral = ?";
+        List<ProyectoDTO> listaProyectos = new ArrayList<>();
+
+        try {
+
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+            declaracionPreparada.setString(1, rfcMoral);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            while (resultadoDeOperacion.next()) {
+
+                ProyectoDTO proyecto = new ProyectoDTO();
+                proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
+                proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
+
+                Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
+                PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
+                proyecto.setPeriodoEscolar(periodoEscolar);
+
+                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
+
+                String rfcMoralResult = resultadoDeOperacion.getString(RFC_MORAL);
+                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoralResult);
+                proyecto.setOrganizacion(organizacionVinculada);
+
+                proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
+                proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
+                proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
+
+                ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoralResult);
+                proyecto.setResponsable(responsable);
+
+                listaProyectos.add(proyecto);
+            }
+        } finally {
+
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        }
+        return listaProyectos;
+    }
 }

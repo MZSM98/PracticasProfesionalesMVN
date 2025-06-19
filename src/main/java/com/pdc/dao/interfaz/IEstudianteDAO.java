@@ -12,4 +12,6 @@ public interface IEstudianteDAO {
     public boolean editarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException;
     public EstudianteDTO buscarEstudiante(String matricula) throws SQLException, IOException;
     public List<EstudianteDTO> listarEstudiantes() throws SQLException, IOException;
+    public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException, IOException;
+
 }

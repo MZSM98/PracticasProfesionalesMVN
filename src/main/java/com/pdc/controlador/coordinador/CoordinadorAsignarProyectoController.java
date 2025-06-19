@@ -1,21 +1,32 @@
 package com.pdc.controlador.coordinador;
 
 import com.pdc.dao.implementacion.EstudianteDAOImpl;
+import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
+import com.pdc.dao.implementacion.ProyectoAsignadoDAOImpl;
 import com.pdc.dao.implementacion.ProyectoDAOImpl;
 import com.pdc.dao.interfaz.IEstudianteDAO;
+import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
+import com.pdc.dao.interfaz.IProyectoAsignadoDAO;
 import com.pdc.dao.interfaz.IProyectoDAO;
 import com.pdc.modelo.dto.EstudianteDTO;
+import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
+import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
+import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
-import static java.awt.SystemColor.text;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,9 +35,17 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 public class CoordinadorAsignarProyectoController implements Initializable {
-    
+
     private static final Logger LOG = LogManager.getLogger(CoordinadorAsignarProyectoController.class);
-    
+
+    @FXML
+    private Button botonAsignar;
+
+    @FXML
+    private Button botonGuardar;
+
+    @FXML
+    private ComboBox<OrganizacionVinculadaDTO> comboOrganizacionVinculada;
 
     @FXML
     private TableColumn<EstudianteDTO, String> columnaMatricula;
@@ -40,6 +59,19 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     @FXML
     private TableColumn<EstudianteDTO, String> columnaNombreAsginado;
     
+    
+    @FXML
+    private TableColumn<EstudianteDTO, Integer> columnaAvanceCrediticio;
+
+    @FXML
+    private TableColumn<EstudianteDTO, Integer> columnaAvanceCrediticioAsignado;
+    
+    @FXML
+    private TableColumn<EstudianteDTO, Double> columnaPromedio;
+
+    @FXML
+    private TableColumn<EstudianteDTO, Double> columnaPromedioAsignado;
+
     @FXML
     private ComboBox<ProyectoDTO> comboProyecto;
 
@@ -48,54 +80,157 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private TableView<EstudianteDTO> tablaSinAsignar;
-    
+
+    private List<ProyectoAsignadoDTO> listaProyectosPorAsignar;
+
     private IProyectoDAO interfazProyectoDAO;
     private IEstudianteDAO interfazEstudianteDAO;
-    
+    private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
+    private IProyectoAsignadoDAO interfazProyectoAsignadoDAO;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         interfazProyectoDAO = new ProyectoDAOImpl();
         interfazEstudianteDAO = new EstudianteDAOImpl();
+        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
+        interfazProyectoAsignadoDAO = new ProyectoAsignadoDAOImpl();
+        listaProyectosPorAsignar = new ArrayList<>();
         configurarTablasEstudiante();
-        llenarDatosComboProyecto();
-    }    
+        llenarDatosComboOrganizacionesVinculadas();
+    }
 
     @FXML
     private void accionAsignar(ActionEvent event) {
-        
+        EstudianteDTO estudianteSeleccionado = tablaSinAsignar.getSelectionModel().getSelectedItem();
+        ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(estudianteSeleccionado)) {
+            AlertaUtil.mostrarAlerta("Alerta", "Debe seleccionar un registro", Alert.AlertType.WARNING);
+        } else {
+            tablaAsignados.getItems().add(estudianteSeleccionado);
+            tablaSinAsignar.getItems().remove(estudianteSeleccionado);
+            ProyectoAsignadoDTO proyectoAsignado = new ProyectoAsignadoDTO();
+            proyectoAsignado.setEstudiante(estudianteSeleccionado);
+            proyectoAsignado.setProyecto(proyectoSeleccionado);
+            listaProyectosPorAsignar.add(proyectoAsignado);
+        }
     }
 
     @FXML
     private void accionCambioComboProyecto(ActionEvent event) {
-        
+        if (Objects.nonNull(comboProyecto.getSelectionModel().getSelectedItem())) {
+            botonAsignar.setDisable(Boolean.FALSE);
+            botonGuardar.setDisable(Boolean.FALSE);
+            llenarTablaEstudianteSinAsignar();
+            llenarTablaEstudiantesAsignados();
+        } else {
+            botonAsignar.setDisable(Boolean.TRUE);
+            botonGuardar.setDisable(Boolean.TRUE);
+        }
+    }
+
+    @FXML
+    private void accionComboOrganizacionVinculada(ActionEvent event) {
+        if (Objects.nonNull(comboOrganizacionVinculada.getSelectionModel().getSelectedItem())) {
+            llenarDatosComboProyecto();
+            llenarTablaEstudianteSinAsignar();
+            llenarTablaEstudiantesAsignados();
+            comboProyecto.setDisable(Boolean.FALSE);
+        }
     }
 
     @FXML
     private void accionCancelar(ActionEvent event) {
         ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_PROYECTO_ASIGNADO);
+        ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_ASIGNAR_PROYECTO);
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_PROYECTO_ASIGNADO);
     }
 
     @FXML
     private void accionGuardar(ActionEvent event) {
-        
+        ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        if (Objects.nonNull(proyectoSeleccionado) && !listaProyectosPorAsignar.isEmpty()) {
+            for (ProyectoAsignadoDTO proyectoAsignado : listaProyectosPorAsignar) {
+                try {
+                    interfazProyectoAsignadoDAO.insertarProyectoAsignado(proyectoAsignado);
+                } catch (SQLException ex) {
+                    LOG.error(ex);
+                } catch (IOException ex) {
+                    LOG.error(ex);
+                }
+            }
+            AlertaUtil.mostrarAlertaRegistroExitoso();
+            accionCancelar(event);
+        }
+
     }
-    
-    private void llenarDatosComboProyecto(){
+
+    private void llenarDatosComboProyecto() {
+        OrganizacionVinculadaDTO organizacionVinculadaSeleccion = comboOrganizacionVinculada.getSelectionModel().getSelectedItem();
         try {
-            comboProyecto.setItems(FXCollections.observableArrayList(interfazProyectoDAO.listarProyectos()));
+            String rfcMoral = organizacionVinculadaSeleccion.getRfcMoral();
+            comboProyecto.setItems(FXCollections.observableArrayList(interfazProyectoDAO.listarProyectosPorOv(rfcMoral)));
         } catch (SQLException ex) {
-                LOG.error(ex);
+            LOG.error(ex);
         } catch (IOException ex) {
-                LOG.error(ex);
+            LOG.error(ex);
         }
     }
-    
-    private void configurarTablasEstudiante(){
-       columnaMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
-       columnaNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEstudiante"));
-       columnaMatriculaAsignado.setCellValueFactory(new PropertyValueFactory<>("matricula"));
-       columnaNombreAsginado.setCellValueFactory(new PropertyValueFactory<>("nombreEstudiante"));
+
+    private void llenarDatosComboOrganizacionesVinculadas() {
+        try {
+            comboOrganizacionVinculada.setItems(FXCollections.observableArrayList(interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas()));
+        } catch (SQLException ex) {
+            LOG.error(ex);
+        } catch (IOException ex) {
+            LOG.error(ex);
+        }
     }
-    
+
+    private void llenarTablaEstudianteSinAsignar() {
+        ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(proyectoSeleccionado)) {
+            tablaSinAsignar.getItems().clear();
+            return;
+        }
+        try {
+            tablaSinAsignar.setItems(FXCollections.observableArrayList(interfazEstudianteDAO.listarEstudiantesSinProyectoAsignado()));
+        } catch (SQLException ex) {
+            LOG.error(ex);
+        } catch (IOException ex) {
+            LOG.error(ex);
+        }
+    }
+
+    private void llenarTablaEstudiantesAsignados() {
+        ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(proyectoSeleccionado)) {
+            tablaAsignados.getItems().clear();
+            listaProyectosPorAsignar.clear();
+            return;
+        }
+        try {
+            List<ProyectoAsignadoDTO> listaProyectoAsignado = interfazProyectoAsignadoDAO.listaProyectoAsignadoPorProyectoID(proyectoSeleccionado.getProyectoID());
+            List<EstudianteDTO> listaEstudianteAsignado = new ArrayList<>();
+            for (ProyectoAsignadoDTO proyectoAsignado : listaProyectoAsignado) {
+                listaEstudianteAsignado.add(proyectoAsignado.getEstudiante());
+            }
+            tablaAsignados.setItems(FXCollections.observableArrayList(listaEstudianteAsignado));
+        } catch (SQLException ex) {
+            LOG.error(ex);
+        } catch (IOException ex) {
+            LOG.error(ex);
+        }
+    }
+
+    private void configurarTablasEstudiante() {
+        columnaMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
+        columnaNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEstudiante"));
+        columnaMatriculaAsignado.setCellValueFactory(new PropertyValueFactory<>("matricula"));
+        columnaNombreAsginado.setCellValueFactory(new PropertyValueFactory<>("nombreEstudiante"));
+        columnaAvanceCrediticio.setCellValueFactory(new PropertyValueFactory<>("avanceCrediticio"));
+        columnaAvanceCrediticioAsignado.setCellValueFactory(new PropertyValueFactory<>("avanceCrediticio"));
+        columnaPromedio.setCellValueFactory(new PropertyValueFactory<>("promedio"));
+        columnaPromedioAsignado.setCellValueFactory(new PropertyValueFactory<>("promedio"));
+    }
+
 }

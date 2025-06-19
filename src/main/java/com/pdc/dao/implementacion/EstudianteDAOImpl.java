@@ -24,10 +24,10 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
-    private ISeccionDAO interfazSeccionDAO;
-    private IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
-    private IUsuarioDAO interfazUsuarioDAO;
-    private ITipoUsuarioDAO interfazTipoUsuarioDAO;
+    private final ISeccionDAO interfazSeccionDAO;
+    private final IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
+    private final IUsuarioDAO interfazUsuarioDAO;
+    private final ITipoUsuarioDAO interfazTipoUsuarioDAO;
     
     public EstudianteDAOImpl(){
         interfazSeccionDAO = new SeccionDAOImpl();
@@ -170,5 +170,50 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         }
 
         return listaEstudiantes;
+    }
+    
+    @Override
+    public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException, IOException {
+        String consultaSQL = "SELECT e.matricula, e.nombreEstudiante, e.periodoEscolar, e.seccionEstudiante, e.avanceCrediticio, e.promedio "
+                + "FROM estudiante e "
+                + "LEFT JOIN proyectoasignado pa ON e.matricula = pa.matriculaestudiante "
+                + "WHERE pa.matriculaestudiante IS NULL";
+
+        List<EstudianteDTO> listaEstudiantesSinProyecto = new ArrayList<>();
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            while (resultadoDeOperacion.next()) {
+                EstudianteDTO estudiante = new EstudianteDTO();
+                estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
+                estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
+
+                int idSeccion = resultadoDeOperacion.getInt("seccionEstudiante");
+                estudiante.setSeccionEstudiante(interfazSeccionDAO.buscarSeccion(idSeccion));
+
+                int idPeriodoEscolar = resultadoDeOperacion.getInt("periodoEscolar");
+                estudiante.setPeriodoEscolar(interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar));
+
+                estudiante.setAvanceCrediticio(resultadoDeOperacion.getInt("avanceCrediticio"));
+                estudiante.setPromedio(resultadoDeOperacion.getDouble("promedio"));
+
+                listaEstudiantesSinProyecto.add(estudiante);
+            }
+        } finally {
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        }
+
+        return listaEstudiantesSinProyecto;
     }
 }
