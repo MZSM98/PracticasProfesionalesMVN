@@ -12,4 +12,5 @@ public interface IProyectoAsignadoDAO {
     public ProyectoAsignadoDTO obtenerProyectoAsignadoPorID(int proyectoAsignadoID) throws SQLException, IOException;
     public List<ProyectoAsignadoDTO> listaProyectoAsignado() throws SQLException, IOException;    
     public List<ProyectoAsignadoDTO> listaProyectoAsignadoPorProyectoID(int proyectoID) throws SQLException, IOException;    
+    public ProyectoAsignadoDTO obtenerProyectoAsignadoPorMatricula(String matriculaEstudiante) throws SQLException, IOException;
 }
