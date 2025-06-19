@@ -1,17 +1,10 @@
 package com.pdc.controlador.profesoree;
 
 import com.pdc.utileria.manejador.ManejadorDeVistas;
-import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-
 
 public class ProfesorEEMenuPrincipalController{
     
@@ -20,8 +13,6 @@ public class ProfesorEEMenuPrincipalController{
     @FXML
     private Label labelCerrarSesion;
     
-    private Stage parentStage;
-   
     @FXML
     void abrirVentanaConsultaCalificaciones(ActionEvent event) {
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.PROFESOREE_REGISTRO_CALIFACION_FINAL);

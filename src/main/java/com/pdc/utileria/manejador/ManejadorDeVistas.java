@@ -46,8 +46,7 @@ public class ManejadorDeVistas {
 
         ACADEMICO_EVALUADOR_MENU_PRINCIPAL("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorMenuPrincipal.fxml", false,""),
         ACADEMICO_EVALUADOR_CONSULTA_EVALUACION("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorConsultaListaEvaluacion.fxml", false,""),
-        ACADEMICO_EVALUADOR_REGISTRO_EVALUACION_PARCIAL("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorRegistroEvaluacionParcial.fxml", false,"")
-        ;
+        ACADEMICO_EVALUADOR_REGISTRO_EVALUACION_PARCIAL("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorRegistroEvaluacionParcial.fxml", false,"");
 
         private final String rutaFXML;
         private final boolean resizable;
@@ -174,24 +173,4 @@ public class ManejadorDeVistas {
     public Stage obtenerEscenarioPrincipal() {
         return escenarioPrincipal;
     }
-    
-    public Stage abrirVistaEnNuevaVentana(Vista vista) {
-        try {
-            Parent root = cargarVista(vista);
-            Scene escena = new Scene(root);
-
-            Stage nuevaVentana = new Stage();
-            nuevaVentana.setScene(escena);
-            nuevaVentana.setTitle("EuroBank - " + vista.name());
-            nuevaVentana.setResizable(vista.isResizable());
-            nuevaVentana.showAndWait();
-
-            return nuevaVentana;
-        } catch (IOException ioe) {
-            AlertaUtil.mostrarAlertaErrorVentana();
-
-            return null;
-        }
-    }
-
 }

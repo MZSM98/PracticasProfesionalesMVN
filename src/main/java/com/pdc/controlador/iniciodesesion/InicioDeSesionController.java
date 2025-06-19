@@ -42,6 +42,7 @@ import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 
 public class InicioDeSesionController implements Initializable {
     
+    public static final String NO_EXISTE_TIPO_USUARIO = "No existe tipo de usuario";
     private static final Integer COORDINADOR = 1;
     private static final Integer ACADEMICO_EVALUADOR = 2;
     private static final Integer PROFESOR_EE = 3;
@@ -143,7 +144,7 @@ public class InicioDeSesionController implements Initializable {
         } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
         } else {
-            throw new IllegalArgumentException("No existe tipo de usuario");
+            throw new IllegalArgumentException(NO_EXISTE_TIPO_USUARIO);
         }
     }
     
@@ -159,8 +160,9 @@ public class InicioDeSesionController implements Initializable {
         } else if (ESTUDIANTE.equals(usuario.getTipoUsuario().getIdTipo())) {
             usuarioFinal = interfazEstudianteDAO.buscarEstudiante(usuario.getUsuario());
         } else {
-            throw new IllegalArgumentException("No existe tipo de usuario");
+            throw new IllegalArgumentException(NO_EXISTE_TIPO_USUARIO);
         }
+        
         usuarioFinal.setUsuario(usuario.getUsuario());
         usuarioFinal.setContrasena(usuario.getContrasena());
         usuarioFinal.setTipoUsuario(usuario.getTipoUsuario());
