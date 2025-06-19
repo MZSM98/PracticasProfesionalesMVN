@@ -36,6 +36,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     public static final String PROYECTO_ID = "proyectoID";
     public static final String TITULO = "titulo";
     public static final String RFC = "rfc";
+    public static final String VACANTES = "vacantes";
     
     public ProyectoDAOImpl(){
         interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
@@ -46,7 +47,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     @Override
     public boolean insertarProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
         
-        String insertarSQL = "INSERT INTO proyecto (titulo, idperiodoescolar, descripcion, rfcMoral, fechaInicio, fechaFinal, responsable) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertarSQL = "INSERT INTO proyecto (titulo, idperiodoescolar, descripcion, rfcMoral, fechaInicio, fechaFinal, responsable, vacantes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         boolean insercionExitosa = false;
 
         try {
@@ -60,6 +61,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             declaracionPreparada.setDate(5, proyecto.getFechaInicio());
             declaracionPreparada.setDate(6, proyecto.getFechaFinal());
             declaracionPreparada.setString(7, proyecto.getResponsable().getRfc());
+            declaracionPreparada.setInt(8, proyecto.getVacantes());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
@@ -94,7 +96,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     @Override
     public boolean editarProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
         
-        String actualizarSQL = "UPDATE proyecto SET titulo = ?, idperiodoescolar = ?, descripcion = ?, rfcMoral = ?, estadoProyecto = ?, fechaInicio = ?, fechaFinal = ?, responsable = ? WHERE proyectoID = ?";
+        String actualizarSQL = "UPDATE proyecto SET titulo = ?, idperiodoescolar = ?,"
+                + " descripcion = ?, rfcMoral = ?, estadoProyecto = ?, fechaInicio = ?, fechaFinal = ?, responsable = ?, vacantes = ? WHERE proyectoID = ?";
         boolean actualizacionExitosa = false;
 
         try {
@@ -109,7 +112,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             declaracionPreparada.setDate(6, proyecto.getFechaInicio());
             declaracionPreparada.setDate(7, proyecto.getFechaFinal());
             declaracionPreparada.setString(8, proyecto.getResponsable().getRfc());
-            declaracionPreparada.setInt(9, proyecto.getProyectoID());
+            declaracionPreparada.setInt(9, proyecto.getVacantes());
+            declaracionPreparada.setInt(10, proyecto.getProyectoID());
             declaracionPreparada.executeUpdate();
             actualizacionExitosa = true;
         } finally {
@@ -123,7 +127,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     @Override
     public List<ProyectoDTO> buscarProyectosPorNombre(String titulo) throws SQLException, IOException {
         
-        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto WHERE titulo LIKE ?";
+        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal,"
+                + " responsable, vacantes FROM proyecto WHERE titulo LIKE ?";
         List<ProyectoDTO> proyectosEncontrados = new ArrayList<>();
 
         try {
@@ -155,8 +160,9 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 
                 ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
                 proyecto.setResponsable(responsable);
+                
+                proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
                 proyectosEncontrados.add(proyecto);
-
             }
         } finally {
             
@@ -170,7 +176,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     @Override
     public List<ProyectoDTO> listarProyectos() throws SQLException, IOException {
         
-        String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto";
+        String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
         try {
@@ -198,6 +204,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
                 ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
                 proyecto.setResponsable(responsable);
+                proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
                 
                 listaProyectos.add(proyecto);
             }
@@ -210,9 +217,10 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         return listaProyectos;
     }
     
+    @Override
     public ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException, IOException {
         
-        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto WHERE proyectoID = ?";
+        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto WHERE proyectoID = ?";
         ProyectoDTO proyecto = null;
 
         try {
@@ -239,6 +247,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
                 ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
                 proyecto.setResponsable(responsable);
+                proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
             }
         } finally {
             

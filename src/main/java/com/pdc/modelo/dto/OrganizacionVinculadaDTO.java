@@ -52,4 +52,9 @@ public class OrganizacionVinculadaDTO {
     
     public enum EstadoOrganizacionVinculada {ACTIVO,INACTIVO};
     
+    @Override
+    public String toString() {
+        return this.nombreOV != null ? this.nombreOV : "";
+    }
+    
 }

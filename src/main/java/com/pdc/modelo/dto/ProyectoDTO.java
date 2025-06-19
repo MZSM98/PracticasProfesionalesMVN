@@ -13,6 +13,7 @@ public class ProyectoDTO {
     private Date fechaInicio;
     private Date fechaFinal;
     private ResponsableOrganizacionVinculadaDTO responsable;
+    private int vacantes;
     
     public int getProyectoID() {
         return proyectoID;
@@ -89,6 +90,16 @@ public class ProyectoDTO {
     public enum EstadoProyecto {
         ACTIVO, INACTIVO
     }
+
+    public int getVacantes() {
+        return vacantes;
+    }
+
+    public void setVacantes(int vacantes) {
+        this.vacantes = vacantes;
+    }
+    
+    
 
     @Override
     public String toString() {

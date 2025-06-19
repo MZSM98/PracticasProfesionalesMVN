@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,7 +32,11 @@ import com.pdc.modelo.dto.PeriodoEscolarDTO;
 import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.sql.Date;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 
 public class CoordinadorRegistroProyectoController implements Initializable {    
     
@@ -62,13 +65,12 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     
     @FXML
     private DatePicker dateFinalProyecto;
-    
       
-    @FXML 
-    private Button botonCancelar;
-    
     @FXML
     private Button botonGuardarProyecto;
+    
+    @FXML
+    private Spinner<Integer> spinnerVacantes;
     
     private IProyectoDAO interfazProyectoDAO;
     private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
@@ -80,6 +82,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         interfazProyectoDAO = new ProyectoDAOImpl();
         interfazPeriodoEscolar = new PeriodoEscolarDAOImpl();
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
@@ -89,8 +92,10 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         cargarOrganizacionesVinculadas();
     }
     
+    
     private void cargarPeriodosEscolares() {
         try {
+            
         List<PeriodoEscolarDTO> periodosEscolares = interfazPeriodoEscolar.listarPeriodos();
         comboPeriodoEscolar.setItems(FXCollections.observableArrayList(periodosEscolares));
         }catch (SQLException sqle) {
@@ -106,48 +111,60 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         
         try {
             
-            List<OrganizacionVinculadaDTO> organizaciones = 
-                interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas();
-            
-            List<OrganizacionVinculadaDTO> organizacionesActivas = organizaciones.stream()
-                .filter(org -> "ACTIVO".equals(org.getEstadoOV()))
-                .collect(java.util.stream.Collectors.toList());
+            List<OrganizacionVinculadaDTO> organizaciones;
+            organizaciones = interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas();
+
+            List<OrganizacionVinculadaDTO> organizacionesActivas;
+            organizacionesActivas = organizaciones.stream()
+                .filter(organizacion -> "ACTIVO".equals(organizacion.getEstadoOV()))
+                .collect(Collectors.toList());
             
             comboOrganizacionVinculada.setItems(FXCollections.observableArrayList(organizacionesActivas));
             
-            comboOrganizacionVinculada.setCellFactory(param -> new javafx.scene.control.ListCell<OrganizacionVinculadaDTO>() {
-                @Override
-                protected void updateItem(OrganizacionVinculadaDTO item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getNombreOV());
-                    }
-                }
-            });
+        } catch (SQLException sqle) {
             
-            comboOrganizacionVinculada.setButtonCell(new javafx.scene.control.ListCell<OrganizacionVinculadaDTO>() {
-                @Override
-                protected void updateItem(OrganizacionVinculadaDTO item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getNombreOV());
-                    }
-                }
-            });
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } catch (IOException ioe) {
             
-        } catch (SQLException e) {
-            
-            LOG.error("Error al cargar las organizaciones vinculadas: " + e.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
-        } catch (IOException e) {
-            
-            LOG.error("Error al cargar las organizaciones vinculadas: " + e.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "Error al cargar la información, contacte con un administrador", Alert.AlertType.ERROR);
+            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, ioe);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
+        
+    }
+    
+    @FXML
+    private void accionComboOrganizacionVinculada(){
+        
+        if (Objects.nonNull(comboOrganizacionVinculada.getSelectionModel().getSelectedItem())){
+            
+            cargarResponsablesOrganizacion();
+        }
+    }
+    
+    private void cargarResponsablesOrganizacion(){
+        
+        OrganizacionVinculadaDTO organizacionSeleccionada;
+        organizacionSeleccionada= comboOrganizacionVinculada.getSelectionModel().getSelectedItem();
+        
+        String rfcOrganizacionSeleccionada;
+        rfcOrganizacionSeleccionada = organizacionSeleccionada.getRfcMoral();
+        
+        try {
+            
+            List<ResponsableOrganizacionVinculadaDTO> responsables;
+            responsables = interfazResponsableOrganizacionVinculadaDAO.listarResponsablesPorOrganizacion(rfcOrganizacionSeleccionada);
+            comboResponsableProyecto.setItems(FXCollections.observableArrayList(responsables));
+        } catch (SQLException sqle) {
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } catch (IOException ioe) {
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, ioe);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
+        }
+        
     }
     
     public void cambiarAModoEdicion(boolean modoEdicion) {
@@ -168,6 +185,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         textTituloProyecto.setText(proyectoDTO.getTituloProyecto());
         textDescripcionProyecto.setText(proyectoDTO.getDescripcionProyecto());
         comboPeriodoEscolar.getSelectionModel().select(proyectoDTO.getPeriodoEscolar());
+        spinnerVacantes.getValueFactory().setValue(proyectoDTO.getVacantes());
         
         try {
             
@@ -212,6 +230,8 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         proyectoDTO.setFechaFinal(Date.valueOf(dateFinalProyecto.getValue()));
         proyectoDTO.setResponsable(comboResponsableProyecto.getSelectionModel().getSelectedItem());
         proyectoDTO.setOrganizacion(comboOrganizacionVinculada.getSelectionModel().getSelectedItem());
+        proyectoDTO.setVacantes(spinnerVacantes.getValue());
+        
         
         if (!validarCampos(proyectoDTO)) {
             return;

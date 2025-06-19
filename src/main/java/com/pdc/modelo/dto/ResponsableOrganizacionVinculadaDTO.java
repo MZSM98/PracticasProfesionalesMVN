@@ -48,5 +48,9 @@ public class ResponsableOrganizacionVinculadaDTO {
         this.rfcMoral = rfcMoral;
     }
     
+    @Override
+    public String toString() {
+        return this.nombreResponsable != null ? this.nombreResponsable : "";
+    }
     
 }
