@@ -12,17 +12,17 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.pdc.utileria.ContrasenaUtil;
-import com.pdc.dao.interfaz.IProfesorEEDAO;
 import com.pdc.dao.interfaz.IUsuarioDAO;
+import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 
-public class ProfesorEEDAOImpl implements IProfesorEEDAO {
+public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperienciaEducativaDAO {
     
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
     private IUsuarioDAO interfazUsuarioDAO;
     
-    public ProfesorEEDAOImpl(){
+    public ProfesorExperienciaEducativaDAOImpl(){
         interfazUsuarioDAO = new UsuarioDAOImpl();
     }
     
@@ -104,7 +104,7 @@ public class ProfesorEEDAOImpl implements IProfesorEEDAO {
             
             if (resultadoDeOperacion.next()) {
                 profesor = new ProfesorEEDTO();
-                profesor.setNumeroTrabajador(resultadoDeOperacion.getString("numeroTrabajador"));
+                profesor.setNumeroTrabajador(resultadoDeOperacion.getString("numeroDeTrabajador"));
                 profesor.setNombreProfesor(resultadoDeOperacion.getString("nombreProfesor"));
                 profesor.setSeccion(resultadoDeOperacion.getString("seccion"));
             }

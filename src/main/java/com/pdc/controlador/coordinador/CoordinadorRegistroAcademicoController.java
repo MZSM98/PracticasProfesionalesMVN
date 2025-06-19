@@ -14,14 +14,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import com.pdc.dao.implementacion.AcademicoEvaluadorDAOImpl;
-import com.pdc.dao.implementacion.ProfesorEEDAOImpl;
+import com.pdc.dao.implementacion.ProfesorExperienciaEducativaDAOImpl;
 import org.apache.log4j.Logger;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.validador.AcademicoValidador;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
-import com.pdc.dao.interfaz.IProfesorEEDAO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
+import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 
 public class CoordinadorRegistroAcademicoController {
     
@@ -51,14 +51,14 @@ public class CoordinadorRegistroAcademicoController {
     
     private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
     
-    private IProfesorEEDAO interfazProfesorEEDAO;
+    private IProfesorExperienciaEducativaDAO interfazProfesorEEDAO;
     
     private boolean modoEdicion;
     
     public void initialize() {
         
         interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAOImpl();
-        interfazProfesorEEDAO = new ProfesorEEDAOImpl();
+        interfazProfesorEEDAO = new ProfesorExperienciaEducativaDAOImpl();
     }
 
     @FXML

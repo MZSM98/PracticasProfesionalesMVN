@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.io.IOException;
 import java.util.List;
 
-public interface IProfesorEEDAO {
+public interface IProfesorExperienciaEducativaDAO {
     
     public boolean insertarProfesorEE(ProfesorEEDTO profesor) throws SQLException, IOException;
     public boolean eliminarProfesorEE(String numeroTrabajador) throws SQLException, IOException;

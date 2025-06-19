@@ -98,13 +98,9 @@ public class ProyectoDTO {
     public void setVacantes(int vacantes) {
         this.vacantes = vacantes;
     }
-    
-    
 
     @Override
     public String toString() {
         return tituloProyecto;
     }
-    
-    
 }
