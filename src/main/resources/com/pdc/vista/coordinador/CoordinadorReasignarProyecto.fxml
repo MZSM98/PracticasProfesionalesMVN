@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorReasignarProyectoController">
-    
+<AnchorPane id="AnchorPane" prefHeight="419.0" prefWidth="521.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorReasignarProyectoController">
+   <children>
+      <Label layoutX="197.0" layoutY="29.0" text="Reasginar proyecto">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="29.0" layoutY="62.0" prefHeight="152.0" prefWidth="471.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="113.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="353.0" minWidth="10.0" prefWidth="353.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefWidth="79.0" text="Matricula:" />
+            <TextField fx:id="textMatricula" editable="false" GridPane.columnIndex="1" />
+            <Label text="Nombre:" GridPane.rowIndex="1" />
+            <TextField fx:id="textNombre" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Proyecto actual:" GridPane.rowIndex="3" />
+            <TextField fx:id="textProyectoActual" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Organización" GridPane.rowIndex="4" />
+            <ComboBox fx:id="comboOrganizacionVinculada" prefHeight="25.0" prefWidth="356.0" promptText="Seleccione una organización" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Nuevo proyecto:" GridPane.rowIndex="5" />
+            <ComboBox fx:id="comboProyecto" prefHeight="25.0" prefWidth="368.0" promptText="Seleccione un proyecto" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Organización actual:" GridPane.rowIndex="2" />
+            <TextField fx:id="textOrganizacionActual" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <GridPane layoutX="125.0" layoutY="338.0" prefHeight="33.0" prefWidth="279.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="61.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="0.0" prefWidth="19.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="54.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="botonGuardar" mnemonicParsing="false" onAction="#accionGuardar" prefHeight="25.0" prefWidth="111.0" text="Guardar" />
+            <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="25.0" prefWidth="110.0" text="Cancelar" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+   </children>
 </AnchorPane>

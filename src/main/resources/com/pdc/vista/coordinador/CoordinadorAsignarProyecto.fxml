@@ -9,26 +9,38 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="399.0" prefWidth="832.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.pdc.controlador.coordinador.CoordinadorAsignarProyectoController">
+<AnchorPane id="AnchorPane" prefHeight="498.0" prefWidth="832.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorAsignarProyectoController">
    <children>
-      <Label layoutX="14.0" layoutY="22.0" text="Proyecto:" />
-      <TableView fx:id="tablaAsignados" layoutX="14.0" layoutY="98.0" prefHeight="247.0" prefWidth="355.0">
+      <Label layoutX="14.0" layoutY="116.0" text="Proyecto:" />
+      <ComboBox fx:id="comboOrganizacionVinculada" layoutX="154.0" layoutY="79.0" onAction="#accionComboOrganizacionVinculada" prefHeight="25.0" prefWidth="312.0" promptText="Seleccione una organización vinculada" />
+      <Label layoutX="14.0" layoutY="83.0" prefHeight="17.0" prefWidth="140.0" text="Organización vinculada:" />
+      <ComboBox fx:id="comboProyecto" disable="true" layoutX="154.0" layoutY="112.0" onAction="#accionCambioComboProyecto" prefHeight="25.0" prefWidth="312.0" promptText="Seleccione un proyecto" />
+      <TableView fx:id="tablaAsignados" layoutX="11.0" layoutY="189.0" prefHeight="247.0" prefWidth="355.0">
         <columns>
           <TableColumn fx:id="columnaMatriculaAsignado" prefWidth="75.0" text="Matricula" />
-          <TableColumn fx:id="columnaNombreAsginado" prefWidth="279.0" text="Nombre" />
+          <TableColumn fx:id="columnaNombreAsginado" prefWidth="188.0" text="Nombre" />
+            <TableColumn fx:id="columnaPromedioAsignado" prefWidth="73.0" text="Promedio" />
+            <TableColumn fx:id="columnaAvanceCrediticioAsignado" prefWidth="65.0" text="Avance crediticio" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <TableView fx:id="tablaSinAsignar" layoutX="469.0" layoutY="98.0" prefHeight="247.0" prefWidth="355.0">
+      <TableView fx:id="tablaSinAsignar" layoutX="466.0" layoutY="189.0" prefHeight="247.0" prefWidth="355.0">
         <columns>
           <TableColumn fx:id="columnaMatricula" prefWidth="75.0" text="Matricula" />
-          <TableColumn fx:id="columnaNombre" prefWidth="279.0" text="Nombre" />
+          <TableColumn fx:id="columnaNombre" prefWidth="173.0" text="Nombre" />
+            <TableColumn fx:id="columnaPromedio" prefWidth="75.0" text="Promedio" />
+            <TableColumn fx:id="columnaAvanceCrediticio" prefWidth="75.0" text="Avance crediticio" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <Button fx:id="botonAsignar" layoutX="373.0" layoutY="189.0" mnemonicParsing="false" onAction="#accionAsignar" prefHeight="25.0" prefWidth="87.0" text="&lt; Asignar" />
-      <ComboBox fx:id="comboProyecto" layoutX="74.0" layoutY="18.0" onAction="#accionCambioComboProyecto" prefHeight="25.0" prefWidth="295.0" promptText="Seleccione un proyecto" />
-      <GridPane layoutX="187.0" layoutY="355.0" prefHeight="30.0" prefWidth="460.0">
+      <Button fx:id="botonAsignar" disable="true" layoutX="372.0" layoutY="276.0" mnemonicParsing="false" onAction="#accionAsignar" prefHeight="25.0" prefWidth="87.0" text="&lt; Asignar" />
+      <GridPane layoutX="199.0" layoutY="442.0" prefHeight="30.0" prefWidth="460.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -38,11 +50,16 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="botonGuardar" mnemonicParsing="false" onAction="#accionGuardar" prefHeight="25.0" prefWidth="155.0" text="Guardar" />
+            <Button fx:id="botonGuardar" disable="true" mnemonicParsing="false" onAction="#accionGuardar" prefHeight="25.0" prefWidth="155.0" text="Guardar" />
             <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="25.0" prefWidth="161.0" text="Cancelar" GridPane.columnIndex="2" />
          </children>
       </GridPane>
-      <Label layoutX="109.0" layoutY="68.0" text="Alumnos asignados al proyecto" />
-      <Label layoutX="563.0" layoutY="68.0" text="Alumnos sin proyecto asignado" />
+      <Label layoutX="106.0" layoutY="166.0" text="Alumnos asignados al proyecto" />
+      <Label layoutX="560.0" layoutY="166.0" text="Alumnos sin proyecto asignado" />
+      <Label layoutX="364.0" layoutY="23.0" text="Asginación de proyectos">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
