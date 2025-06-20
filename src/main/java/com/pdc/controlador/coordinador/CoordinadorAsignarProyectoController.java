@@ -28,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -43,6 +44,9 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private Button botonGuardar;
+    
+    @FXML
+    private Button botonReiniciar;
 
     @FXML
     private ComboBox<OrganizacionVinculadaDTO> comboOrganizacionVinculada;
@@ -80,6 +84,9 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private TableView<EstudianteDTO> tablaSinAsignar;
+    
+    @FXML
+    private Label labelVacantes;
 
     private List<ProyectoAsignadoDTO> listaProyectosPorAsignar;
 
@@ -107,7 +114,7 @@ public class CoordinadorAsignarProyectoController implements Initializable {
         
         if (Objects.isNull(estudianteSeleccionado)) {
             AlertaUtil.mostrarAlerta("Alerta", "Debe seleccionar un registro", Alert.AlertType.WARNING);
-        } else {
+        }else if(validaVacantesProyecto(proyectoSeleccionado)){
             tablaAsignados.getItems().add(estudianteSeleccionado);
             tablaSinAsignar.getItems().remove(estudianteSeleccionado);
             ProyectoAsignadoDTO proyectoAsignado;
@@ -115,19 +122,24 @@ public class CoordinadorAsignarProyectoController implements Initializable {
             proyectoAsignado.setEstudiante(estudianteSeleccionado);
             proyectoAsignado.setProyecto(proyectoSeleccionado);
             listaProyectosPorAsignar.add(proyectoAsignado);
+            botonReiniciar.setDisable(Boolean.FALSE);
+            actualizaVacantes();
         }
     }
 
     @FXML
     private void accionCambioComboProyecto(ActionEvent event) {
-        if (Objects.nonNull(comboProyecto.getSelectionModel().getSelectedItem())) {
+        ProyectoDTO proyecto = comboProyecto.getSelectionModel().getSelectedItem();
+        if (Objects.nonNull(proyecto)) {
             botonAsignar.setDisable(Boolean.FALSE);
             botonGuardar.setDisable(Boolean.FALSE);
             llenarTablaEstudianteSinAsignar();
             llenarTablaEstudiantesAsignados();
+            actualizaVacantes();
         } else {
             botonAsignar.setDisable(Boolean.TRUE);
             botonGuardar.setDisable(Boolean.TRUE);
+            actualizaVacantes();
         }
     }
 
@@ -151,6 +163,7 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     @FXML
     private void accionGuardar(ActionEvent event) {
         ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+
         if (Objects.nonNull(proyectoSeleccionado) && !listaProyectosPorAsignar.isEmpty()) {
             for (ProyectoAsignadoDTO proyectoAsignado : listaProyectosPorAsignar) {
                 try {
@@ -163,8 +176,33 @@ public class CoordinadorAsignarProyectoController implements Initializable {
             }
             AlertaUtil.mostrarAlertaRegistroExitoso();
             accionCancelar(event);
+        }else{
+            AlertaUtil.mostrarAlerta("Advertencia", "No hay cambios por guardar", Alert.AlertType.WARNING);
         }
 
+    }
+    
+    @FXML
+    private void accionReiniciar(ActionEvent event) {
+        if(!listaProyectosPorAsignar.isEmpty()){
+            llenarTablaEstudianteSinAsignar();
+            llenarTablaEstudiantesAsignados();
+            actualizaVacantes();
+            listaProyectosPorAsignar.clear();
+            botonReiniciar.setDisable(Boolean.FALSE);
+        }
+    }
+    
+    private boolean validaVacantesProyecto(ProyectoDTO proyectoSeleccionado){
+        Integer vacantes = proyectoSeleccionado.getVacantes();
+        Integer actuales = tablaAsignados.getItems().size()+1;
+        
+        if(actuales > vacantes){
+            AlertaUtil.mostrarAlerta("Advertencia", "Se ha alcanzado el limite de vacantes: "+vacantes, Alert.AlertType.WARNING);
+            return false;
+        }else{
+            return true;
+        }
     }
 
     private void llenarDatosComboProyecto() {
@@ -236,4 +274,12 @@ public class CoordinadorAsignarProyectoController implements Initializable {
         columnaPromedioAsignado.setCellValueFactory(new PropertyValueFactory<>("promedio"));
     }
 
+    private void actualizaVacantes(){
+        ProyectoDTO proyecto = comboProyecto.getSelectionModel().getSelectedItem();
+        if(Objects.nonNull(proyecto)){
+            labelVacantes.setText(String.format("%d / %d", tablaAsignados.getItems().size(), proyecto.getVacantes()));
+        }else{
+            labelVacantes.setText(String.format("%d / %d", 0, 0));
+        }
+    }
 }

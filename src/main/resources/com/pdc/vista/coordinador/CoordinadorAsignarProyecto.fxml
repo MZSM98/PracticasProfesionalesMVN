@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="498.0" prefWidth="832.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorAsignarProyectoController">
+<AnchorPane id="AnchorPane" prefHeight="527.0" prefWidth="832.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorAsignarProyectoController">
    <children>
       <Label layoutX="14.0" layoutY="116.0" text="Proyecto:" />
       <ComboBox fx:id="comboOrganizacionVinculada" layoutX="154.0" layoutY="79.0" onAction="#accionComboOrganizacionVinculada" prefHeight="25.0" prefWidth="312.0" promptText="Seleccione una organización vinculada" />
@@ -40,7 +40,7 @@
          </columnResizePolicy>
       </TableView>
       <Button fx:id="botonAsignar" disable="true" layoutX="372.0" layoutY="276.0" mnemonicParsing="false" onAction="#accionAsignar" prefHeight="25.0" prefWidth="87.0" text="&lt; Asignar" />
-      <GridPane layoutX="199.0" layoutY="442.0" prefHeight="30.0" prefWidth="460.0">
+      <GridPane layoutX="189.0" layoutY="483.0" prefHeight="30.0" prefWidth="460.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -61,5 +61,8 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
+      <Label layoutX="11.0" layoutY="443.0" text="Vacantes del proyecto:" />
+      <Label fx:id="labelVacantes" layoutX="142.0" layoutY="443.0" text="0 / 0" />
+      <Button fx:id="botonReiniciar" disable="true" layoutX="372.0" layoutY="353.0" mnemonicParsing="false" onAction="#accionReiniciar" prefHeight="25.0" prefWidth="87.0" text="Reiniciar" />
    </children>
 </AnchorPane>
