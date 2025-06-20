@@ -108,14 +108,17 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private void accionAsignar(ActionEvent event) {
+        
         EstudianteDTO estudianteSeleccionado = tablaSinAsignar.getSelectionModel().getSelectedItem();
         ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        
         if (Objects.isNull(estudianteSeleccionado)) {
             AlertaUtil.mostrarAlerta("Alerta", "Debe seleccionar un registro", Alert.AlertType.WARNING);
         }else if(validaVacantesProyecto(proyectoSeleccionado)){
             tablaAsignados.getItems().add(estudianteSeleccionado);
             tablaSinAsignar.getItems().remove(estudianteSeleccionado);
-            ProyectoAsignadoDTO proyectoAsignado = new ProyectoAsignadoDTO();
+            ProyectoAsignadoDTO proyectoAsignado;
+            proyectoAsignado = new ProyectoAsignadoDTO();
             proyectoAsignado.setEstudiante(estudianteSeleccionado);
             proyectoAsignado.setProyecto(proyectoSeleccionado);
             listaProyectosPorAsignar.add(proyectoAsignado);

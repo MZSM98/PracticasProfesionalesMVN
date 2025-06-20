@@ -81,7 +81,7 @@ public class EstudianteGestionController implements Initializable {
         try {
             ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
             EstudianteRegistroController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
-            controlador.poblarInformacionComboPeriodoySeccion();
+            controlador.poblarInformacionCombos();
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
         } catch (IOException ex) {
             LOG.error("Error al cargar la ventana de edición: " + ex.getMessage());

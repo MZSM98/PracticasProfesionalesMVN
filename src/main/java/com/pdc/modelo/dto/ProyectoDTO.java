@@ -14,6 +14,10 @@ public class ProyectoDTO {
     private Date fechaFinal;
     private ResponsableOrganizacionVinculadaDTO responsable;
     private int vacantes;
+    private String cronogramaMesUno;
+    private String cronogramaMesDos;
+    private String cronogramaMesTres;
+    private String cronogramaMesCuatro;
     
     public int getProyectoID() {
         return proyectoID;
@@ -98,6 +102,40 @@ public class ProyectoDTO {
     public void setVacantes(int vacantes) {
         this.vacantes = vacantes;
     }
+
+    public String getCronogramaMesUno() {
+        return cronogramaMesUno;
+    }
+
+    public void setCronogramaMesUno(String cronogramaMesUno) {
+        this.cronogramaMesUno = cronogramaMesUno;
+    }
+
+    public String getCronogramaMesDos() {
+        return cronogramaMesDos;
+    }
+
+    public void setCronogramaMesDos(String cronogramaMesDos) {
+        this.cronogramaMesDos = cronogramaMesDos;
+    }
+
+    public String getCronogramaMesTres() {
+        return cronogramaMesTres;
+    }
+
+    public void setCronogramaMesTres(String cronogramaMesTres) {
+        this.cronogramaMesTres = cronogramaMesTres;
+    }
+
+    public String getCronogramaMesCuatro() {
+        return cronogramaMesCuatro;
+    }
+
+    public void setCronogramaMesCuatro(String cronogramaMesCuatro) {
+        this.cronogramaMesCuatro = cronogramaMesCuatro;
+    }
+
+    
 
     @Override
     public String toString() {

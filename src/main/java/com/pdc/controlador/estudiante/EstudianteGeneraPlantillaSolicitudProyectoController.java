@@ -117,8 +117,8 @@ public class EstudianteGeneraPlantillaSolicitudProyectoController implements Ini
             remplazos.put("{cronograma_octubre_abril}", "");
             remplazos.put("{cronograma_noviembre_mayo}", "");
             
-            POIUtil.reemplazarMarcadores(word, remplazos, documento);
-            mostrarDialogoGuardar(word);
+            POIUtil.reemplazarMarcadores(word, remplazos);
+            mostrarDialogoGuardar(word, documento);
 
         } catch (IOException ex) {
             LOG.error("Error al procesar plantilla: ", ex);

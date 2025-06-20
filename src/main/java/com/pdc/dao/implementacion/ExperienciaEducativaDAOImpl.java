@@ -51,7 +51,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
     }
     
     @Override
-    public List<ExperienciaEducativaDTO> listarExperienciaAsignada() throws SQLException, IOException {
+    public List<ExperienciaEducativaDTO> listarExperienciaEducativa() throws SQLException, IOException {
         String consultaTodoSQL = "SELECT nrc, nombre FROM experienciaeducativa";
         List<ExperienciaEducativaDTO> listaExperienciasEducativas = new ArrayList<>();
         
