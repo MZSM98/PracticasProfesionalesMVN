@@ -1,6 +1,6 @@
 package com.pdc.modelo.dto;
 
-public class ProfesorEEDTO extends UsuarioDTO{
+public class ProfesorExperienciaEducativaDTO extends UsuarioDTO{
     
     private String numeroTrabajador;
     private String nombreProfesor;

@@ -111,6 +111,7 @@ public class EstudianteGestionController implements Initializable {
         columnPromedio.setCellValueFactory(new PropertyValueFactory<>("promedio"));
     }
     private void poblarTablaEstudiante(){
+        
         try {
             List<EstudianteDTO> listaEstudiantes = interfazEstudianteDAO.listarEstudiantes();
             ObservableList<EstudianteDTO> listaObservableEstudiantes = FXCollections.observableArrayList(listaEstudiantes);

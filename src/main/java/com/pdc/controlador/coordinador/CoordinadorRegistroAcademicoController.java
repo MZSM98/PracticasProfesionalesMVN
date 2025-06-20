@@ -1,7 +1,7 @@
 package com.pdc.controlador.coordinador;
 
 import com.pdc.modelo.dto.AcademicoEvaluadorDTO;
-import com.pdc.modelo.dto.ProfesorEEDTO;
+import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.modelo.dto.TipoUsuarioDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import java.io.IOException;
@@ -95,7 +95,7 @@ public class CoordinadorRegistroAcademicoController {
     
     private void guardarDatosProfesorExperienciaEducativa(){
         
-        ProfesorEEDTO profesorExperienciaEducativa = new ProfesorEEDTO();
+        ProfesorExperienciaEducativaDTO profesorExperienciaEducativa = new ProfesorExperienciaEducativaDTO();
         profesorExperienciaEducativa.setNumeroTrabajador(txtNumeroDeTrabajador.getText().trim());
         profesorExperienciaEducativa.setNombreProfesor(txtNombreDelTrabajador.getText().trim());
         profesorExperienciaEducativa.setSeccion(txtSeccion.getText().trim());
@@ -121,9 +121,9 @@ public class CoordinadorRegistroAcademicoController {
             AcademicoEvaluadorDTO academicoEvaluador = (AcademicoEvaluadorDTO) academicoSeleccionado;
             txtNumeroDeTrabajador.setText(academicoEvaluador.getNumeroDeTrabajador());
             txtNombreDelTrabajador.setText(academicoEvaluador.getNombreAcademico());
-        }else if(academicoSeleccionado instanceof ProfesorEEDTO){
+        }else if(academicoSeleccionado instanceof ProfesorExperienciaEducativaDTO){
             
-            ProfesorEEDTO profesor = (ProfesorEEDTO) academicoSeleccionado;
+            ProfesorExperienciaEducativaDTO profesor = (ProfesorExperienciaEducativaDTO) academicoSeleccionado;
             txtNumeroDeTrabajador.setText(profesor.getNumeroTrabajador());
             txtNombreDelTrabajador.setText(profesor.getNombreProfesor());
             txtSeccion.setText(profesor.getSeccion());
@@ -138,9 +138,9 @@ public class CoordinadorRegistroAcademicoController {
             if(academico instanceof AcademicoEvaluadorDTO){
                 
                 interfazAcademicoEvaluadorDAO.insertarAcademicoEvaluador((AcademicoEvaluadorDTO) academico);
-            }else if(academico instanceof ProfesorEEDTO){
+            }else if(academico instanceof ProfesorExperienciaEducativaDTO){
                 
-                interfazProfesorEEDAO.insertarProfesorEE((ProfesorEEDTO) academico);
+                interfazProfesorEEDAO.insertarProfesorEE((ProfesorExperienciaEducativaDTO) academico);
             }
             AlertaUtil.mostrarAlertaRegistroExitoso();
             limpiarCampos();
@@ -161,9 +161,9 @@ public class CoordinadorRegistroAcademicoController {
             if(academico instanceof AcademicoEvaluadorDTO){
                 
             interfazAcademicoEvaluadorDAO.editarAcademicoEvaluador((AcademicoEvaluadorDTO) academico);
-            }else if(academico instanceof ProfesorEEDTO){
+            }else if(academico instanceof ProfesorExperienciaEducativaDTO){
                 
-                interfazProfesorEEDAO.editarProfesorEE((ProfesorEEDTO) academico);
+                interfazProfesorEEDAO.editarProfesorEE((ProfesorExperienciaEducativaDTO) academico);
             }
             AlertaUtil.mostrarAlerta(ConstantesUtil.ACTUALIZAR, ConstantesUtil.ALERTA_ACTUALIZACION_EXITOSA, Alert.AlertType.INFORMATION);
             volverAGestionAcademico();

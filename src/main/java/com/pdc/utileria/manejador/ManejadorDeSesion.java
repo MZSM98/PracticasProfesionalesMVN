@@ -16,7 +16,7 @@ public class ManejadorDeSesion {
         
         return usuario;
     }
-
+    
     public static void iniciarSesion(UsuarioDTO usuario) {
         
         ManejadorDeSesion.usuario = usuario;
@@ -26,4 +26,5 @@ public class ManejadorDeSesion {
        
        usuario = null;
    }
+   
 }

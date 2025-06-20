@@ -134,7 +134,8 @@ public class InicioDeSesionController implements Initializable {
     }
     
 
-    private void abrirMenuPrincipal(TipoUsuarioDTO tipoUsuario){ 
+    private void abrirMenuPrincipal(TipoUsuarioDTO tipoUsuario){
+        
         if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
         } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {

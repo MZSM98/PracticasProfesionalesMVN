@@ -3,7 +3,7 @@ package com.pdc.utileria;
 import com.pdc.modelo.dto.AcademicoEvaluadorDTO;
 import com.pdc.modelo.dto.CoordinadorDTO;
 import com.pdc.modelo.dto.EstudianteDTO;
-import com.pdc.modelo.dto.ProfesorEEDTO;
+import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 
 public class ContrasenaUtil {
     
@@ -18,7 +18,7 @@ public class ContrasenaUtil {
         return contrasenaDefecto.concat(academicoEvaluador.getNombreAcademico().substring(0, 2));
     }
     
-    public static final String crearContrasenaPorDefecto(ProfesorEEDTO profesorEE){
+    public static final String crearContrasenaPorDefecto(ProfesorExperienciaEducativaDTO profesorEE){
         
         String contrasenaDefecto = profesorEE.getNumeroTrabajador().substring(0,7);
         return contrasenaDefecto.concat(profesorEE.getNombreProfesor().substring(0, 2));

@@ -1,7 +1,7 @@
 package com.pdc.controlador.coordinador;
 
 import com.pdc.modelo.dto.AcademicoEvaluadorDTO;
-import com.pdc.modelo.dto.ProfesorEEDTO;
+import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.modelo.dto.TipoUsuarioDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import java.io.IOException;
@@ -139,10 +139,10 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             try {
             ObservableList<UsuarioDTO> listaObservableUsuarioDTO = FXCollections.observableArrayList();
 
-            List<ProfesorEEDTO> listaAcademicoEvaluador = interfazProfesorEEDAO.listaProfesorEE();
-            ObservableList<ProfesorEEDTO> listaObservableAcademicoEvaluador = FXCollections.observableArrayList(listaAcademicoEvaluador);
+            List<ProfesorExperienciaEducativaDTO> listaAcademicoEvaluador = interfazProfesorEEDAO.listaProfesorEE();
+            ObservableList<ProfesorExperienciaEducativaDTO> listaObservableAcademicoEvaluador = FXCollections.observableArrayList(listaAcademicoEvaluador);
                         
-            for (ProfesorEEDTO academico : listaObservableAcademicoEvaluador) {
+            for (ProfesorExperienciaEducativaDTO academico : listaObservableAcademicoEvaluador) {
                 
                 listaObservableUsuarioDTO.add(academico); 
             }

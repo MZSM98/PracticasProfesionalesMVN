@@ -31,5 +31,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
+      <Label layoutX="41.0" layoutY="26.0" text="Bienvenido:" />
+      <Label fx:id="labelNombreUsuario" layoutX="110.0" layoutY="26.0" text="LabelNombreUsuario" />
    </children>
 </AnchorPane>

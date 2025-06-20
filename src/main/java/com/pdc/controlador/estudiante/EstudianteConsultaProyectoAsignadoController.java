@@ -58,10 +58,12 @@ public class EstudianteConsultaProyectoAsignadoController implements Initializab
     }
     
     private void consultaProyectoAsingado(){
-        EstudianteDTO estudiante = (EstudianteDTO) ManejadorDeSesion.getUsuario();
+        EstudianteDTO estudiante;
+        estudiante = (EstudianteDTO) ManejadorDeSesion.getUsuario();
         String matricula = estudiante.getMatricula();
         ProyectoAsignadoDTO proyectoAsignado = null;
         try {
+            
             proyectoAsignado = interfazProyectoAsignadoDAO.obtenerProyectoAsignadoPorMatricula(matricula);
         } catch (SQLException ex) {
             LOG.error(ex);
@@ -69,6 +71,7 @@ public class EstudianteConsultaProyectoAsignadoController implements Initializab
             LOG.error(ex);
         }
         if(Objects.nonNull(proyectoAsignado)){
+            
             ProyectoDTO proyecto = proyectoAsignado.getProyecto();
             llenarDatosVista(proyecto);
         }else{

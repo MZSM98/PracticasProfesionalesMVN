@@ -1,6 +1,6 @@
 package com.pdc.dao.implementacion;
 
-import com.pdc.modelo.dto.ProfesorEEDTO;
+import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.utileria.bd.ConexionBD;
 import com.pdc.modelo.dto.UsuarioDTO;
 
@@ -27,7 +27,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
     
     @Override
-    public boolean insertarProfesorEE(ProfesorEEDTO profesor) throws SQLException, IOException {
+    public boolean insertarProfesorEE(ProfesorExperienciaEducativaDTO profesor) throws SQLException, IOException {
         String insertarSQL = "INSERT INTO profesoree (numeroDeTrabajador, nombreProfesor, seccion) VALUES (?, ?, ?)";
         boolean insercionExitosa = false;
         
@@ -72,7 +72,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
 
     @Override
-    public boolean editarProfesorEE(ProfesorEEDTO profesor) throws SQLException, IOException {
+    public boolean editarProfesorEE(ProfesorExperienciaEducativaDTO profesor) throws SQLException, IOException {
         String actualizarSQL = "UPDATE profesoree SET nombreProfesor = ?, seccion = ? WHERE numeroDeTrabajador = ?";
         boolean actualizacionExitosa = false;
         
@@ -92,9 +92,9 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
 
     @Override
-    public ProfesorEEDTO buscarProfesorEE(String numeroTrabajador) throws SQLException, IOException {
+    public ProfesorExperienciaEducativaDTO buscarProfesorEE(String numeroTrabajador) throws SQLException, IOException {
         String consultaSQL = "SELECT numeroDeTrabajador, nombreProfesor, seccion FROM profesoree WHERE numeroDeTrabajador = ?";
-        ProfesorEEDTO profesor = null;
+        ProfesorExperienciaEducativaDTO profesor = null;
         
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
@@ -103,7 +103,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
             resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             if (resultadoDeOperacion.next()) {
-                profesor = new ProfesorEEDTO();
+                profesor = new ProfesorExperienciaEducativaDTO();
                 profesor.setNumeroTrabajador(resultadoDeOperacion.getString("numeroDeTrabajador"));
                 profesor.setNombreProfesor(resultadoDeOperacion.getString("nombreProfesor"));
                 profesor.setSeccion(resultadoDeOperacion.getString("seccion"));
@@ -117,9 +117,9 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
 
     @Override
-    public List<ProfesorEEDTO> listaProfesorEE() throws SQLException, IOException {
+    public List<ProfesorExperienciaEducativaDTO> listaProfesorEE() throws SQLException, IOException {
         String consultaSQL = "SELECT numeroDeTrabajador, nombreProfesor, seccion FROM profesoree";
-        List<ProfesorEEDTO> profesores = new ArrayList<>();
+        List<ProfesorExperienciaEducativaDTO> profesores = new ArrayList<>();
         
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
@@ -127,7 +127,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
             resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             while (resultadoDeOperacion.next()) {
-                ProfesorEEDTO profesor = new ProfesorEEDTO();
+                ProfesorExperienciaEducativaDTO profesor = new ProfesorExperienciaEducativaDTO();
                 profesor.setNumeroTrabajador(resultadoDeOperacion.getString("numeroDeTrabajador"));
                 profesor.setNombreProfesor(resultadoDeOperacion.getString("nombreProfesor"));
                 profesor.setSeccion(resultadoDeOperacion.getString("seccion"));

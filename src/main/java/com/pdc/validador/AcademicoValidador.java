@@ -1,7 +1,7 @@
 package com.pdc.validador;
 
 import com.pdc.modelo.dto.AcademicoEvaluadorDTO;
-import com.pdc.modelo.dto.ProfesorEEDTO;
+import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import com.pdc.utileria.ConstantesUtil;
 
@@ -55,8 +55,8 @@ public class AcademicoValidador {
                 AcademicoEvaluadorDTO academicoEvaluador = (AcademicoEvaluadorDTO) academico;
                 validarNumeroDeTrabajador(academicoEvaluador.getNumeroDeTrabajador());
                 validarNombre(academicoEvaluador.getNombreAcademico(), 100);
-            }else if(academico instanceof ProfesorEEDTO){
-                ProfesorEEDTO profesorExperienciaEducativa = (ProfesorEEDTO) academico;
+            }else if(academico instanceof ProfesorExperienciaEducativaDTO){
+                ProfesorExperienciaEducativaDTO profesorExperienciaEducativa = (ProfesorExperienciaEducativaDTO) academico;
                 validarNumeroDeTrabajador(profesorExperienciaEducativa.getNumeroTrabajador());
                 validarNombre(profesorExperienciaEducativa.getNombreProfesor(), 100);
                 validarSeccion(profesorExperienciaEducativa.getSeccion(), 2);
