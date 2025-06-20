@@ -12,7 +12,9 @@ import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
+import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.GmailUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
 import java.net.URL;
@@ -168,6 +170,7 @@ public class CoordinadorAsignarProyectoController implements Initializable {
             for (ProyectoAsignadoDTO proyectoAsignado : listaProyectosPorAsignar) {
                 try {
                     interfazProyectoAsignadoDAO.insertarProyectoAsignado(proyectoAsignado);
+                    informaCorreo(proyectoAsignado.getEstudiante(), proyectoSeleccionado.getResponsable(), proyectoSeleccionado);
                 } catch (SQLException ex) {
                     LOG.error(ex);
                 } catch (IOException ex) {
@@ -281,5 +284,12 @@ public class CoordinadorAsignarProyectoController implements Initializable {
         }else{
             labelVacantes.setText(String.format("%d / %d", 0, 0));
         }
+    }
+    
+    private void informaCorreo(EstudianteDTO estudiante, ResponsableOrganizacionVinculadaDTO responsable, ProyectoDTO proyecto){
+        //GmailUtil.enviarCorreoHTML(estudiante.getCorreo(), asunto, nombre, mensaje);
+        GmailUtil.enviarCorreoHTML(responsable.getCorreoResponsable(), "Proyecto asignado", responsable.getNombreResponsable(), 
+                String.format("El estudiante %s ha sido asignado al proyecto %s", estudiante.getNombreEstudiante(), proyecto.getTituloProyecto()));
+
     }
 }

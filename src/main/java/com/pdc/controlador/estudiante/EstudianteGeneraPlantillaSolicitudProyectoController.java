@@ -112,10 +112,10 @@ public class EstudianteGeneraPlantillaSolicitudProyectoController implements Ini
             remplazos.put("{proyecto_descripcion}", proyecto.getDescripcionProyecto());
             remplazos.put("{proyecto_vacantes}", proyecto.getVacantes() + " estudiantes");
 
-            remplazos.put("{cronograma_agosto_febrero}", "");
-            remplazos.put("{cronograma_ septiembre_marzo}", "");
-            remplazos.put("{cronograma_octubre_abril}", "");
-            remplazos.put("{cronograma_noviembre_mayo}", "");
+            remplazos.put("{cronograma_agosto_febrero}", proyecto.getCronogramaMesUno());
+            remplazos.put("{cronograma_ septiembre_marzo}", proyecto.getCronogramaMesDos());
+            remplazos.put("{cronograma_octubre_abril}", proyecto.getCronogramaMesTres());
+            remplazos.put("{cronograma_noviembre_mayo}", proyecto.getCronogramaMesCuatro());
             
             POIUtil.reemplazarMarcadores(word, remplazos);
             mostrarDialogoGuardar(word, documento);
