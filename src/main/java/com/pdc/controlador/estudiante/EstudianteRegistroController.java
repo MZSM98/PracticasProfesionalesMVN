@@ -148,9 +148,8 @@ public class EstudianteRegistroController implements Initializable {
         textAvanceCrediticio.setText(estudiante.getAvanceCrediticio().toString());
         textPromedio.setText(estudiante.getPromedio().toString());
         textMatricula.setDisable(modoEdicion);
-        comboExperienciaEducativa.setDisable(modoEdicion);
+        textNombreEstudiante.setDisable(modoEdicion);
         comboPeriodoEscolar.setDisable(modoEdicion);
-        comboSeccionEstudiante.setDisable(modoEdicion);
     }
 
     public void setModoEdicion(boolean modoEdicion) {

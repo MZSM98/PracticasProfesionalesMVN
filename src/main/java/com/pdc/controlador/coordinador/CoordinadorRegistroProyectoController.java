@@ -68,7 +68,19 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     
     @FXML
     private Spinner<Integer> spinnerVacantes;
-     
+    
+    @FXML
+    private TextArea textCronogramaMesUno;
+    
+    @FXML
+    private TextArea textCronogramaMesDos;
+    
+    @FXML
+    private TextArea textCronogramaMesTres;
+    
+    @FXML
+    private TextArea textCronogramaMesCuatro;
+    
     @FXML
     private Button botonGuardarProyecto;
     
@@ -193,6 +205,10 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         textDescripcionProyecto.setText(proyectoDTO.getDescripcionProyecto());
         comboPeriodoEscolar.getSelectionModel().select(proyectoDTO.getPeriodoEscolar());
         spinnerVacantes.getValueFactory().setValue(proyectoDTO.getVacantes());
+        textCronogramaMesUno.setText(String.valueOf(proyectoDTO.getCronogramaMesUno()));
+        textCronogramaMesDos.setText(String.valueOf(proyectoDTO.getCronogramaMesDos()));
+        textCronogramaMesTres.setText(String.valueOf(proyectoDTO.getCronogramaMesTres()));
+        textCronogramaMesCuatro.setText(String.valueOf(proyectoDTO.getCronogramaMesCuatro()));
         
         try {
             
@@ -238,6 +254,10 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         proyectoDTO.setResponsable(comboResponsableProyecto.getSelectionModel().getSelectedItem());
         proyectoDTO.setOrganizacion(comboOrganizacionVinculada.getSelectionModel().getSelectedItem());
         proyectoDTO.setVacantes(spinnerVacantes.getValue());
+        proyectoDTO.setCronogramaMesUno(textCronogramaMesUno.getText().trim());
+        proyectoDTO.setCronogramaMesDos(textCronogramaMesDos.getText().trim());
+        proyectoDTO.setCronogramaMesTres(textCronogramaMesTres.getText().trim());
+        proyectoDTO.setCronogramaMesCuatro(textCronogramaMesCuatro.getText().trim());
         
         
         if (!validarCampos(proyectoDTO)) {
