@@ -28,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -80,6 +81,9 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private TableView<EstudianteDTO> tablaSinAsignar;
+    
+    @FXML
+    private Label labelVacantes;
 
     private List<ProyectoAsignadoDTO> listaProyectosPorAsignar;
 
@@ -117,11 +121,13 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private void accionCambioComboProyecto(ActionEvent event) {
-        if (Objects.nonNull(comboProyecto.getSelectionModel().getSelectedItem())) {
+        ProyectoDTO proyecto = comboProyecto.getSelectionModel().getSelectedItem();
+        if (Objects.nonNull(proyecto)) {
             botonAsignar.setDisable(Boolean.FALSE);
             botonGuardar.setDisable(Boolean.FALSE);
             llenarTablaEstudianteSinAsignar();
             llenarTablaEstudiantesAsignados();
+            labelVacantes.setText(String.format("%d / %d", tablaAsignados.getItems().size(), proyecto.getVacantes()));
         } else {
             botonAsignar.setDisable(Boolean.TRUE);
             botonGuardar.setDisable(Boolean.TRUE);
@@ -148,7 +154,9 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     @FXML
     private void accionGuardar(ActionEvent event) {
         ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
-        if (Objects.nonNull(proyectoSeleccionado) && !listaProyectosPorAsignar.isEmpty()) {
+
+        if (validaVacantesProyecto(proyectoSeleccionado)
+                && Objects.nonNull(proyectoSeleccionado) && !listaProyectosPorAsignar.isEmpty()) {
             for (ProyectoAsignadoDTO proyectoAsignado : listaProyectosPorAsignar) {
                 try {
                     interfazProyectoAsignadoDAO.insertarProyectoAsignado(proyectoAsignado);
@@ -162,6 +170,18 @@ public class CoordinadorAsignarProyectoController implements Initializable {
             accionCancelar(event);
         }
 
+    }
+    
+    private boolean validaVacantesProyecto(ProyectoDTO proyectoSeleccionado){
+        Integer vacantes = proyectoSeleccionado.getVacantes();
+        Integer actuales = tablaAsignados.getItems().size();
+        
+        if(actuales > vacantes){
+            AlertaUtil.mostrarAlerta("Advertencia", "El limite de vacantes para el proyecto es de "+vacantes, Alert.AlertType.WARNING);
+            return false;
+        }else{
+            return true;
+        }
     }
 
     private void llenarDatosComboProyecto() {
