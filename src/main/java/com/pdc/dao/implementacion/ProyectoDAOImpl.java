@@ -428,6 +428,10 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         proyecto.setResponsable(responsable);
 
         proyecto.setVacantes(rs.getInt(VACANTES));
+        proyecto.setCronogramaMesUno(resultadoDeOperacion.getString(CRONOGRAMA_MES_UNO));
+        proyecto.setCronogramaMesDos(resultadoDeOperacion.getString(CRONOGRAMA_MES_DOS));
+        proyecto.setCronogramaMesTres(resultadoDeOperacion.getString(CRONOGRAMA_MES_TRES));
+        proyecto.setCronogramaMesCuatro(resultadoDeOperacion.getString(CRONOGRAMA_MES_CUATRO));
 
         return proyecto;
     }
