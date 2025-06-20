@@ -2,6 +2,8 @@ package com.pdc.dao.implementacion;
 
 import com.pdc.dao.interfaz.IEstudianteDAO;
 import com.pdc.dao.interfaz.IEstudianteExperienciaEducativa;
+import com.pdc.dao.interfaz.IExperienciaEducativa;
+import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
 import com.pdc.utileria.bd.ConexionBD;
@@ -19,14 +21,14 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
     private final IEstudianteDAO interfazEstudianteDAO; 
-    private final IExperienciaEducativa interfazExperienciaEducativa;
+    private final IExperienciaEducativa interfazExperienciaEducativaDAO;
     
     public static final String ID_EXPERIENCIA_ASIGNADA = "idexperienciaasignada";
     public static final String NRC = "nrc";
     public static final String MATRICULA = "matricula";
     
     public EstudianteExperienciaEducativaDAOImpl() {
-        interfazExperienciaEducativa = new ExperienciaEducativaDA();
+        interfazExperienciaEducativaDAO = new ExperienciaEducativaDAOImpl();
         interfazEstudianteDAO = new EstudianteDAOImpl();
     }
     
@@ -38,8 +40,8 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
-            declaracionPreparada.setString(1, estudianteAsignado.getExperienciaEducativa());
-            declaracionPreparada.setString(2, estudianteAsignado.getEstudiante());
+            declaracionPreparada.setString(1, estudianteAsignado.getExperienciaEducativa().getNrc());
+            declaracionPreparada.setString(2, estudianteAsignado.getEstudiante().getMatricula());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
@@ -61,8 +63,9 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
-            declaracionPreparada.setString(1, estudianteAsignado.getNrc());
-            declaracionPreparada.setString(2, estudianteAsignado.getMatricula());
+            
+            declaracionPreparada.setString(1, estudianteAsignado.getExperienciaEducativa().getNrc());
+            declaracionPreparada.setString(2, estudianteAsignado.getEstudiante().getMatricula());
             declaracionPreparada.setInt(3, estudianteAsignado.getIdExperienciaAsignada());
             declaracionPreparada.executeUpdate();
             actualizacionExitosa = true;
@@ -91,8 +94,16 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
             if (resultadoDeOperacion.next()) {
                 estudianteAsignado = new EstudianteExperienciaEducativaDTO();
                 estudianteAsignado.setIdExperienciaAsignada(resultadoDeOperacion.getInt(ID_EXPERIENCIA_ASIGNADA));
-                estudianteAsignado.setExperienciaEducativa(resultadoDeOperacion.getString(NRC));
-                estudianteAsignado.setMatricula(resultadoDeOperacion.getString(MATRICULA));
+                
+                String nrc = resultadoDeOperacion.getString(NRC);
+                ExperienciaEducativaDTO experienciaEducativa;
+                experienciaEducativa = interfazExperienciaEducativaDAO.obtenerExperienciaEducativaPorNRC(nrc);
+                experienciaEducativa.setNrc(nrc);
+                
+                String matricula = resultadoDeOperacion.getString(MATRICULA);
+                EstudianteDTO estudiante;
+                estudiante = interfazEstudianteDAO.buscarEstudiante(matricula);
+                estudiante.setMatricula(matricula);
             }
         } finally {
             if (resultadoDeOperacion != null) {
@@ -121,8 +132,16 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
             while (resultadoDeOperacion.next()) {
                 EstudianteExperienciaEducativaDTO estudianteAsignado = new EstudianteExperienciaEducativaDTO();
                 estudianteAsignado.setIdExperienciaAsignada(resultadoDeOperacion.getInt(ID_EXPERIENCIA_ASIGNADA));
-                estudianteAsignado.setNrc(resultadoDeOperacion.getString(NRC));
-                estudianteAsignado.setMatricula(resultadoDeOperacion.getString(MATRICULA));
+                
+                String nrc = resultadoDeOperacion.getString(NRC);
+                ExperienciaEducativaDTO experienciaEducativa;
+                experienciaEducativa = interfazExperienciaEducativaDAO.obtenerExperienciaEducativaPorNRC(nrc);
+                experienciaEducativa.setNrc(nrc);
+                
+                String matricula = resultadoDeOperacion.getString(MATRICULA);
+                EstudianteDTO estudiante;
+                estudiante = interfazEstudianteDAO.buscarEstudiante(matricula);
+                estudiante.setMatricula(matricula);
                 
                 listaEstudiantesAsignados.add(estudianteAsignado);
             }
