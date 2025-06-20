@@ -28,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -71,6 +72,8 @@ public class EstudianteGeneraPlantillaSolicitudProyectoController implements Ini
             if (plantilla != null) {
                 
                 llenarDatosPlantilla(plantilla, proyecto, documento);
+                FileUtils.deleteQuietly(plantilla);
+
             } else {
                 AlertaUtil.mostrarAlertaErrorCargarInformacion();
 
@@ -146,7 +149,7 @@ public class EstudianteGeneraPlantillaSolicitudProyectoController implements Ini
                 document.close();
 
                 AlertaUtil.mostrarAlertaExito("Documento guardado exitosamente");
-
+                
             } catch (IOException ex) {
                 LOG.error("Error al guardar documento: ", ex);
                 AlertaUtil.mostrarAlertaError("Error al guardar el documento");
