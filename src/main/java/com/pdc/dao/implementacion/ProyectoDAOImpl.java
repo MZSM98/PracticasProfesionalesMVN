@@ -261,7 +261,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     @Override
     public List<ProyectoDTO> listarProyectosPorOv(String rfcMoral) throws SQLException, IOException {
 
-        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable FROM proyecto WHERE rfcMoral = ?";
+        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto WHERE rfcMoral = ?";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
         try {
@@ -293,6 +293,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
 
                 ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoralResult);
                 proyecto.setResponsable(responsable);
+                proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
 
                 listaProyectos.add(proyecto);
             }
