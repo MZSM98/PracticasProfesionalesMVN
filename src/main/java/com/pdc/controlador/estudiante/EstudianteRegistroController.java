@@ -18,12 +18,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import com.pdc.dao.implementacion.EstudianteDAOImpl;
+import com.pdc.dao.implementacion.EstudianteExperienciaEducativaDAOImpl;
+import com.pdc.dao.implementacion.ExperienciaEducativaDAOImpl;
 import com.pdc.dao.implementacion.PeriodoEscolarDAOImpl;
 import com.pdc.dao.implementacion.SeccionDAOImpl;
 import org.apache.log4j.Logger;
 import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
 import com.pdc.dao.interfaz.ISeccionDAO;
 import com.pdc.dao.interfaz.IEstudianteDAO;
+import com.pdc.dao.interfaz.IEstudianteExperienciaEducativa;
+import com.pdc.dao.interfaz.IExperienciaEducativa;
+import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
+import com.pdc.modelo.dto.ExperienciaEducativaDTO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class EstudianteRegistroController implements Initializable {
@@ -42,10 +48,12 @@ public class EstudianteRegistroController implements Initializable {
     private ComboBox<PeriodoEscolarDTO> comboPeriodoEscolar;
 
     @FXML
-    private TextField textPromedio;
-
-    @FXML
     private ComboBox<SeccionDTO> comboSeccionEstudiante;
+    
+    @FXML
+    private ComboBox<ExperienciaEducativaDTO> comboExperienciaEducativa;
+    @FXML
+    private TextField textPromedio;
 
     @FXML
     private TextField textAvanceCrediticio;
@@ -53,10 +61,10 @@ public class EstudianteRegistroController implements Initializable {
     private boolean modoEdicion;
     
     private IEstudianteDAO interfazEstudianteDAO;
-    
     private IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
-    
     private ISeccionDAO interfazSeccionDAO;
+    private IExperienciaEducativa interfazExperienciaEducativaDAO;
+    private IEstudianteExperienciaEducativa interfazEstudianteExperienciaEducativaDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,7 +72,9 @@ public class EstudianteRegistroController implements Initializable {
         interfazEstudianteDAO = new EstudianteDAOImpl();
         interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
         interfazSeccionDAO = new SeccionDAOImpl();
-        poblarInformacionComboPeriodoySeccion();
+        interfazExperienciaEducativaDAO = new ExperienciaEducativaDAOImpl();
+        interfazEstudianteExperienciaEducativaDAO = new EstudianteExperienciaEducativaDAOImpl();
+        poblarInformacionCombos();
     }    
 
     @FXML
@@ -85,6 +95,11 @@ public class EstudianteRegistroController implements Initializable {
             estudiante.setAvanceCrediticio(Integer.valueOf(textAvanceCrediticio.getText().trim()));
             estudiante.setPromedio(Double.valueOf(textPromedio.getText().trim()));
             
+            EstudianteExperienciaEducativaDTO experienciaAsignada;
+            experienciaAsignada = new EstudianteExperienciaEducativaDTO();
+            experienciaAsignada.setEstudiante(estudiante);
+            experienciaAsignada.setExperienciaEducativa(comboExperienciaEducativa.getValue());
+            
             if (!EstudianteValidador.validarEstudiante(estudiante)) {
                 return;
             }
@@ -92,34 +107,62 @@ public class EstudianteRegistroController implements Initializable {
             if (modoEdicion) {
                 editarEstudiante(estudiante);
             } else {
-                registrarEstudiante(estudiante);
+                registrarEstudiante(estudiante, experienciaAsignada);
             }
             
-            limpiarCampos();
+            salirAMenuPrincipal();
         } catch (NumberFormatException e) {
             LOG.error(e);
         }
     }
      
     public void llenarCamposEditablesEstudiante(EstudianteDTO estudiante){
+        
         textMatricula.setText(estudiante.getMatricula());
         textNombreEstudiante.setText(estudiante.getNombreEstudiante());
         comboPeriodoEscolar.setValue(estudiante.getPeriodoEscolar());
         comboSeccionEstudiante.setValue(estudiante.getSeccionEstudiante());
+        
+        try {
+            
+            String matricula;
+            matricula = estudiante.getMatricula();  
+            
+            EstudianteExperienciaEducativaDTO experienciaEducativa;
+            experienciaEducativa = interfazEstudianteExperienciaEducativaDAO.obtenerExperienciaAsignadaPorEstudiante(matricula);
+            
+            ExperienciaEducativaDTO experienciaSeleccionada;
+            experienciaSeleccionada = experienciaEducativa.getExperienciaEducativa();
+            
+            comboExperienciaEducativa.setValue(experienciaSeleccionada);
+        }catch (SQLException sqle){
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        }catch (IOException slqe){
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
+        }
+        
         textAvanceCrediticio.setText(estudiante.getAvanceCrediticio().toString());
         textPromedio.setText(estudiante.getPromedio().toString());
         textMatricula.setDisable(modoEdicion);
+        comboExperienciaEducativa.setDisable(modoEdicion);
+        comboPeriodoEscolar.setDisable(modoEdicion);
+        comboSeccionEstudiante.setDisable(modoEdicion);
     }
 
     public void setModoEdicion(boolean modoEdicion) {
         this.modoEdicion = modoEdicion;
     }
     
-    private void registrarEstudiante(EstudianteDTO estudiante){
+    private void registrarEstudiante(EstudianteDTO estudiante, EstudianteExperienciaEducativaDTO experienciaAsignada){
         
         try {
             
             interfazEstudianteDAO.insertarEstudiante(estudiante);
+            interfazEstudianteExperienciaEducativaDAO.insertarExperienciaAsignada(experienciaAsignada);
         } catch (SQLException ex) {
             
             LOG.error(ex);
@@ -144,10 +187,11 @@ public class EstudianteRegistroController implements Initializable {
         }
     }
     
-    public void poblarInformacionComboPeriodoySeccion(){
+    public void poblarInformacionCombos(){
         
         ObservableList<PeriodoEscolarDTO> listaPeriodos;
         ObservableList<SeccionDTO> listaSecciones;
+        ObservableList<ExperienciaEducativaDTO> listaExperienciasEducativas;
         
         try {
             
@@ -156,6 +200,9 @@ public class EstudianteRegistroController implements Initializable {
             
             listaSecciones = FXCollections.observableArrayList(interfazSeccionDAO.listarSecciones());
             comboSeccionEstudiante.setItems(listaSecciones);
+            
+            listaExperienciasEducativas = FXCollections.observableArrayList(interfazExperienciaEducativaDAO.listarExperienciaEducativa());
+            comboExperienciaEducativa.setItems(listaExperienciasEducativas);
         } catch (SQLException ex) {
             
             LOG.error(ex);
@@ -164,16 +211,6 @@ public class EstudianteRegistroController implements Initializable {
             
             LOG.error(ex);
         }
-    }
-    
-    private void limpiarCampos(){
-        
-        textMatricula.setText("");
-        textNombreEstudiante.setText("");
-        textAvanceCrediticio.setText("");
-        textPromedio.setText("");
-        comboPeriodoEscolar.setValue(null);
-        comboSeccionEstudiante.setValue(null);
     }
     
     private void salirAMenuPrincipal (){

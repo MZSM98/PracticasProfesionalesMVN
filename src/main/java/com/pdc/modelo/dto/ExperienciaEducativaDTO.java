@@ -22,4 +22,9 @@ public class ExperienciaEducativaDTO {
         this.nombre = nombre;
     }
 
+    @Override
+    public String toString() {
+        return (this.nombre != null ? this.nombre : "") + 
+               " - NRC: " + (this.nrc != null ? this.nrc : "");
+    }
 }

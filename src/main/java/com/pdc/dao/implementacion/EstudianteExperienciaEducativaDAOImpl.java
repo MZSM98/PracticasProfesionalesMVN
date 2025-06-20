@@ -158,4 +158,43 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         }
         return listaEstudiantesAsignados;
     }
+    
+    @Override
+    public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorEstudiante(String matriculaEstudiante) throws SQLException, IOException{
+        String consultaSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa WHERE matricula = ?";
+        EstudianteExperienciaEducativaDTO experienciaAsignada = null;
+        
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+            declaracionPreparada.setString(1, matriculaEstudiante);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+            
+            if (resultadoDeOperacion.next()) {
+                
+                experienciaAsignada = new EstudianteExperienciaEducativaDTO();
+                experienciaAsignada.setIdExperienciaAsignada((Integer)resultadoDeOperacion.getInt(ID_EXPERIENCIA_ASIGNADA));
+
+                String nrc = resultadoDeOperacion.getString(NRC);
+                ExperienciaEducativaDTO experienciaEducativa = interfazExperienciaEducativaDAO.obtenerExperienciaEducativaPorNRC(nrc);
+                experienciaAsignada.setExperienciaEducativa(experienciaEducativa);
+
+                String matricula = resultadoDeOperacion.getString(MATRICULA);
+                EstudianteDTO estudiante = interfazEstudianteDAO.buscarEstudiante(matricula);
+                experienciaAsignada.setEstudiante(estudiante);
+            }
+        } finally {
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        }
+        return experienciaAsignada;
+    }
+
 }

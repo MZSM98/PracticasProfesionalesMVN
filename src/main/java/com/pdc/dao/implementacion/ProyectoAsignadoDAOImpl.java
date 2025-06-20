@@ -212,6 +212,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
+                
                 proyectoAsignado = new ProyectoAsignadoDTO();
                 proyectoAsignado.setIdProyectoAsignado(resultadoDeOperacion.getInt(ID_PROYECTO_ASIGNADO));
 

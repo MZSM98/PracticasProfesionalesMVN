@@ -10,5 +10,5 @@ import java.util.List;
 public interface IExperienciaEducativa {
     
     public ExperienciaEducativaDTO obtenerExperienciaEducativaPorNRC(String nrc) throws SQLException, IOException;
-    public List<ExperienciaEducativaDTO> listarExperienciaAsignada() throws SQLException, IOException; 
+    public List<ExperienciaEducativaDTO> listarExperienciaEducativa() throws SQLException, IOException; 
 }
