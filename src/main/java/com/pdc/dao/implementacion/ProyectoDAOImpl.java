@@ -384,7 +384,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     public List<ProyectoDTO> listarProyectosConVacantesDisponibles() throws SQLException, IOException {
 
         String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, "
-                + "estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes "
+                + "estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes, cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro  "
                 + "FROM proyecto p "
                 + "WHERE p.vacantes > (SELECT COUNT(*) FROM proyectoasignado pa WHERE pa.idproyecto = p.proyectoID)";
 
@@ -428,10 +428,10 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         proyecto.setResponsable(responsable);
 
         proyecto.setVacantes(rs.getInt(VACANTES));
-        proyecto.setCronogramaMesUno(resultadoDeOperacion.getString(CRONOGRAMA_MES_UNO));
-        proyecto.setCronogramaMesDos(resultadoDeOperacion.getString(CRONOGRAMA_MES_DOS));
-        proyecto.setCronogramaMesTres(resultadoDeOperacion.getString(CRONOGRAMA_MES_TRES));
-        proyecto.setCronogramaMesCuatro(resultadoDeOperacion.getString(CRONOGRAMA_MES_CUATRO));
+        proyecto.setCronogramaMesUno(rs.getString(CRONOGRAMA_MES_UNO));
+        proyecto.setCronogramaMesDos(rs.getString(CRONOGRAMA_MES_DOS));
+        proyecto.setCronogramaMesTres(rs.getString(CRONOGRAMA_MES_TRES));
+        proyecto.setCronogramaMesCuatro(rs.getString(CRONOGRAMA_MES_CUATRO));
 
         return proyecto;
     }
