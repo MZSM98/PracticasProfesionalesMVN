@@ -64,11 +64,12 @@ public class EstudianteGeneraPlantillaSolicitudProyectoController implements Ini
 
         Integer idDocumento = DocumentoEnum.SOLICITUD_PRACTICAS.getId();
         try {
+            
             DocumentoDTO documento = interfazDocumentoDAO.buscarDocumento(idDocumento);
             FTPUtil.configurar();
             File plantilla = FTPUtil.descargarPlantillaTemp(documento.getPlantilla());
-
             if (plantilla != null) {
+                
                 llenarDatosPlantilla(plantilla, proyecto, documento);
             } else {
                 AlertaUtil.mostrarAlertaErrorCargarInformacion();
