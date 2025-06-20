@@ -288,8 +288,17 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     
     private void informaCorreo(EstudianteDTO estudiante, ResponsableOrganizacionVinculadaDTO responsable, ProyectoDTO proyecto){
         //GmailUtil.enviarCorreoHTML(estudiante.getCorreo(), asunto, nombre, mensaje);
-        GmailUtil.enviarCorreoHTML(responsable.getCorreoResponsable(), "Proyecto asignado", responsable.getNombreResponsable(), 
-                String.format("El estudiante %s ha sido asignado al proyecto %s", estudiante.getNombreEstudiante(), proyecto.getTituloProyecto()));
+        try {
+            GmailUtil.enviarCorreoHTML(responsable.getCorreoResponsable(), 
+                    "Proyecto asignado", responsable.getNombreResponsable(), 
+                    String.format("El estudiante %s con matricula %s ha sido asignado al proyecto %s",
+                    estudiante.getNombreEstudiante(),
+                    estudiante.getMatricula(),
+                    proyecto.getTituloProyecto()));
+        } catch (Exception e) {
+            LOG.error(e);
+        }
+        
 
     }
 }

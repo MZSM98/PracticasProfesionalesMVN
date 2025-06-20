@@ -39,6 +39,7 @@ import com.pdc.dao.interfaz.ITipoUsuarioDAO;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
+import com.pdc.utileria.GmailUtil;
 
 public class InicioDeSesionController implements Initializable {
     
@@ -84,6 +85,7 @@ public class InicioDeSesionController implements Initializable {
         
         poblarComboTipoUsuario();
         aplicarRestriccionesLongitudACampos();
+        GmailUtil.configurarCorreo();
     }    
 
     @FXML
