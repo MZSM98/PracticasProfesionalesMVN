@@ -46,7 +46,7 @@ public class OrganizacionVinculadaValidador {
             
             throw new IllegalArgumentException(ConstantesUtil.ALERTA_TELEFONO_OBLIGATORIO);
         }
-        if (telefonoOV.matches(ConstantesUtil.REGEX_TELEFONO)){
+        if (!telefonoOV.matches(ConstantesUtil.REGEX_TELEFONO)){
             
             throw new IllegalArgumentException (ConstantesUtil.ALERTA_FORMATO_TELEFONO);
         }        
