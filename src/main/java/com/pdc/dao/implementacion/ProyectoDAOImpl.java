@@ -37,21 +37,21 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     public static final String TITULO = "titulo";
     public static final String RFC = "rfc";
     public static final String VACANTES = "vacantes";
-    
-    public ProyectoDAOImpl(){
+
+    public ProyectoDAOImpl() {
         interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         interfazResponsableOrganizacionVinculadaDAO = new ResponsableOrganizacionVinculadaDAOImpl();
     }
-    
+
     @Override
     public boolean insertarProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
-        
+
         String insertarSQL = "INSERT INTO proyecto (titulo, idperiodoescolar, descripcion, rfcMoral, fechaInicio, fechaFinal, responsable, vacantes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         boolean insercionExitosa = false;
 
         try {
-            
+
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
@@ -65,43 +65,51 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
-            
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return insercionExitosa;
     }
 
     @Override
     public boolean eliminarProyecto(int proyectoID) throws SQLException, IOException {
-        
+
         String eliminarSQL = "DELETE FROM proyecto WHERE proyectoID = ?";
         boolean eliminacionExitosa = false;
 
         try {
-            
+
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setInt(1, proyectoID);
             declaracionPreparada.executeUpdate();
             eliminacionExitosa = true;
         } finally {
-            
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return eliminacionExitosa;
     }
 
     @Override
     public boolean editarProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
-        
+
         String actualizarSQL = "UPDATE proyecto SET titulo = ?, idperiodoescolar = ?,"
                 + " descripcion = ?, rfcMoral = ?, estadoProyecto = ?, fechaInicio = ?, fechaFinal = ?, responsable = ?, vacantes = ? WHERE proyectoID = ?";
         boolean actualizacionExitosa = false;
 
         try {
-            
+
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
@@ -117,85 +125,95 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             declaracionPreparada.executeUpdate();
             actualizacionExitosa = true;
         } finally {
-            
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return actualizacionExitosa;
     }
 
     @Override
     public List<ProyectoDTO> buscarProyectosPorNombre(String titulo) throws SQLException, IOException {
-        
+
         String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal,"
                 + " responsable, vacantes FROM proyecto WHERE titulo LIKE ?";
         List<ProyectoDTO> proyectosEncontrados = new ArrayList<>();
 
         try {
-            
+
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, "%" + titulo + "%");
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             while (resultadoDeOperacion.next()) {
-                
+
                 ProyectoDTO proyecto = new ProyectoDTO();
                 proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
                 proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
-                
+
                 Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
                 PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
                 proyecto.setPeriodoEscolar(periodoEscolar);
-                
+
                 proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
-                
+
                 String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
                 OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
                 proyecto.setOrganizacion(organizacionVinculada);
-                
+
                 proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
                 proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
                 proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
-                
+
                 ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
                 proyecto.setResponsable(responsable);
-                
+
                 proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
                 proyectosEncontrados.add(proyecto);
             }
         } finally {
-            
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return proyectosEncontrados;
     }
-    
+
     @Override
     public List<ProyectoDTO> listarProyectos() throws SQLException, IOException {
-        
+
         String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
         try {
-            
+
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             while (resultadoDeOperacion.next()) {
-                
+
                 ProyectoDTO proyecto = new ProyectoDTO();
                 proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
                 proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
-                
+
                 Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
                 PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
                 proyecto.setPeriodoEscolar(periodoEscolar);
                 proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
-                
+
                 String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
                 OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
                 proyecto.setOrganizacion(organizacionVinculada);
@@ -205,33 +223,39 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
                 proyecto.setResponsable(responsable);
                 proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
-                
+
                 listaProyectos.add(proyecto);
             }
         } finally {
-            
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return listaProyectos;
     }
-    
+
     @Override
     public ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException, IOException {
-        
+
         String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto WHERE proyectoID = ?";
         ProyectoDTO proyecto = null;
 
         try {
-            
+
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, proyectoID);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
-                
+
                 proyecto = new ProyectoDTO();
                 proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
                 proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
@@ -250,14 +274,20 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
             }
         } finally {
-            
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return proyecto;
     }
-    
+
     @Override
     public List<ProyectoDTO> listarProyectosPorOv(String rfcMoral) throws SQLException, IOException {
 
@@ -310,5 +340,69 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             }
         }
         return listaProyectos;
+    }
+
+    @Override
+    public List<ProyectoDTO> listarProyectosConVacantesDisponibles() throws SQLException, IOException {
+
+        String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, "
+                + "estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes "
+                + "FROM proyecto p "
+                + "WHERE p.vacantes > (SELECT COUNT(*) FROM proyectoasignado pa WHERE pa.idproyecto = p.proyectoID)";
+
+        List<ProyectoDTO> proyectosConVacantes = new ArrayList<>();
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            while (resultadoDeOperacion.next()) {
+                ProyectoDTO proyecto = construirProyectoDesdeResultSet(resultadoDeOperacion);
+                proyectosConVacantes.add(proyecto);
+            }
+        } finally {
+            cerrarRecursos();
+        }
+        return proyectosConVacantes;
+    }
+
+    private ProyectoDTO construirProyectoDesdeResultSet(ResultSet rs) throws SQLException, IOException {
+        ProyectoDTO proyecto = new ProyectoDTO();
+        proyecto.setProyectoID(rs.getInt(PROYECTO_ID));
+        proyecto.setTituloProyecto(rs.getString(TITULO));
+
+        Integer idPeriodoEscolar = rs.getInt(ID_PERIODO_ESCOLAR);
+        PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
+        proyecto.setPeriodoEscolar(periodoEscolar);
+
+        proyecto.setDescripcionProyecto(rs.getString(DESCRIPCION));
+
+        String rfcMoral = rs.getString(RFC_MORAL);
+        OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
+        proyecto.setOrganizacion(organizacionVinculada);
+
+        proyecto.setEstadoProyecto(rs.getString(ESTADO_PROYECTO));
+        proyecto.setFechaInicio(rs.getDate(FECHA_INICIO));
+        proyecto.setFechaFinal(rs.getDate(FECHA_FINAL));
+
+        ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
+        proyecto.setResponsable(responsable);
+
+        proyecto.setVacantes(rs.getInt(VACANTES));
+
+        return proyecto;
+    }
+
+    private void cerrarRecursos() throws SQLException {
+        if (resultadoDeOperacion != null) {
+            resultadoDeOperacion.close();
+        }
+        if (declaracionPreparada != null) {
+            declaracionPreparada.close();
+        }
+        if (conexionBD != null) {
+            conexionBD.close();
+        }
     }
 }

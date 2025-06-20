@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 public class FTPUtil {
 
     private static final Logger LOG = LogManager.getLogger(FTPUtil.class);
-
+    public static final String SEPARADOR = "/";
     private static String host;
     private static int puerto;
     private static String usuario;
@@ -264,6 +264,23 @@ public class FTPUtil {
             }
         } catch (Exception e) {
             LOG.warn("No se pudieron crear algunos directorios remotos: {}", e);
+        }
+    }
+    
+    public static File descargarPlantillaTemp(String archivoRemoto) {
+        verificarConfiguracion();
+
+        try {
+            String archivoTemporal = System.getProperty("java.io.tmpdir") + "/"
+                    + archivoRemoto.substring(archivoRemoto.lastIndexOf('/') + 1);
+
+            boolean descargado = descargarArchivo(archivoRemoto, archivoTemporal);
+
+            return descargado ? new File(archivoTemporal) : null;
+
+        } catch (Exception e) {
+            LOG.error("Error al descargar plantilla: ", e);
+            return null;
         }
     }
 

@@ -31,7 +31,7 @@ public class EstudianteMenuPrincipalController implements Initializable {
 
     @FXML
     void abrirVentanaProyectoAsignado(ActionEvent event) {
-        ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_CONSULTA_PROYECTO_ASIGNADO);
+        ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_CONSULTA_PROYECTO_ASIGNADO);
     }
 

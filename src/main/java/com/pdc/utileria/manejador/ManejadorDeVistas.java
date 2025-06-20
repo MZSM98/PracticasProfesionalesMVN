@@ -8,6 +8,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.WindowEvent;
 
 public class ManejadorDeVistas {
 
@@ -29,7 +34,8 @@ public class ManejadorDeVistas {
         ESTUDIANTE_REGISTRO_AUTOEVALUACION("/com/pdc/vista/estudiante/EstudianteRegistroAutoevaluacion.fxml", false,""),
         ESTUDIANTE_REGISTRO_REPORTE_MENSUAL("/com/pdc/vista/estudiante/EstudianteRegistroReporteMensual.fxml", false,""),
         ESTUDIANTE_REGISTRO_SOLICITUD_PROYECTO("/com/pdc/vista/estudiante/EstudianteRegistroSolicitudProyecto.fxml", false,""),
-        
+        ESTUDIANTE_GENERA_PLANTILLA_SOLICITUD("/com/pdc/vista/estudiante/EstudianteGeneraPlantillaSolicitudProyecto.fxml", false,""),
+
         COORDINADOR_MENU_PRINCIPAL("/com/pdc/vista/coordinador/CoordinadorMenuPrincipal.fxml", false,""),
         COORDINADOR_GESTION_ACADEMICO("/com/pdc/vista/coordinador/CoordinadorGestionAcademico.fxml", false,""),
         COORDINADOR_GESTION_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorGestionOrganizacionVinculada.fxml", false,""),
@@ -148,6 +154,25 @@ public class ManejadorDeVistas {
 
         cargarVista(vista);
         return (T) controladoresCache.get(vista);
+    }
+    public void configurarCierreVentana(EventHandler<WindowEvent> manejadorCierre) {
+        if (escenarioPrincipal != null) {
+            escenarioPrincipal.setOnCloseRequest(manejadorCierre);
+        }
+    }
+    public void configurarCierreConConfirmacion() {
+        configurarCierreVentana(event -> {
+            event.consume(); // Prevenir cierre automático
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmar salida");
+            alert.setHeaderText("¿Estás seguro de que deseas salir de la aplicación.");
+
+            Optional<ButtonType> resultado = alert.showAndWait();
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                escenarioPrincipal.close();
+            }
+        });
     }
 
     public void limpiarCache() {

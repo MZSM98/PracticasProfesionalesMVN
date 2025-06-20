@@ -9,6 +9,7 @@ public class PracticasProfesionales extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         ManejadorDeVistas.getInstancia().setEscenarioPrincipal(stage);
+        ManejadorDeVistas.getInstancia().configurarCierreConConfirmacion();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.INICIO_SESION);
     }
     
