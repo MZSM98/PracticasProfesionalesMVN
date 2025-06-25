@@ -23,6 +23,7 @@ import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 public class EstudianteGestionController implements Initializable {
+    
     private static final Logger LOG = Logger.getLogger(EstudianteGestionController.class);
 
     @FXML
@@ -50,22 +51,31 @@ public class EstudianteGestionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         interfazEstudianteDAO = new EstudianteDAOImpl();
         configurarColumnasTablaEstudiante();
         poblarTablaEstudiante();
     }    
     
     @FXML
-    void abrirEditarAcademico(ActionEvent event) {
-        EstudianteDTO estudianteSeleccionado = tableEstudiantes.getSelectionModel().getSelectedItem();
+    void abrirEditarEstudiante(ActionEvent event) {
+        
+        EstudianteDTO estudianteSeleccionado;
+        estudianteSeleccionado = tableEstudiantes.getSelectionModel().getSelectedItem();
         
         if (estudianteSeleccionado == null) {
-            AlertaUtil.mostrarAlerta("Aviso", "Por favor, seleccione un registro para editar", Alert.AlertType.WARNING);
+            
+            AlertaUtil.mostrarAlertaSeleccionRegistro();
             return;
         }
+        
         try {
+            
             ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_ACTUALIZAR);
-            EstudianteRegistroController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ESTUDIANTE_ACTUALIZAR);
+            
+            EstudianteRegistroController controlador;
+            controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ESTUDIANTE_ACTUALIZAR);
+            
             controlador.setModoEdicion(Boolean.TRUE);
             controlador.llenarCamposEditablesEstudiante(estudianteSeleccionado);
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_ACTUALIZAR);
@@ -76,33 +86,29 @@ public class EstudianteGestionController implements Initializable {
     }
 
     @FXML
-    void abrirRegistrarAcademico(ActionEvent event) {
+    void abrirRegistrarEstudiante(ActionEvent event) {
        
-        try {
-            ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
-            EstudianteRegistroController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
-            controlador.poblarInformacionCombos();
-            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
-        } catch (IOException ex) {
-            LOG.error("Error al cargar la ventana de edición: " + ex.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudo abrir la ventana de edición.", Alert.AlertType.ERROR);
-        }
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO);
     }
 
     @FXML
     void salirAMenuPrincipal(ActionEvent event) {
+        
         ManejadorDeVistas.getInstancia().limpiarCache();
         final Integer COORDINADOR = 1;
         final Integer PROFESOREE = 3;
         ManejadorDeVistas.getInstancia().limpiarCache();
         if(COORDINADOR.equals(ManejadorDeSesion.getUsuario().getTipoUsuario().getIdTipo())){
+            
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
         }else if(PROFESOREE.equals(ManejadorDeSesion.getUsuario().getTipoUsuario().getIdTipo())){
+            
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.PROFESOREE_MENU_PRINCIPAL);
         }
     }
 
     private void configurarColumnasTablaEstudiante(){
+        
         columnMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
         columnNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEstudiante"));
         columnPeriodo.setCellValueFactory(new PropertyValueFactory<>("periodoEscolar"));
@@ -113,14 +119,18 @@ public class EstudianteGestionController implements Initializable {
     private void poblarTablaEstudiante(){
         
         try {
+            
             List<EstudianteDTO> listaEstudiantes = interfazEstudianteDAO.listarEstudiantes();
             ObservableList<EstudianteDTO> listaObservableEstudiantes = FXCollections.observableArrayList(listaEstudiantes);
             tableEstudiantes.setItems(listaObservableEstudiantes);
-        } catch (SQLException ex) {
-            LOG.error(ex);
+        } catch (SQLException sqle) {
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ex) {
-            LOG.error(ex);
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
-    
 }

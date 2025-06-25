@@ -9,10 +9,8 @@ import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import com.pdc.dao.implementacion.AcademicoEvaluadorDAOImpl;
 import com.pdc.dao.implementacion.ProfesorExperienciaEducativaDAOImpl;
 import org.apache.log4j.Logger;
@@ -29,12 +27,6 @@ public class CoordinadorRegistroAcademicoController {
     private static final Integer ACADEMICO_EVALUADOR = 2;
     private static final Integer PROFESOR_EE = 3;
     
-    @FXML
-    private Button botonCancelar;
-
-    @FXML
-    private Button botonGuardar;
-
     @FXML
     private TextField txtNombreDelTrabajador;
 
@@ -187,7 +179,7 @@ public class CoordinadorRegistroAcademicoController {
         } catch (IllegalArgumentException iae) {
             
             LOG.error (ConstantesUtil.LOG_DATOS_NO_VALIDOS, iae);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ALERTA_DATOS_INVALIDOS, iae.getMessage(), Alert.AlertType.WARNING);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ALERTA_DATOS_NO_VALIDOS, iae.getMessage(), Alert.AlertType.WARNING);
             return false;
         }
     }
@@ -217,6 +209,7 @@ public class CoordinadorRegistroAcademicoController {
     
     @FXML
     private void volverAGestionAcademico() {
+        
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ACADEMICO);
     }

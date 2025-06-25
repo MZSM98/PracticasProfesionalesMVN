@@ -20,7 +20,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
-    private IUsuarioDAO interfazUsuarioDAO;
+    private final IUsuarioDAO interfazUsuarioDAO;
     
     public ProfesorExperienciaEducativaDAOImpl(){
         interfazUsuarioDAO = new UsuarioDAOImpl();

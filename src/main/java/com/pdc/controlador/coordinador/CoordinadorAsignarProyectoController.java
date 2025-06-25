@@ -147,7 +147,9 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private void accionComboOrganizacionVinculada(ActionEvent event) {
+        
         if (Objects.nonNull(comboOrganizacionVinculada.getSelectionModel().getSelectedItem())) {
+            
             llenarDatosComboProyecto();
             llenarTablaEstudianteSinAsignar();
             llenarTablaEstudiantesAsignados();
@@ -157,6 +159,7 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private void accionCancelar(ActionEvent event) {
+        
         ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_PROYECTO_ASIGNADO);
         ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_ASIGNAR_PROYECTO);
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_PROYECTO_ASIGNADO);
@@ -164,17 +167,24 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private void accionGuardar(ActionEvent event) {
+        
         ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
 
         if (Objects.nonNull(proyectoSeleccionado) && !listaProyectosPorAsignar.isEmpty()) {
+            
             for (ProyectoAsignadoDTO proyectoAsignado : listaProyectosPorAsignar) {
                 try {
+                    
                     interfazProyectoAsignadoDAO.insertarProyectoAsignado(proyectoAsignado);
                     informaCorreo(proyectoAsignado.getEstudiante(), proyectoSeleccionado.getResponsable(), proyectoSeleccionado);
                 } catch (SQLException ex) {
+                    
                     LOG.error(ex);
+                    AlertaUtil.mostrarAlertaBaseDatos();
                 } catch (IOException ex) {
+                    
                     LOG.error(ex);
+                    AlertaUtil.mostrarAlertaRegistroFallido();
                 }
             }
             AlertaUtil.mostrarAlertaRegistroExitoso();
@@ -197,11 +207,13 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     }
     
     private boolean validaVacantesProyecto(ProyectoDTO proyectoSeleccionado){
+        
         Integer vacantes = proyectoSeleccionado.getVacantes();
         Integer actuales = tablaAsignados.getItems().size()+1;
         
         if(actuales > vacantes){
-            AlertaUtil.mostrarAlerta("Advertencia", "Se ha alcanzado el limite de vacantes: "+vacantes, Alert.AlertType.WARNING);
+            
+            AlertaUtil.mostrarAlerta("Advertencia", "Se ha alcanzado el limite de vacantes: "+ vacantes, Alert.AlertType.WARNING);
             return false;
         }else{
             return true;
@@ -209,14 +221,20 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     }
 
     private void llenarDatosComboProyecto() {
+        
         OrganizacionVinculadaDTO organizacionVinculadaSeleccion = comboOrganizacionVinculada.getSelectionModel().getSelectedItem();
         try {
+            
             String rfcMoral = organizacionVinculadaSeleccion.getRfcMoral();
             comboProyecto.setItems(FXCollections.observableArrayList(interfazProyectoDAO.listarProyectosPorOv(rfcMoral)));
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
+        } catch (SQLException sqle) {
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } catch (IOException ioe) {
+            
+            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, ioe);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
 

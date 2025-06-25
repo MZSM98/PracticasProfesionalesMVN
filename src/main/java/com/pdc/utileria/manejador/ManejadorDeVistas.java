@@ -123,43 +123,51 @@ public class ManejadorDeVistas {
     }
 
     public void cambiarVista(Vista vista, String titulo) {
+        
         try {
-            Parent root = cargarVista(vista);
-            Scene escena = new Scene(root);
+            
+            Parent root;
+            root = cargarVista(vista);
+            Scene escena;
+            escena = new Scene(root);
             
             if (escenarioPrincipal != null) {
                 
                 escenarioPrincipal.hide();
                 if (escenarioPrincipal.isMaximized()) {
+                    
                     escenarioPrincipal.setMaximized(false);
                 }
                 escenarioPrincipal.sizeToScene();
                 escenarioPrincipal.setScene(escena);
                 escenarioPrincipal.setTitle(titulo);
                 escenarioPrincipal.setResizable(vista.isResizable());
-                
                 escenarioPrincipal.centerOnScreen();
-                
                 escenarioPrincipal.show();
             }
         } catch (IOException e) {
+            
             AlertaUtil.mostrarAlertaErrorVentana();
         }
     }
 
     public <T> T obtenerControlador(Vista vista) throws IOException {
+        
         if (controladoresCache.containsKey(vista)) {
+            
             return (T) controladoresCache.get(vista);
         }
 
         cargarVista(vista);
         return (T) controladoresCache.get(vista);
     }
+    
     public void configurarCierreVentana(EventHandler<WindowEvent> manejadorCierre) {
         if (escenarioPrincipal != null) {
             escenarioPrincipal.setOnCloseRequest(manejadorCierre);
         }
     }
+    
     public void configurarCierreConConfirmacion() {
         configurarCierreVentana(event -> {
             event.consume(); // Prevenir cierre automático

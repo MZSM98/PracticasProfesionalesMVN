@@ -29,9 +29,6 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
     private static final Logger LOG = Logger.getLogger(CoordinadorGestionOrganizacionVinculadaController.class);
     
     @FXML
-    private Button botonSalir;
-        
-    @FXML
     private TableView<OrganizacionVinculadaDTO> tableOrganizacionesVinculadas;
     
     @FXML

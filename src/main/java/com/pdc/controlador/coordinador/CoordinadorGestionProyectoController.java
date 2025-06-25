@@ -19,7 +19,6 @@ import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.ProyectoDTO.EstadoProyecto;
 import com.pdc.utileria.AlertaUtil;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import com.pdc.dao.implementacion.ProyectoDAOImpl;

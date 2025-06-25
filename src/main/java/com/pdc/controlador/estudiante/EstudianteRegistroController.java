@@ -79,6 +79,7 @@ public class EstudianteRegistroController implements Initializable {
 
     @FXML
     void cancelarRegistroEstudiante(ActionEvent event) {
+        
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_GESTION);
     }
@@ -87,7 +88,9 @@ public class EstudianteRegistroController implements Initializable {
     void registrarEstudiante(ActionEvent event) {
         
         try {
-            EstudianteDTO estudiante = new EstudianteDTO();
+            
+            EstudianteDTO estudiante;
+            estudiante = new EstudianteDTO();
             estudiante.setMatricula(textMatricula.getText().trim());
             estudiante.setNombreEstudiante(textNombreEstudiante.getText().trim());
             estudiante.setPeriodoEscolar(comboPeriodoEscolar.getValue());
@@ -162,12 +165,14 @@ public class EstudianteRegistroController implements Initializable {
             
             interfazEstudianteDAO.insertarEstudiante(estudiante);
             interfazEstudianteExperienciaEducativaDAO.insertarExperienciaAsignada(experienciaAsignada);
-        } catch (SQLException ex) {
+        } catch (SQLException sqle) {
             
-            LOG.error(ex);
-        } catch (IOException ex) {
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } catch (IOException ioe) {
             
-            LOG.error(ex);
+            LOG.error(ioe);
+            AlertaUtil.mostrarAlertaRegistroFallido();
         }
     }
     
@@ -177,16 +182,18 @@ public class EstudianteRegistroController implements Initializable {
             
             interfazEstudianteDAO.editarEstudiante(estudiante);
             salirAMenuPrincipal();
-        } catch (SQLException ex) {
+        } catch (SQLException sqle) {
             
-            LOG.error(ex);
-        } catch (IOException ex) {
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } catch (IOException ioe) {
             
-            LOG.error(ex);
+            LOG.error(ioe);
+            AlertaUtil.mostrarAlertaActualizacionFallida();
         }
     }
     
-    public void poblarInformacionCombos(){
+    private void poblarInformacionCombos(){
         
         ObservableList<PeriodoEscolarDTO> listaPeriodos;
         ObservableList<SeccionDTO> listaSecciones;
@@ -209,10 +216,12 @@ public class EstudianteRegistroController implements Initializable {
         } catch (IOException ex) {
             
             LOG.error(ex);
+            AlertaUtil.mostrarAlertaRegistroFallido();
         }
     }
     
     private void salirAMenuPrincipal (){
+        
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_GESTION);
     }

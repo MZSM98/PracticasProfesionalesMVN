@@ -32,7 +32,7 @@ public class ConstantesUtil {
     public static final String REGEX_USUARIO_VALIDO = "^[a-zA-Z0-9]{9}$";
     
     public static final String ALERTA_CLASE_UTILERIA = "Clase de utilería...";
-    public static final String ALERTA_DATOS_INVALIDOS = "Datos inválidos o Incompletos";
+    public static final String ALERTA_DATOS_NO_VALIDOS = "Datos inválidos o Incompletos";
     public static final String ALERTA_ACTUALIZACION_EXITOSA = "Registro actualizado exitosamente";
     public static final String ALERTA_REGISTRO_RFC_MORAL_DUPLICADO = "Esa Organización vinculada ya se encuentra registrada";
     public static final String ALERTA_REGISTRO_NUMERO_EMPLEADO_DUPLICADO = "Ese Academico ya se encuentra registrado";
@@ -66,6 +66,7 @@ public class ConstantesUtil {
     
     public static final String LOG_ACTUALIZACION_FALLIDA = "Error al actualizar el registro";
     public static final String LOG_ERROR_VENTANA = "No se pudo cargar la ventana";
+    public static final String LOG_ERROR_BD = "Hubo un error en la conexión con la base de datos";
     public static final String LOG_ERROR_REGISTRO_DUPLICADO = "Se intentó registrar una clave primaria ya existente";
     public static final String LOG_DATOS_NO_VALIDOS = "Se ingresaron datos no válidos";
     public static final String LOG_ERROR_CARGAR_INFORMACION = "No se pudo cargar la información";

@@ -27,13 +27,13 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="labelTipoUsuario" layoutX="96.0" layoutY="227.0" text="Tipo usuario:" />
       <Label fx:id="labelUsuario" layoutX="97.0" layoutY="265.0" text="Usuario:" />
       <Label fx:id="labelContrasena" layoutX="97.0" layoutY="302.0" text="Contraseña:" />
-      <ComboBox fx:id="comboTipoUsuario" layoutX="186.0" layoutY="223.0" prefHeight="25.0" prefWidth="224.0" promptText="Seleccione un tipo" />
       <TextField fx:id="textUsuario" layoutX="187.0" layoutY="261.0" prefHeight="25.0" prefWidth="224.0" />
       <PasswordField fx:id="textContrasena" layoutX="187.0" layoutY="298.0" prefHeight="25.0" prefWidth="224.0" />
       <Button fx:id="botonIniciarSesion" layoutX="139.0" layoutY="347.0" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar sesión" />
       <Button fx:id="botonSalir" layoutX="281.0" layoutY="347.0" mnemonicParsing="false" onAction="#cerrarPrograma" prefHeight="25.0" prefWidth="85.0" text="Salir" />
+      <Label layoutX="97.0" layoutY="227.0" text="Tipo de Usuario:" />
+      <ComboBox fx:id="comboTipoUsuario" layoutX="187.0" layoutY="223.0" prefHeight="25.0" prefWidth="224.0" promptText="Tipo de usuario" />
    </children>
 </AnchorPane>

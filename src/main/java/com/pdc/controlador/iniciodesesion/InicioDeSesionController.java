@@ -11,7 +11,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,7 +28,6 @@ import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
 import com.pdc.dao.interfaz.ICoordinadorDAO;
 import com.pdc.dao.interfaz.IEstudianteDAO;
 import com.pdc.validador.InicioDeSesionValidador;
-
 import org.apache.log4j.Logger;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
@@ -75,6 +73,7 @@ public class InicioDeSesionController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         botonIniciarSesion.setDefaultButton(Boolean.TRUE);
         interfazUsuarioDAO = new UsuarioDAOImpl();
         interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
@@ -104,7 +103,7 @@ public class InicioDeSesionController implements Initializable {
         usuarioDTO.setTipoUsuario(comboTipoUsuario.getValue());
         
         if(!validarCamposInicioSesion(usuarioDTO)){
-            
+            limpiarCampos();
             return;
         }
         try {
@@ -113,24 +112,20 @@ public class InicioDeSesionController implements Initializable {
             usuarioDTO.setSalt(usuarioBusqueda.getSalt());
 
             if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
+                
                 ManejadorDeSesion.iniciarSesion(obtenerTipoUsuario(usuarioBusqueda));
                 abrirMenuPrincipal(usuarioDTO.getTipoUsuario());
-                
             } else {
 
                 AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, ConstantesUtil.ALERTA_CREDENCIALES_INVALIDAS, Alert.AlertType.WARNING);
             }
-        }catch (IllegalArgumentException ioe){
-            
-            LOG.error(ConstantesUtil.LOG_DATOS_NO_VALIDOS, ioe);
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, ConstantesUtil.ALERTA_DATOS_INVALIDOS, Alert.AlertType.WARNING); 
         }catch (SQLException sqle) {
             
-            LOG.error(AlertaUtil.ALERTA_ERROR_BD,sqle);
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
-            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA,ioe);
+            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
             AlertaUtil.mostrarAlertaErrorVentana();
         }
     }
@@ -138,31 +133,44 @@ public class InicioDeSesionController implements Initializable {
 
     private void abrirMenuPrincipal(TipoUsuarioDTO tipoUsuario){
         
-        if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {
+        if (COORDINADOR.equals(tipoUsuario.getIdTipo())) {  
+            
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_MENU_PRINCIPAL);
         } else if (ACADEMICO_EVALUADOR.equals(tipoUsuario.getIdTipo())) {
+            
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_MENU_PRINCIPAL);
         } else if (PROFESOR_EE.equals(tipoUsuario.getIdTipo())) {
+            
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.PROFESOREE_MENU_PRINCIPAL);
         } else if (ESTUDIANTE.equals(tipoUsuario.getIdTipo())) {
+            
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
         } else {
-            throw new IllegalArgumentException(NO_EXISTE_TIPO_USUARIO);
+            
+            AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, NO_EXISTE_TIPO_USUARIO, Alert.AlertType.WARNING);
         }
     }
     
-    public UsuarioDTO obtenerTipoUsuario(UsuarioDTO usuario) throws SQLException, IOException{ 
-        final String numeroDeTrabajador = usuario.getUsuario();
+    private UsuarioDTO obtenerTipoUsuario(UsuarioDTO usuario) throws SQLException, IOException{ 
+        
+        final String numeroDeTrabajador;
+        numeroDeTrabajador = usuario.getUsuario();
         UsuarioDTO usuarioFinal;
+        
         if (COORDINADOR.equals(usuario.getTipoUsuario().getIdTipo())) {
+            
             usuarioFinal = interfazCordinadorDao.buscarCoordinador(numeroDeTrabajador);
         } else if (ACADEMICO_EVALUADOR.equals(usuario.getTipoUsuario().getIdTipo())) {
+            
             usuarioFinal = interfazAcademicoEvaluadorDAO.buscarAcademicoEvaluador(numeroDeTrabajador);
         } else if (PROFESOR_EE.equals(usuario.getTipoUsuario().getIdTipo())) {
+            
             usuarioFinal = interfazProfesorEEDAO.buscarProfesorEE(numeroDeTrabajador);
         } else if (ESTUDIANTE.equals(usuario.getTipoUsuario().getIdTipo())) {
+            
             usuarioFinal = interfazEstudianteDAO.buscarEstudiante(usuario.getUsuario());
         } else {
+            
             throw new IllegalArgumentException(NO_EXISTE_TIPO_USUARIO);
         }
         
@@ -203,11 +211,16 @@ public class InicioDeSesionController implements Initializable {
         } catch (IllegalArgumentException iae) {
             
             LOG.error (ConstantesUtil.LOG_DATOS_NO_VALIDOS,iae);
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ALERTA_DATOS_INVALIDOS, iae.getMessage(), Alert.AlertType.WARNING);
+            AlertaUtil.mostrarAlerta(ConstantesUtil.ALERTA_DATOS_NO_VALIDOS, iae.getMessage(), Alert.AlertType.WARNING);
             return false;
         } 
     }
 
+    private void limpiarCampos(){
+        
+        textUsuario.clear();
+        textContrasena.clear();
+    }
     private void aplicarRestriccionesLongitudACampos(){
         
         RestriccionCamposUtil.aplicarRestriccionLongitud(textContrasena, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);

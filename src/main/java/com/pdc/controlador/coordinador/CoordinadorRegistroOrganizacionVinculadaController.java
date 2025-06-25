@@ -6,6 +6,7 @@ import com.pdc.modelo.dto.OrganizacionVinculadaDTO.EstadoOrganizacionVinculada;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -38,14 +39,14 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
     @FXML
     private Button botonRegistrarOrganizacionVinculada;
     
-    private IOrganizacionVinculadaDAO organizacionVinculadaDAO;
+    private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
     private OrganizacionVinculadaDTO organizacionVinculadaDTO;
     
     private boolean modoEdicion = false;
     
     public void initialize() {
         
-        organizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
+        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         aplicarRestriccionesACampos();
     }
     
@@ -104,7 +105,7 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
             return true;
         } catch (IllegalArgumentException iae) {
             
-            LOG.error (ConstantesUtil.ALERTA_DATOS_INVALIDOS, iae);
+            LOG.error (ConstantesUtil.ALERTA_DATOS_NO_VALIDOS, iae);
             AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, iae.getMessage(), Alert.AlertType.WARNING);
             return false;
         }
@@ -116,7 +117,7 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
         
         try {
             
-            organizacionVinculadaDAO.insertarOrganizacionVinculada(organizacionVinculadaDTO);
+            interfazOrganizacionVinculadaDAO.insertarOrganizacionVinculada(organizacionVinculadaDTO);
             AlertaUtil.mostrarAlertaRegistroExitoso();
             cerrarVentana();
         } catch(SQLIntegrityConstraintViolationException icve){
@@ -125,7 +126,7 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
             AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, ConstantesUtil.ALERTA_REGISTRO_RFC_MORAL_DUPLICADO, Alert.AlertType.WARNING);
         } catch (SQLException sqle) {
             
-            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            LOG.error(sqle.getMessage(), sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
@@ -138,7 +139,7 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
                 
         try {
             
-            boolean actualizacionExitosa = organizacionVinculadaDAO.editarOrganizacionVinculada(organizacionVinculadaDTO);            
+            boolean actualizacionExitosa = interfazOrganizacionVinculadaDAO.editarOrganizacionVinculada(organizacionVinculadaDTO);            
             if (actualizacionExitosa) {
                 
                 AlertaUtil.mostrarAlerta(AlertaUtil.EXITO, ConstantesUtil.ALERTA_ACTUALIZACION_EXITOSA, Alert.AlertType.INFORMATION);

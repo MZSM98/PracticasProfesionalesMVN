@@ -24,8 +24,8 @@
             <Font name="System Bold" size="23.0" />
          </font>
       </Label>
-      <Button fx:id="botonAbrirRegistrarEstudiante" layoutX="883.0" layoutY="104.0" mnemonicParsing="false" onAction="#abrirRegistrarAcademico" text="Registrar" />
-      <Button fx:id="botonAbrirEditarEstudiante" layoutX="883.0" layoutY="138.0" mnemonicParsing="false" onAction="#abrirEditarAcademico" prefHeight="25.0" prefWidth="63.0" text="Editar" />
+      <Button fx:id="botonAbrirRegistrarEstudiante" layoutX="883.0" layoutY="104.0" mnemonicParsing="false" onAction="#abrirRegistrarEstudiante" text="Registrar" />
+      <Button fx:id="botonAbrirEditarEstudiante" layoutX="883.0" layoutY="138.0" mnemonicParsing="false" onAction="#abrirEditarEstudiante" prefHeight="25.0" prefWidth="63.0" text="Editar" />
       <Button fx:id="botonSalir" layoutX="883.0" layoutY="172.0" mnemonicParsing="false" onAction="#salirAMenuPrincipal" prefHeight="25.0" prefWidth="63.0" text="Salir" />
    </children>
 </AnchorPane>

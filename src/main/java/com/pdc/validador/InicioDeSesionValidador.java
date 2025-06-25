@@ -1,6 +1,5 @@
 package com.pdc.validador;
 
-import com.pdc.modelo.dto.TipoUsuarioDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import com.pdc.utileria.ConstantesUtil;
 
@@ -9,14 +8,6 @@ public class InicioDeSesionValidador {
     private InicioDeSesionValidador (){
         
         throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
-    }
-    
-    private static void validarTipoUsuario(TipoUsuarioDTO tipoUsuario) {
-        
-        if (tipoUsuario == null){
-            
-            throw new IllegalArgumentException (ConstantesUtil.ALERTA_SELECCION_TIPO_USUARIO);
-        }
     }
     
     public static void validarUsuario (String usuarioIngresado){
@@ -31,9 +22,9 @@ public class InicioDeSesionValidador {
         }
     }
     
-    private static void validarCampoContrasena(String contrasena){
+    private static void validarCampoContrasena(String contrasenaIngresada){
         
-        if (contrasena.isEmpty()){
+        if (contrasenaIngresada.isEmpty()){
             
             throw new IllegalArgumentException (ConstantesUtil.ALERTA_INGRESE_CONTRASENA);
         }
@@ -41,7 +32,6 @@ public class InicioDeSesionValidador {
     
     public static void validarInicioDeSesion(UsuarioDTO usuarioDTO){
         
-        validarTipoUsuario(usuarioDTO.getTipoUsuario());
         validarUsuario(usuarioDTO.getUsuario());
         validarCampoContrasena(usuarioDTO.getContrasena());
     }

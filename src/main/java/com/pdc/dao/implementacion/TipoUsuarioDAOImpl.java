@@ -45,11 +45,13 @@ public class TipoUsuarioDAOImpl implements ITipoUsuarioDAO {
 
     @Override
     public TipoUsuarioDTO buscarTipoUsuario(Integer idtipo) throws SQLException, IOException {
+        
         String consultaSQL = "SELECT idtipo, tipo FROM tipousuario WHERE idtipo = ?";
 
         TipoUsuarioDTO tipoUsuario = new TipoUsuarioDTO();
 
         try {
+            
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, idtipo);

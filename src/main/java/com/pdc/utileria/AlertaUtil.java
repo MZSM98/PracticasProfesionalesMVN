@@ -1,8 +1,5 @@
 package com.pdc.utileria;
 
-import com.pdc.utileria.manejador.ManejadorDeVistas;
-import java.io.File;
-import java.io.IOException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
@@ -24,13 +21,15 @@ public class AlertaUtil {
     public static final String ALERTA_INFO_CANCELACION = "Se perderán todos los datos ingresados";
     public static final String ALERTA_HEADER_CANCELACION = "¿Está seguro que desea cancelar?";
     public static final String ALERTA_ACTUALIZACION_FALLIDA = "Falló la actualización del registro, intente más tarde";
+    public static final String ALERTA_SELECCION_REGISTRO = "Por favor, seleccione un registro para editar";
 
     private AlertaUtil() {
 
         throw new UnsupportedOperationException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
     }
 
-    public static void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
+    public static void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo){
+        
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
@@ -38,7 +37,8 @@ public class AlertaUtil {
         alerta.showAndWait();
     }
 
-    public static void mostrarAlertaRegistroExitoso() {
+    public static void mostrarAlertaRegistroExitoso(){
+        
         Alert exito = new Alert(Alert.AlertType.INFORMATION);
         exito.setTitle(EXITO);
         exito.setHeaderText(null);
@@ -46,7 +46,8 @@ public class AlertaUtil {
         exito.showAndWait();
     }
 
-    public static void mostrarAlertaActualizacionExitosa() {
+    public static void mostrarAlertaActualizacionExitosa(){
+        
         Alert exito = new Alert(Alert.AlertType.INFORMATION);
         exito.setTitle(EXITO);
         exito.setHeaderText(null);
@@ -54,7 +55,8 @@ public class AlertaUtil {
         exito.showAndWait();
     }
 
-    public static void mostrarAlertaRegistroFallido() {
+    public static void mostrarAlertaRegistroFallido(){
+        
         Alert fallido = new Alert(Alert.AlertType.ERROR);
         fallido.setTitle(ERROR);
         fallido.setHeaderText(null);
@@ -62,21 +64,24 @@ public class AlertaUtil {
         fallido.showAndWait();
     }
 
-    public static void mostrarAlertaActualizacionFallida() {
+    public static void mostrarAlertaActualizacionFallida(){
+        
         Alert actualizacionFallida = new Alert(Alert.AlertType.ERROR);
         actualizacionFallida.setTitle(ERROR);
         actualizacionFallida.setHeaderText(null);
         actualizacionFallida.setContentText(ALERTA_ACTUALIZACION_FALLIDA);
     }
 
-    public static void mostrarAlertaEliminacionFallida() {
+    public static void mostrarAlertaEliminacionFallida(){
+        
         Alert eliminacionFallida = new Alert(Alert.AlertType.ERROR);
         eliminacionFallida.setTitle(ERROR);
         eliminacionFallida.setHeaderText(ERROR);
         eliminacionFallida.setContentText(ALERTA_ELIMINACION_FALLIDA);
     }
 
-    public static boolean mostrarAlertaCancelarGuardado() {
+    public static boolean mostrarAlertaCancelarGuardado(){
+        
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle(CONFIRMACION);
         confirmacion.setHeaderText(ALERTA_HEADER_CANCELACION);
@@ -85,7 +90,8 @@ public class AlertaUtil {
         return confirmacion.showAndWait().orElse(ButtonType.NO) == ButtonType.YES;
     }
 
-    public static boolean mostrarAlertaEliminar() {
+    public static boolean mostrarAlertaEliminar(){
+        
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle(CONFIRMACION);
         confirmacion.setHeaderText(ALERTA_CONFIRMAR_ELIMINAR);
@@ -93,7 +99,8 @@ public class AlertaUtil {
         return confirmacion.showAndWait().orElse(ButtonType.NO) == ButtonType.YES;
     }
 
-    public static void mostrarAlertaErrorVentana() {
+    public static void mostrarAlertaErrorVentana(){
+        
         Alert errorVentana = new Alert(Alert.AlertType.ERROR);
         errorVentana.setTitle(ERROR);
         errorVentana.setHeaderText(null);
@@ -101,7 +108,8 @@ public class AlertaUtil {
         errorVentana.showAndWait();
     }
 
-    public static void mostrarAlertaBaseDatos() {
+    public static void mostrarAlertaBaseDatos(){
+        
         Alert errorBaseDatos = new Alert(Alert.AlertType.ERROR);
         errorBaseDatos.setTitle(ERROR);
         errorBaseDatos.setHeaderText(null);
@@ -109,7 +117,8 @@ public class AlertaUtil {
         errorBaseDatos.showAndWait();
     }
 
-    public static void mostrarAlertaExito(String mensaje) {
+    public static void mostrarAlertaExito(String mensaje){
+        
         Alert exito = new Alert(Alert.AlertType.INFORMATION);
         exito.setTitle(EXITO);
         exito.setHeaderText(null);
@@ -117,7 +126,8 @@ public class AlertaUtil {
         exito.showAndWait();
     }
 
-    public static void mostrarAlertaError(String mensaje) {
+    public static void mostrarAlertaError(String mensaje){
+        
         Alert error = new Alert(Alert.AlertType.ERROR);
         error.setTitle(ERROR);
         error.setHeaderText(null);
@@ -125,11 +135,21 @@ public class AlertaUtil {
         error.showAndWait();
     }
 
-    public static void mostrarAlertaErrorCargarInformacion() {
+    public static void mostrarAlertaErrorCargarInformacion(){
+        
         Alert errorCargaInfo = new Alert(Alert.AlertType.ERROR);
         errorCargaInfo.setTitle(ERROR);
         errorCargaInfo.setHeaderText(null);
         errorCargaInfo.setContentText(ALERTA_ERROR_CARGAR_INFORMACION);
         errorCargaInfo.showAndWait();
+    }
+    
+    public static void mostrarAlertaSeleccionRegistro(){
+        
+        Alert seleccionRegistro = new Alert(Alert.AlertType.WARNING);
+        seleccionRegistro.setTitle(ADVERTENCIA);
+        seleccionRegistro.setHeaderText(null);
+        seleccionRegistro.setContentText(ALERTA_SELECCION_REGISTRO);
+        seleccionRegistro.showAndWait();
     }
 }
