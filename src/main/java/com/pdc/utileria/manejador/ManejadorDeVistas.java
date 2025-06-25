@@ -27,7 +27,6 @@ public class ManejadorDeVistas {
         ESTUDIANTE_ACTUALIZACION_PERFIL("/com/pdc/vista/estudiante/EstudianteActualizacionPerfil.fxml", false,""),
         ESTUDIANTE_CONSULTA_CRONOGRAMA("/com/pdc/vista/estudiante/EstudianteConsultaCronograma.fxml", false,""),
         ESTUDIANTE_CONSULTA_PROYECTO_ASIGNADO("/com/pdc/vista/estudiante/EstudianteConsultaProyectoAsignado.fxml", false,""),
-        ESTUDIANTE_EVALUACION_PRESENTACION("/com/pdc/vista/estudiante/EstudianteEvaluacionPresentacion.fxml", false,""),
         ESTUDIANTE_GESTION("/com/pdc/vista/estudiante/EstudianteGestion.fxml", false,""),
         ESTUDIANTE_REGISTRO("/com/pdc/vista/estudiante/EstudianteRegistro.fxml", false,"Registrar estudiante"),
         ESTUDIANTE_ACTUALIZAR("/com/pdc/vista/estudiante/EstudianteRegistro.fxml", false,"Actualizar estudiante"),
@@ -35,6 +34,8 @@ public class ManejadorDeVistas {
         ESTUDIANTE_REGISTRO_REPORTE_MENSUAL("/com/pdc/vista/estudiante/EstudianteRegistroReporteMensual.fxml", false,""),
         ESTUDIANTE_REGISTRO_SOLICITUD_PROYECTO("/com/pdc/vista/estudiante/EstudianteRegistroSolicitudProyecto.fxml", false,""),
         ESTUDIANTE_GENERA_PLANTILLA_SOLICITUD("/com/pdc/vista/estudiante/EstudianteGeneraPlantillaSolicitudProyecto.fxml", false,""),
+        ESTUDIANTE_GESTION_REPORTE_MENSUAL("/com/pdc/vista/estudiante/EstudianteGestionReporteMensual.fxml", false,""),
+
 
         COORDINADOR_MENU_PRINCIPAL("/com/pdc/vista/coordinador/CoordinadorMenuPrincipal.fxml", false,""),
         COORDINADOR_GESTION_ACADEMICO("/com/pdc/vista/coordinador/CoordinadorGestionAcademico.fxml", false,""),
