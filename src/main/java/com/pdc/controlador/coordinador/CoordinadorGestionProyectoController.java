@@ -26,15 +26,13 @@ import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.dao.interfaz.IProyectoDAO;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
 import com.pdc.modelo.dto.PeriodoEscolarDTO;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import javafx.beans.property.SimpleStringProperty;
 
 public class CoordinadorGestionProyectoController implements Initializable {
     
     private static final Logger LOG = Logger.getLogger(CoordinadorGestionProyectoController.class);
-    
-    @FXML
-    private Button botonSalir;
     
     @FXML
     private TextField textBuscarTitulo;
@@ -93,15 +91,18 @@ public class CoordinadorGestionProyectoController implements Initializable {
     private void cargarProyectos() {
         
         try {
+            
             List<ProyectoDTO> proyectos = interfazProyectoDAO.listarProyectos();
             listaProyectos = FXCollections.observableArrayList(proyectos);
             tableProyectos.setItems(listaProyectos);
         } catch (SQLException sqle) {
-            LOG.error("Error al cargar los proyectos: " + sqle.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudo cargar la información, contacte al administrador", Alert.AlertType.ERROR);
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
-            LOG.error("No se lograron cargar los proyectos: " + ioe.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudo cargar la información, contacte al administrador", Alert.AlertType.ERROR);
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     
@@ -117,11 +118,13 @@ public class CoordinadorGestionProyectoController implements Initializable {
             listaProyectos = FXCollections.observableArrayList(proyectosEncontrados);
             tableProyectos.setItems(listaProyectos);
         } catch (SQLException sqle) {
-            LOG.error("Error al buscar proyectos: " + sqle.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudo realizar la búsqueda, contacte al administrador", Alert.AlertType.ERROR);
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
-            LOG.error("Error al buscar proyectos: " + ioe.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudo realizar la búsqueda, contacte al administrador", Alert.AlertType.ERROR);
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
         
@@ -137,18 +140,19 @@ public class CoordinadorGestionProyectoController implements Initializable {
         ProyectoDTO proyectoSeleccionado = tableProyectos.getSelectionModel().getSelectedItem();
         
         if (proyectoSeleccionado == null) {
-            AlertaUtil.mostrarAlerta("Aviso", "Por favor, seleccione un proyecto para editar", Alert.AlertType.WARNING);
+            
+            AlertaUtil.mostrarAlertaSeleccionRegistro();
             return;
         }
-        
         try {
             CoordinadorRegistroProyectoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_PROYECTO);       
             controlador.cambiarAModoEdicion(true);
             controlador.llenarCamposEditablesProyecto(proyectoSeleccionado);
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_PROYECTO);
         } catch (IOException ioe) {
-            LOG.error("Error al cargar la ventana de edición: " + ioe.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "No se pudo abrir la ventana de edición, contacte con un administrador", Alert.AlertType.ERROR);
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
+            AlertaUtil.mostrarAlertaErrorVentana();
         }
     }
     
@@ -173,6 +177,7 @@ public class CoordinadorGestionProyectoController implements Initializable {
             boolean actualizacionExitosa = interfazProyectoDAO.editarProyecto(proyectoSeleccionado);
             
             if (actualizacionExitosa) {
+                
                 AlertaUtil.mostrarAlerta("Éxito", "Estado del proyecto cambiado a: " + nuevoEstado, Alert.AlertType.INFORMATION);
                 cargarProyectos();
             } else {
