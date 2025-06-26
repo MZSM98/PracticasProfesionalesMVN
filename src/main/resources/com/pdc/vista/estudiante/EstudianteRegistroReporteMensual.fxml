@@ -9,17 +9,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="220.0" prefWidth="336.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.pdc.controlador.estudiante.EstudianteRegistroReporteMensualController">
+<AnchorPane id="AnchorPane" prefHeight="220.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.estudiante.EstudianteRegistroReporteMensualController">
    <children>
-      <Label layoutX="85.0" layoutY="24.0" text="Registro reporte mensual">
+      <Label layoutX="157.0" layoutY="20.0" text="Registro reporte mensual">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboReporteMensual" layoutX="142.0" layoutY="61.0" prefHeight="25.0" prefWidth="173.0" promptText="Seleccione reporte" />
+      <ComboBox fx:id="comboReporteMensual" layoutX="142.0" layoutY="61.0" prefHeight="25.0" prefWidth="317.0" promptText="Seleccione reporte" />
       <Label layoutX="23.0" layoutY="65.0" text="Reporte mensual:" />
-      <GridPane layoutX="19.0" layoutY="115.0" prefHeight="88.0" prefWidth="300.0">
+      <GridPane layoutX="24.0" layoutY="110.0" prefHeight="88.0" prefWidth="456.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -31,9 +30,10 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#accionCargar" prefHeight="25.0" prefWidth="100.0" text="Cargar" />
-            <Button mnemonicParsing="false" onAction="#accionDescargar" prefHeight="25.0" prefWidth="100.0" text="Descargar" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" onAction="#accionCancelar" prefHeight="25.0" prefWidth="100.0" text="Cancelar" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#accionCargar" prefHeight="25.0" prefWidth="130.0" text="Cargar reporte" />
+            <Button mnemonicParsing="false" onAction="#accionDescargar" prefHeight="25.0" prefWidth="130.0" text="Descargar reporte" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" onAction="#accionCancelar" prefHeight="25.0" prefWidth="130.0" text="Cancelar" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#accionGenerarPlantilla" prefHeight="25.0" prefWidth="130.0" text="Generar plantilla" GridPane.columnIndex="2" />
          </children>
       </GridPane>
    </children>

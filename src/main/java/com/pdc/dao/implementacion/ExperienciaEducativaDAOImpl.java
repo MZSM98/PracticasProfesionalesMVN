@@ -32,7 +32,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
     @Override
     public ExperienciaEducativaDTO obtenerExperienciaEducativaPorNRC(String nrc) throws SQLException, IOException {
         
-        String consultaSQL = "SELECT nrc, nombre FROM experienciaeducativa WHERE nrc = ?";
+        String consultaSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa WHERE nrc = ?";
         ExperienciaEducativaDTO experienciaEducativa = null;
         
         try {
@@ -45,6 +45,10 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
                 experienciaEducativa = new ExperienciaEducativaDTO();
                 experienciaEducativa.setNrc(resultadoDeOperacion.getString(NRC));
                 experienciaEducativa.setNombre(resultadoDeOperacion.getString(NOMBRE));
+                String numeroDeTrabajador = resultadoDeOperacion.getString(NUMERO_DE_TRABAJADOR);
+                ProfesorExperienciaEducativaDTO profesor;
+                profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
+                experienciaEducativa.setProfesor(profesor);
             }
         } finally {
             if (resultadoDeOperacion != null) {
