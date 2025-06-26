@@ -111,13 +111,15 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     }
     
     private void cargarListaAcademico(){
-            try {
+        
+        try {
             ObservableList<UsuarioDTO> listaObservableUsuarioDTO = FXCollections.observableArrayList();
 
             List<AcademicoEvaluadorDTO> listaAcademicoEvaluador = interfazAcademicoEvaluadorDAO.listarAcademicoEvaluador();
             ObservableList<AcademicoEvaluadorDTO> listaObservableAcademicoEvaluador = FXCollections.observableArrayList(listaAcademicoEvaluador);
                         
             for (AcademicoEvaluadorDTO academico : listaObservableAcademicoEvaluador) {
+                
                 listaObservableUsuarioDTO.add(academico); 
             }
 
@@ -161,8 +163,10 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     private void abrirRegistrarAcademico(ActionEvent event) {
         
         try {
+            
             ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
-            CoordinadorRegistroAcademicoController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
+            CoordinadorRegistroAcademicoController controlador;
+            controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ACADEMICO);
             TipoUsuarioDTO tipoUsuarioSeleccionado = comboTipoAcademico.getSelectionModel().getSelectedItem();
             controlador.asignarTipoUsuario(tipoUsuarioSeleccionado);

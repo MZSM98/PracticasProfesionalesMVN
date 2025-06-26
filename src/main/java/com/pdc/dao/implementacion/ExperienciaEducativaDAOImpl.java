@@ -67,7 +67,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
     @Override
     public List<ExperienciaEducativaDTO> listarExperienciaEducativa() throws SQLException, IOException {
         
-        String consultaTodoSQL = "SELECT nrc, nombre FROM experienciaeducativa";
+        String consultaTodoSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa";
         List<ExperienciaEducativaDTO> listaExperienciasEducativas = new ArrayList<>();
         
         try {
@@ -81,6 +81,13 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
                 experienciaEducativa = new ExperienciaEducativaDTO();
                 experienciaEducativa.setNrc(resultadoDeOperacion.getString(NRC));
                 experienciaEducativa.setNombre(resultadoDeOperacion.getString(NOMBRE));
+                
+                String numeroDeTrabajador;
+                numeroDeTrabajador = resultadoDeOperacion.getString(NUMERO_DE_TRABAJADOR);
+                ProfesorExperienciaEducativaDTO profesor;
+                profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
+                experienciaEducativa.setProfesor(profesor);
+                
                 listaExperienciasEducativas.add(experienciaEducativa);
             }
         } finally {
@@ -137,5 +144,24 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
             }
         }
         return experienciaEducativa;
+    }
+    
+    @Override
+    public boolean asignarProfesorAExperienciaEducativa(String nrc, String numeroDeTrabajador) throws SQLException, IOException {
+        String actualizarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = ? WHERE nrc = ?";
+        boolean actualizacionExitosa = false;
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
+            declaracionPreparada.setString(1, numeroDeTrabajador);
+            declaracionPreparada.setString(2, nrc);
+            declaracionPreparada.executeUpdate();
+            actualizacionExitosa = true;
+        } finally {
+            if (declaracionPreparada != null) declaracionPreparada.close();
+            if (conexionBD != null) conexionBD.close();
+        }
+        return actualizacionExitosa;
     }
 }

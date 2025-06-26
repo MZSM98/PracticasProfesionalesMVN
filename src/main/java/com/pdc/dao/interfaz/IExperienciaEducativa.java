@@ -12,4 +12,5 @@ public interface IExperienciaEducativa {
     public ExperienciaEducativaDTO obtenerExperienciaEducativaPorNRC(String nrc) throws SQLException, IOException;
     public List<ExperienciaEducativaDTO> listarExperienciaEducativa() throws SQLException, IOException;
     public ExperienciaEducativaDTO buscarExperienciaEducativaPorProfesor(String numeroDeTrabajador) throws SQLException, IOException;
+    public boolean asignarProfesorAExperienciaEducativa(String nrc, String numeroDeTrabajador) throws SQLException, IOException;
 }

@@ -1,11 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordiandorConsultaEstadisticaController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="384.0" prefWidth="414.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.pdc.controlador.coordinador.CoordiandorConsultaEstadisticaController">
+   <children>
+      <Label fx:id="labelTituloEstadisticas" layoutX="96.0" layoutY="31.0" text="Estadísticas de Registros">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <GridPane gridLinesVisible="true" layoutX="83.0" layoutY="81.0" prefHeight="244.0" prefWidth="247.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.66668701171875" minWidth="10.0" prefWidth="158.66666158040366" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="244.66668701171875" minWidth="10.0" prefWidth="88.66667175292969" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="labelSubtituloOrganizaciones" text="Organizaciones Registradas:">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="labelSubtituloProyectos" text="Proyectos Registrados:" GridPane.rowIndex="1">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelSubtituloProyectosAsignados" text="Proyectos Asignados:" GridPane.rowIndex="2">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelSubtituloEstudiantes" text="Estudiantes Registrados:" GridPane.rowIndex="3">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelSubtituloAcademicos" text="Académicos Registrados:" GridPane.rowIndex="4">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelSubtituloAcademicosEvaluadores" text="Academicos Evaluadores:" GridPane.rowIndex="5">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelSubtitutloProfesores" text="Profesores de Experiencia Educativa:" wrapText="true" GridPane.rowIndex="6">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelCantidadOrganizaciones" text="LabelOrganizacionesRegistradas" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelCantidadProyectosRegistrados" text="LabelProyectosRegistrados" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelCantidadProyectosAsignados" text="LabelProyectosAsignados" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelCantidadEstudiantesRegistrados" text="LabelEstudiantesRegistrados" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelCantidadAcademicosRegistrados" text="LabelAcadémicosRegistrados" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelCantidadAcademicosEvaluadoresRegistrados" text="LabelAcademicosEvaluadores" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="labelCantidadProfesoresRegistrados" text="LabelProfesoresExperienciaEducativa" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </GridPane>
+      <Button fx:id="botonSalir" layoutX="170.0" layoutY="337.0" mnemonicParsing="false" onAction="#cerrarVentana" prefHeight="25.0" prefWidth="74.0" text="Salir" />
+   </children>
 </AnchorPane>
