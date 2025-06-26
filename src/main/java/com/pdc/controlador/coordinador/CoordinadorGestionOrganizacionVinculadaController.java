@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -76,12 +75,12 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
             tableOrganizacionesVinculadas.setItems(listaOrganizacionesVinculadas);            
         } catch (SQLException sqle) {
             
-            LOG.error("Error al cargar las organizaciones vinculadas: " + sqle.getMessage());
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, "No se pudo cargar la información, contacte al administrador: ", Alert.AlertType.ERROR);            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         } catch (IOException ioe){
             
-            LOG.error("No se lograron cargar los registros" + ioe.getMessage());
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, "No se pudo cargar la información, contacte al adminsitrador", Alert.AlertType.ERROR);
+            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
         
@@ -111,7 +110,7 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REGISTRO_ORGANIZACION_VINCULADA);
         } catch (IOException ioe) {
             
-            LOG.error("Error al cargar la ventana de edición OV: " + ioe.getMessage());
+            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
             AlertaUtil.mostrarAlertaErrorVentana();
         }
         
@@ -120,7 +119,8 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
     @FXML
     private void cambiarEstadoOrganizacionVinculada(ActionEvent event) {
         
-        OrganizacionVinculadaDTO organizacionSeleccionada = tableOrganizacionesVinculadas.getSelectionModel().getSelectedItem();
+        OrganizacionVinculadaDTO organizacionSeleccionada;
+        organizacionSeleccionada = tableOrganizacionesVinculadas.getSelectionModel().getSelectedItem();
         
         if (organizacionSeleccionada == null) {
             
@@ -150,11 +150,11 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         } catch (SQLException e) {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD + e.getMessage());
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException e){
             
             LOG.error("Error al cambiar estado de la organización: " + e.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "Error al actualizar el registro", Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaActualizacionFallida();
         }
     }
     
@@ -170,7 +170,8 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         }
         try {
             
-        CoordinadorGestionResponsableOrganizacionController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_GESTION_RESPONSABLE_ORGANIZACION);
+        CoordinadorGestionResponsableOrganizacionController controlador;
+        controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_GESTION_RESPONSABLE_ORGANIZACION);
         controlador.cargarListaResponsablesOrganizacion(organizacionSeleccionada);
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_RESPONSABLE_ORGANIZACION);
         } catch (IOException ioe){

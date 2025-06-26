@@ -28,12 +28,14 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     public static final String MATRICULA = "matricula";
     
     public EstudianteExperienciaEducativaDAOImpl() {
+        
         interfazExperienciaEducativaDAO = new ExperienciaEducativaDAOImpl();
         interfazEstudianteDAO = new EstudianteDAOImpl();
     }
     
     @Override
     public boolean insertarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException, IOException {
+        
         String insertarSQL = "INSERT INTO estudianteexperienciaeducativa (nrc, matricula) VALUES (?, ?)";
         boolean insercionExitosa = false;
         
@@ -56,7 +58,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     }
     
     @Override
-    public boolean editarExperienciaAsignado(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException, IOException {
+    public boolean editarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException, IOException {
         String actualizarSQL = "UPDATE estudianteexperienciaeducativa SET nrc = ?, matricula = ? WHERE idexperienciaasignada = ?";
         boolean actualizacionExitosa = false;
         
@@ -82,16 +84,19 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     
     @Override
     public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorID(Integer idExperienciaAsignada) throws SQLException, IOException {
+        
         String consultaSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa WHERE idexperienciaasignada = ?";
         EstudianteExperienciaEducativaDTO estudianteAsignado = null;
         
         try {
+            
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, idExperienciaAsignada);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             if (resultadoDeOperacion.next()) {
+                
                 estudianteAsignado = new EstudianteExperienciaEducativaDTO();
                 estudianteAsignado.setIdExperienciaAsignada(resultadoDeOperacion.getInt(ID_EXPERIENCIA_ASIGNADA));
                 
@@ -121,8 +126,10 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     
     @Override
     public List<EstudianteExperienciaEducativaDTO> listarExperienciaAsignada() throws SQLException, IOException {
+        
         String consultaTodoSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa";
-        List<EstudianteExperienciaEducativaDTO> listaEstudiantesAsignados = new ArrayList<>();
+        List<EstudianteExperienciaEducativaDTO> listaEstudiantesAsignados;
+        listaEstudiantesAsignados = new ArrayList<>();
         
         try {
             conexionBD = new ConexionBD().getConexionBaseDatos();
@@ -130,18 +137,22 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
             resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             while (resultadoDeOperacion.next()) {
-                EstudianteExperienciaEducativaDTO estudianteAsignado = new EstudianteExperienciaEducativaDTO();
+                
+                EstudianteExperienciaEducativaDTO estudianteAsignado;
+                estudianteAsignado= new EstudianteExperienciaEducativaDTO();
                 estudianteAsignado.setIdExperienciaAsignada(resultadoDeOperacion.getInt(ID_EXPERIENCIA_ASIGNADA));
                 
-                String nrc = resultadoDeOperacion.getString(NRC);
+                String nrc;
+                nrc= resultadoDeOperacion.getString(NRC);
                 ExperienciaEducativaDTO experienciaEducativa;
                 experienciaEducativa = interfazExperienciaEducativaDAO.obtenerExperienciaEducativaPorNRC(nrc);
-                experienciaEducativa.setNrc(nrc);
+                estudianteAsignado.setExperienciaEducativa(experienciaEducativa);
                 
-                String matricula = resultadoDeOperacion.getString(MATRICULA);
+                String matricula;
+                matricula = resultadoDeOperacion.getString(MATRICULA);
                 EstudianteDTO estudiante;
                 estudiante = interfazEstudianteDAO.buscarEstudiante(matricula);
-                estudiante.setMatricula(matricula);
+                estudianteAsignado.setEstudiante(estudiante);
                 
                 listaEstudiantesAsignados.add(estudianteAsignado);
             }
@@ -161,6 +172,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     
     @Override
     public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorEstudiante(String matriculaEstudiante) throws SQLException, IOException{
+        
         String consultaSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa WHERE matricula = ?";
         EstudianteExperienciaEducativaDTO experienciaAsignada = null;
         
@@ -179,8 +191,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
                 ExperienciaEducativaDTO experienciaEducativa = interfazExperienciaEducativaDAO.obtenerExperienciaEducativaPorNRC(nrc);
                 experienciaAsignada.setExperienciaEducativa(experienciaEducativa);
 
-                String matricula = resultadoDeOperacion.getString(MATRICULA);
-                EstudianteDTO estudiante = interfazEstudianteDAO.buscarEstudiante(matricula);
+                EstudianteDTO estudiante = interfazEstudianteDAO.buscarEstudiante(matriculaEstudiante);
                 experienciaAsignada.setEstudiante(estudiante);
             }
         } finally {

@@ -31,12 +31,12 @@ import com.pdc.dao.interfaz.IExperienciaEducativa;
 import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EstudianteRegistroController implements Initializable {
     
     private static final Logger LOG = Logger.getLogger(EstudianteRegistroController.class);
-    @FXML
-    private Button botonCancelar;
     
     @FXML
     private TextField textMatricula;
@@ -59,7 +59,6 @@ public class EstudianteRegistroController implements Initializable {
     private TextField textAvanceCrediticio;
     
     private boolean modoEdicion;
-    
     private IEstudianteDAO interfazEstudianteDAO;
     private IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
     private ISeccionDAO interfazSeccionDAO;
@@ -201,7 +200,12 @@ public class EstudianteRegistroController implements Initializable {
         
         try {
             
-            listaPeriodos = FXCollections.observableArrayList(interfazPeriodoEscolarDAO.listarPeriodos());
+            List<PeriodoEscolarDTO> periodosActivos = interfazPeriodoEscolarDAO.listarPeriodos()
+                    .stream()
+                    .filter(periodo -> "ACTIVO".equalsIgnoreCase(periodo.getEstado()))
+                    .collect(Collectors.toList());
+            
+            listaPeriodos = FXCollections.observableArrayList(periodosActivos);
             comboPeriodoEscolar.setItems(listaPeriodos);
             
             listaSecciones = FXCollections.observableArrayList(interfazSeccionDAO.listarSecciones());

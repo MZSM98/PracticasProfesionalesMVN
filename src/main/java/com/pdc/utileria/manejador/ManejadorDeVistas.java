@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -79,8 +80,8 @@ public class ManejadorDeVistas {
 
     private static ManejadorDeVistas instancia;
     private Stage escenarioPrincipal;
-    private Map<Vista, Parent> vistasCache;
-    private Map<Vista, Object> controladoresCache;
+    private final Map<Vista, Parent> vistasCache;
+    private final Map<Vista, Object> controladoresCache;
 
     private ManejadorDeVistas() {
         this.vistasCache = new HashMap<>();
@@ -99,10 +100,10 @@ public class ManejadorDeVistas {
     }
 
     public Parent cargarVista(Vista vista) throws IOException {
+        
         if (vistasCache.containsKey(vista)) {
             return vistasCache.get(vista);
         }
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(vista.getRutaFXML()));
             Parent root = loader.load();

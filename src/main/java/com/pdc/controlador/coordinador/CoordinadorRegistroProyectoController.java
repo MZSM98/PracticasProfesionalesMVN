@@ -30,6 +30,7 @@ import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
 import com.pdc.dao.interfaz.IResponsableOrganizacionVinculadaDAO;
 import com.pdc.modelo.dto.PeriodoEscolarDTO;
 import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.sql.Date;
 import java.util.Objects;
@@ -108,20 +109,30 @@ public class CoordinadorRegistroProyectoController implements Initializable {
     private void configurarSpinnerVacantes(){
         
         SpinnerValueFactory<Integer> valueFactory;
-        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 6, 1, 1);
+        final int minimo = 1;
+        final int maximo = 6;
+        final int inicial = 1;
+        final int incremento = 1;
+        
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(minimo, maximo, inicial, incremento);
         spinnerVacantes.setValueFactory(valueFactory);
     }
     
     private void cargarPeriodosEscolares() {
         try {
             
-        List<PeriodoEscolarDTO> periodosEscolares = interfazPeriodoEscolar.listarPeriodos();
+        List<PeriodoEscolarDTO> periodosEscolares = interfazPeriodoEscolar.listarPeriodos()
+                .stream()
+                .filter(periodo -> "ACTIVO".equalsIgnoreCase(periodo.getEstado()))
+                .collect(Collectors.toList());
         comboPeriodoEscolar.setItems(FXCollections.observableArrayList(periodosEscolares));
         }catch (SQLException sqle) {
             
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
         }catch (IOException ioe){
             
+            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
@@ -130,13 +141,11 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         
         try {
             
-            List<OrganizacionVinculadaDTO> organizaciones;
-            organizaciones = interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas();
-
             List<OrganizacionVinculadaDTO> organizacionesActivas;
-            organizacionesActivas = organizaciones.stream()
-                .filter(organizacion -> "ACTIVO".equals(organizacion.getEstadoOV()))
-                .collect(Collectors.toList());
+            organizacionesActivas = interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas()
+                    .stream()
+                    .filter(organizacion -> "ACTIVO".equalsIgnoreCase(organizacion.getEstadoOV()))
+                    .collect(Collectors.toList());
             
             comboOrganizacionVinculada.setItems(FXCollections.observableArrayList(organizacionesActivas));
             
