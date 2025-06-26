@@ -63,12 +63,14 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
 
     @FXML
     private void accionDescargarAutoevaluacion(ActionEvent event) {
+        Integer idDocumento = DocumentoEnum.AUTOEVALUACION_ALUMNO.getId();
+
         EstudianteDTO estudiante = (EstudianteDTO) ManejadorDeSesion.getUsuario();
         String matricula = estudiante.getMatricula();
         EstudianteDocumentoDTO estudianteDocumento = null;
 
         try {
-            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorMatricula(matricula);
+            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorIdDocumento(idDocumento);
         } catch (SQLException ex) {
             LOG.error(ex);
         } catch (IOException ex) {
@@ -117,7 +119,7 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
         EstudianteDocumentoDTO estudianteDocumento;
         DocumentoDTO documento;
         try {
-            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorMatricula(matricula);
+            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorIdDocumento(idDocumento);
             documento = interfazDocumentoDAO.buscarDocumento(idDocumento);
 
             if (Objects.nonNull(estudianteDocumento)) {

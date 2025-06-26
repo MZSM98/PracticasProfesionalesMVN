@@ -51,12 +51,14 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
 
     @FXML
     private void accionDescargarSolicitud(ActionEvent event) {
+        Integer idDocumento = DocumentoEnum.SOLICITUD_PRACTICAS.getId();
+
         EstudianteDTO estudiante = (EstudianteDTO) ManejadorDeSesion.getUsuario();
         String matricula = estudiante.getMatricula();
         EstudianteDocumentoDTO estudianteDocumento = null;
 
         try {
-            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorMatricula(matricula);
+            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorIdDocumento(idDocumento);
         } catch (SQLException ex) {
             LOG.error(ex);
         } catch (IOException ex) {
@@ -64,7 +66,7 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
         }
 
         if (Objects.nonNull(estudianteDocumento)) {
-            String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getDocumento().getNombreDocumento());
+            String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getDocumento().getFormatoNombre());
             FTPUtil.configurar();
             File archivo = FTPUtil.descargarPlantillaTemp(archivoSolicitud);
             pdfSelector.mostrarDialogoGuardarPdf(archivo, estudianteDocumento.getDocumento().getFormatoNombre());
@@ -81,7 +83,7 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
         EstudianteDocumentoDTO estudianteDocumento;
         DocumentoDTO documento;
         try {
-            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorMatricula(matricula);
+            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorIdDocumento(idDocumento);
             documento = interfazDocumentoDAO.buscarDocumento(idDocumento);
 
             if (Objects.nonNull(estudianteDocumento)) {

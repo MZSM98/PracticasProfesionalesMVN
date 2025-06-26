@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +34,6 @@ public class ManejadorDeVistas {
         ESTUDIANTE_REGISTRO_REPORTE_MENSUAL("/com/pdc/vista/estudiante/EstudianteRegistroReporteMensual.fxml", false,""),
         ESTUDIANTE_REGISTRO_SOLICITUD_PROYECTO("/com/pdc/vista/estudiante/EstudianteRegistroSolicitudProyecto.fxml", false,""),
         ESTUDIANTE_GENERA_PLANTILLA_SOLICITUD("/com/pdc/vista/estudiante/EstudianteGeneraPlantillaSolicitudProyecto.fxml", false,""),
-        ESTUDIANTE_GESTION_REPORTE_MENSUAL("/com/pdc/vista/estudiante/EstudianteGestionReporteMensual.fxml", false,""),
 
 
         COORDINADOR_MENU_PRINCIPAL("/com/pdc/vista/coordinador/CoordinadorMenuPrincipal.fxml", false,""),
