@@ -1,6 +1,5 @@
 package com.pdc.controlador.estudiante;
 
-import static com.pdc.utileria.FTPUtil.SEPARADOR;
 import com.pdc.dao.implementacion.DocumentoDAOImpl;
 import com.pdc.dao.implementacion.EstudianteDocumentoDAOImpl;
 import com.pdc.dao.implementacion.EstudianteExperienciaEducativaDAOImpl;
@@ -166,10 +165,10 @@ public class EstudianteRegistroReporteMensualController implements Initializable
         }
 
         if (Objects.nonNull(estudianteDocumento)) {
-            String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getDocumento().getNombreDocumento());
+            String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getNombreArchivo());
             FTPUtil.configurar();
             File archivo = FTPUtil.descargarPlantillaTemp(archivoSolicitud);
-            String nombreDocumento = estudianteDocumento.getDocumento().getFormatoNombre().replace(".pdf", numeroReporte.concat(".pdf"));
+            String nombreDocumento = estudianteDocumento.getNombreArchivo();
 
             pdfSelector.mostrarDialogoGuardarPdf(archivo, nombreDocumento);
         } else {

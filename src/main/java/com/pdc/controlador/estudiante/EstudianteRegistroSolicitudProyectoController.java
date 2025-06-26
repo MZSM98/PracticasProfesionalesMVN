@@ -66,10 +66,10 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
         }
 
         if (Objects.nonNull(estudianteDocumento)) {
-            String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getDocumento().getFormatoNombre());
+            String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getNombreArchivo());
             FTPUtil.configurar();
             File archivo = FTPUtil.descargarPlantillaTemp(archivoSolicitud);
-            pdfSelector.mostrarDialogoGuardarPdf(archivo, estudianteDocumento.getDocumento().getFormatoNombre());
+            pdfSelector.mostrarDialogoGuardarPdf(archivo, estudianteDocumento.getNombreArchivo());
         } else {
             AlertaUtil.mostrarAlerta("Información", "No se ha cargado ninguna solicitud.", Alert.AlertType.INFORMATION);
         }
@@ -120,7 +120,7 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
         estudianteDocumento.setRuta(estudiante.getMatricula().concat(SEPARADOR));
         estudianteDocumento.setEstudiante(estudiante);
         estudianteDocumento.setDocumento(documento);
-        estudianteDocumento.setNombreArchivo(documento.getNombreDocumento());
+        estudianteDocumento.setNombreArchivo(documento.getFormatoNombre());
         interfazEstudianteDocumentoDAO.insertarEstudianteDocumento(estudianteDocumento);
     }
 

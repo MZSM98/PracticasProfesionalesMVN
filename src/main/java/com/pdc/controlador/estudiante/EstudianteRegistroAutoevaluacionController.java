@@ -81,7 +81,7 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
             String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getDocumento().getFormatoNombre());
             FTPUtil.configurar();
             File archivo = FTPUtil.descargarPlantillaTemp(archivoSolicitud);
-            pdfSelector.mostrarDialogoGuardarPdf(archivo, estudianteDocumento.getDocumento().getFormatoNombre());
+            pdfSelector.mostrarDialogoGuardarPdf(archivo, estudianteDocumento.getNombreArchivo());
         } else {
             AlertaUtil.mostrarAlerta("Información", "No se ha cargado ninguna solicitud.", Alert.AlertType.INFORMATION);
         }
@@ -195,7 +195,7 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
         estudianteDocumento.setRuta(estudiante.getMatricula().concat(SEPARADOR));
         estudianteDocumento.setEstudiante(estudiante);
         estudianteDocumento.setDocumento(documento);
-        estudianteDocumento.setNombreArchivo(documento.getNombreDocumento());
+        estudianteDocumento.setNombreArchivo(documento.getFormatoNombre());
         interfazEstudianteDocumentoDAO.insertarEstudianteDocumento(estudianteDocumento);
     }
     
