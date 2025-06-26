@@ -134,4 +134,23 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
         }
         return experienciaEducativa;
     }
+    
+    @Override
+    public boolean asignarProfesorAExperienciaEducativa(String nrc, String numeroDeTrabajador) throws SQLException, IOException {
+        String actualizarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = ? WHERE nrc = ?";
+        boolean actualizacionExitosa = false;
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
+            declaracionPreparada.setString(1, numeroDeTrabajador);
+            declaracionPreparada.setString(2, nrc);
+            declaracionPreparada.executeUpdate();
+            actualizacionExitosa = true;
+        } finally {
+            if (declaracionPreparada != null) declaracionPreparada.close();
+            if (conexionBD != null) conexionBD.close();
+        }
+        return actualizacionExitosa;
+    }
 }
