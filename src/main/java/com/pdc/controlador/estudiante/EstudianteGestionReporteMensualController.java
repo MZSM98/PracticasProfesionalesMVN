@@ -8,13 +8,11 @@ import com.pdc.dao.interfaz.IEstudianteDocumentoDAO;
 import com.pdc.dao.interfaz.IProyectoAsignadoDAO;
 import com.pdc.modelo.dto.DocumentoDTO;
 import com.pdc.modelo.dto.EstudianteDTO;
-import com.pdc.modelo.dto.EstudianteDocumentoDTO;
 import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.modelo.enums.DocumentoEnum;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.FTPUtil;
-import static com.pdc.utileria.FTPUtil.SEPARADOR;
 import com.pdc.utileria.FileSelectorUtil;
 import com.pdc.utileria.POIUtil;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
@@ -32,61 +30,34 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
-public class EstudianteRegistroAutoevaluacionController implements Initializable {
+public class EstudianteGestionReporteMensualController implements Initializable {
 
-    private static final Logger LOG = LogManager.getLogger(EstudianteRegistroSolicitudProyectoController.class);
+    private static final Logger LOG = LogManager.getLogger(EstudianteGestionReporteMensualController.class);
 
     private IProyectoAsignadoDAO interfazProyectoAsignadoDAO;
-    private IEstudianteDocumentoDAO interfazEstudianteDocumentoDAO;
     private IDocumentoDAO interfazDocumentoDAO;
     FileSelectorUtil pdfSelector;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        interfazEstudianteDocumentoDAO = new EstudianteDocumentoDAOImpl();
         interfazDocumentoDAO = new DocumentoDAOImpl();
         interfazProyectoAsignadoDAO = new ProyectoAsignadoDAOImpl();
         pdfSelector = new FileSelectorUtil();
     }
 
     @FXML
-    private void accionCancelar(ActionEvent event) {
+    public void accionCancelar(ActionEvent event) {
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
     }
 
     @FXML
-    private void accionDescargarAutoevaluacion(ActionEvent event) {
-        EstudianteDTO estudiante = (EstudianteDTO) ManejadorDeSesion.getUsuario();
-        String matricula = estudiante.getMatricula();
-        EstudianteDocumentoDTO estudianteDocumento = null;
-
-        try {
-            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorMatricula(matricula);
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
-
-        if (Objects.nonNull(estudianteDocumento)) {
-            String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getDocumento().getFormatoNombre());
-            FTPUtil.configurar();
-            File archivo = FTPUtil.descargarPlantillaTemp(archivoSolicitud);
-            pdfSelector.mostrarDialogoGuardarPdf(archivo, estudianteDocumento.getDocumento().getFormatoNombre());
-        } else {
-            AlertaUtil.mostrarAlerta("Información", "No se ha cargado ninguna solicitud.", Alert.AlertType.INFORMATION);
-        }
-    }
-
-    @FXML
-    private void accionDescargarPlantilla(ActionEvent event) {
+    public void accionDescargarPlantilla(ActionEvent event) {
         ProyectoDTO proyecto = consultaProyectoAsingado();
         try {
             DocumentoEnum documentoEnum = DocumentoEnum.AUTOEVALUACION_ALUMNO;
@@ -110,28 +81,8 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
     }
 
     @FXML
-    private void accionRegistrarAutoevaluacion(ActionEvent event) {
-        Integer idDocumento = DocumentoEnum.AUTOEVALUACION_ALUMNO.getId();
-        EstudianteDTO estudiante = (EstudianteDTO) ManejadorDeSesion.getUsuario();
-        String matricula = estudiante.getMatricula();
-        EstudianteDocumentoDTO estudianteDocumento;
-        DocumentoDTO documento;
-        try {
-            estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorMatricula(matricula);
-            documento = interfazDocumentoDAO.buscarDocumento(idDocumento);
-
-            if (Objects.nonNull(estudianteDocumento)) {
-                actualizarDocumentoEstudiante(documento, estudianteDocumento, matricula);
-                AlertaUtil.mostrarAlertaExito("Se actualizó la solicitud.");
-            } else {
-                guardarDocumentoEstudiante(documento, estudiante);
-                AlertaUtil.mostrarAlertaExito("Se actualizó guardo la solicitud.");
-            }
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+    public void accionRegistrarReporteMensual(ActionEvent event) {
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO_REPORTE_MENSUAL);
     }
 
     private void llenarDatosPlantilla(File archivoPlantilla, ProyectoDTO proyecto, DocumentoDTO documento) {
@@ -145,13 +96,12 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
 
             remplazos.put("{estudiante_nombre}", estudiante.getNombreEstudiante());
             remplazos.put("{estudiante_matricula}", estudiante.getMatricula());
-            
+
             remplazos.put("{organizacionvinculada_nombre}", proyecto.getOrganizacion().getNombreOV());
 
             remplazos.put("{responsableproyecto_nombre}", proyecto.getResponsable().getNombreResponsable());
-            
+
             remplazos.put("{proyecto_nombre}", proyecto.getTituloProyecto());
-            
 
             POIUtil.reemplazarMarcadores(word, remplazos);
             pdfSelector.mostrarDialogoGuardarDocx(word, documento);
@@ -182,28 +132,4 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
             return null;
         }
     }
-
-    private void guardarDocumentoEstudiante(DocumentoDTO documento, EstudianteDTO estudiante) throws SQLException, IOException {
-        FTPUtil.configurar();
-        Stage escenarioPadre = ManejadorDeVistas.getInstancia().obtenerEscenarioPrincipal();
-        String origen = pdfSelector.seleccionarArchivoPDF(escenarioPadre);
-        String destino = estudiante.getMatricula().concat(SEPARADOR).concat(documento.getFormatoNombre());
-        FTPUtil.cargarArchivo(origen, destino);
-        EstudianteDocumentoDTO estudianteDocumento = new EstudianteDocumentoDTO();
-        estudianteDocumento.setRuta(estudiante.getMatricula().concat(SEPARADOR));
-        estudianteDocumento.setEstudiante(estudiante);
-        estudianteDocumento.setDocumento(documento);
-        estudianteDocumento.setNombreArchivo(documento.getNombreDocumento());
-        interfazEstudianteDocumentoDAO.insertarEstudianteDocumento(estudianteDocumento);
-    }
-    
-    private void actualizarDocumentoEstudiante(DocumentoDTO documento, EstudianteDocumentoDTO estudianteDocumento, String matricula) throws SQLException, IOException {
-        FTPUtil.configurar();
-        Stage escenarioPadre = ManejadorDeVistas.getInstancia().obtenerEscenarioPrincipal();
-        String origen = pdfSelector.seleccionarArchivoPDF(escenarioPadre);
-        String destino = matricula.concat(SEPARADOR).concat(documento.getFormatoNombre());
-        FTPUtil.cargarArchivo(origen, destino);
-        interfazEstudianteDocumentoDAO.editarEstudianteDocumento(estudianteDocumento);
-    }
-
 }

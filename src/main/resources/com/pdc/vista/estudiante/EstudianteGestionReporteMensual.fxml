@@ -8,12 +8,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="111.0" prefWidth="557.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.pdc.controlador.estudiante.EstudianteRegistroAutoevaluacionController">
+<AnchorPane id="AnchorPane" prefHeight="96.0" prefWidth="581.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.estudiante.EstudianteGestionReporteMensualController">
    <children>
-      <AnchorPane id="AnchorPane" layoutX="5.0" layoutY="3.0" prefHeight="169.0" prefWidth="581.0">
+      <AnchorPane id="AnchorPane" prefHeight="169.0" prefWidth="581.0">
          <children>
-            <Label layoutX="201.0" layoutY="24.0" text="Registro de autoevaluación">
+            <Label layoutX="197.0" layoutY="23.0" text="Registro de reporte mensual">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -32,9 +31,8 @@
                </rowConstraints>
                <children>
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#accionDescargarPlantilla" prefHeight="25.0" prefWidth="160.0" text="Generar plantilla" GridPane.columnIndex="4" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#accionRegistrarAutoevaluacion" prefHeight="25.0" prefWidth="160.0" text="Registrar autoevaluación" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#accionRegistrarReporteMensual" prefHeight="25.0" prefWidth="160.0" text="Registrar reporte mensual" />
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="25.0" prefWidth="160.0" text="Cancelar" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#accionDescargarAutoevaluacion" prefHeight="25.0" prefWidth="160.0" text="Descargar autoevaluación" GridPane.columnIndex="2" />
                </children>
             </GridPane>
          </children>

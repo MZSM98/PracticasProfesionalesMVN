@@ -51,11 +51,6 @@ public class EstudianteMenuPrincipalController implements Initializable {
     }
 
     @FXML
-    void abrirVentanaEvaluacionPresentacion(ActionEvent event) {
-        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_EVALUACION_PRESENTACION);
-    }
-
-    @FXML
     void abrirVentanaRegistrarReporteMensual(ActionEvent event) {
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_REGISTRO_REPORTE_MENSUAL);
     }

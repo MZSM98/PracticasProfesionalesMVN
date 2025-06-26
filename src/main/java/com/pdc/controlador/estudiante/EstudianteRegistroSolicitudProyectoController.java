@@ -10,14 +10,12 @@ import com.pdc.modelo.dto.EstudianteDocumentoDTO;
 import com.pdc.modelo.enums.DocumentoEnum;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.FTPUtil;
-import com.pdc.utileria.PDFSelectorUtil;
+import com.pdc.utileria.FileSelectorUtil;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -25,7 +23,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -36,12 +33,14 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
 
     private IEstudianteDocumentoDAO interfazEstudianteDocumentoDAO;
     private IDocumentoDAO interfazDocumentoDAO;
+    FileSelectorUtil pdfSelector;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         interfazEstudianteDocumentoDAO = new EstudianteDocumentoDAOImpl();
         interfazDocumentoDAO = new DocumentoDAOImpl();
+        pdfSelector = new FileSelectorUtil();
     }
 
     @FXML
@@ -68,7 +67,7 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
             String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getDocumento().getNombreDocumento());
             FTPUtil.configurar();
             File archivo = FTPUtil.descargarPlantillaTemp(archivoSolicitud);
-            mostrarDialogoGuardar(archivo, estudianteDocumento.getDocumento().getNombreDocumento());
+            pdfSelector.mostrarDialogoGuardarPdf(archivo, estudianteDocumento.getDocumento().getFormatoNombre());
         } else {
             AlertaUtil.mostrarAlerta("Información", "No se ha cargado ninguna solicitud.", Alert.AlertType.INFORMATION);
         }
@@ -102,7 +101,6 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
 
     private void actualizarDocumentoEstudiante(DocumentoDTO documento, EstudianteDocumentoDTO estudianteDocumento, String matricula) throws SQLException, IOException {
         FTPUtil.configurar();
-        PDFSelectorUtil pdfSelector = new PDFSelectorUtil();
         Stage escenarioPadre = ManejadorDeVistas.getInstancia().obtenerEscenarioPrincipal();
         String origen = pdfSelector.seleccionarArchivoPDF(escenarioPadre);
         String destino = matricula.concat(SEPARADOR).concat(documento.getFormatoNombre());
@@ -112,7 +110,6 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
 
     private void guardarDocumentoEstudiante(DocumentoDTO documento, EstudianteDTO estudiante) throws SQLException, IOException {
         FTPUtil.configurar();
-        PDFSelectorUtil pdfSelector = new PDFSelectorUtil();
         Stage escenarioPadre = ManejadorDeVistas.getInstancia().obtenerEscenarioPrincipal();
         String origen = pdfSelector.seleccionarArchivoPDF(escenarioPadre);
         String destino = estudiante.getMatricula().concat(SEPARADOR).concat(documento.getFormatoNombre());
@@ -126,40 +123,8 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
     }
 
     @FXML
-    void accionCancelar(ActionEvent event) {
+    private void accionCancelar(ActionEvent event) {
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
-    }
-
-    private void mostrarDialogoGuardar(File archivoTemporal, String nombreArchivo) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Guardar documento");
-        fileChooser.setInitialFileName(nombreArchivo);
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Archivos PDF (*.pdf)", "*.pdf");
-        fileChooser.getExtensionFilters().add(extFilter);
-        Stage stage = ManejadorDeVistas.getInstancia().obtenerEscenarioPrincipal();
-        File archivoDestino = fileChooser.showSaveDialog(stage);
-
-        if (archivoDestino != null) {
-            try {
-                Files.copy(archivoTemporal.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                AlertaUtil.mostrarAlertaExito("Documento guardado exitosamente");
-            } catch (IOException ex) {
-                LOG.error("Error al guardar documento: ", ex);
-                AlertaUtil.mostrarAlertaError("Error al guardar el documento");
-            } finally {
-                try {
-                    Files.deleteIfExists(archivoTemporal.toPath());
-                } catch (IOException ex) {
-                    LOG.warn("No se pudo eliminar el archivo temporal: " + archivoTemporal.getAbsolutePath(), ex);
-                }
-            }
-        } else {
-            try {
-                Files.deleteIfExists(archivoTemporal.toPath());
-            } catch (IOException ex) {
-                LOG.warn("No se pudo eliminar el archivo temporal: " + archivoTemporal.getAbsolutePath(), ex);
-            }
-        }
     }
 }
