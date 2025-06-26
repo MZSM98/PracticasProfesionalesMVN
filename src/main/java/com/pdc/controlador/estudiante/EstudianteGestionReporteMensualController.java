@@ -1,10 +1,8 @@
 package com.pdc.controlador.estudiante;
 
 import com.pdc.dao.implementacion.DocumentoDAOImpl;
-import com.pdc.dao.implementacion.EstudianteDocumentoDAOImpl;
 import com.pdc.dao.implementacion.ProyectoAsignadoDAOImpl;
 import com.pdc.dao.interfaz.IDocumentoDAO;
-import com.pdc.dao.interfaz.IEstudianteDocumentoDAO;
 import com.pdc.dao.interfaz.IProyectoAsignadoDAO;
 import com.pdc.modelo.dto.DocumentoDTO;
 import com.pdc.modelo.dto.EstudianteDTO;

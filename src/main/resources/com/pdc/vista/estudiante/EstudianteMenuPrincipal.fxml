@@ -22,7 +22,6 @@
       <Button fx:id="botonConsultarCronograma" layoutX="41.0" layoutY="188.0" mnemonicParsing="false" onAction="#abrirVentanaConsultarCronograma" prefHeight="25.0" prefWidth="131.0" text="Cronograma" />
       <Button fx:id="botonRegistrarAutoevaluacion" layoutX="220.0" layoutY="188.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarAutoevaluacion" prefHeight="25.0" prefWidth="161.0" text="Autoevaluación" />
       <Button fx:id="botonRegistrarReporteMensual" layoutX="220.0" layoutY="237.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarReporteMensual" prefHeight="25.0" prefWidth="161.0" text="Reporte mensual" />
-      <Button fx:id="botonRegistrarEvaluacionPresentacion" layoutX="220.0" layoutY="287.0" mnemonicParsing="false" onAction="#abrirVentanaEvaluacionPresentacion" text="Evaluación de presentación" />
       <Label fx:id="labelCerrarSesion" layoutX="506.0" layoutY="324.0" onMouseClicked="#cerrarSesion" text="Cerrar Sesión" textFill="#0095ff" underline="true">
          <font>
             <Font name="System Bold" size="12.0" />
