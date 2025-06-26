@@ -44,10 +44,14 @@ public class CoordinadorRegistroAcademicoController {
     private TextField textSeccion;
     
     @FXML
-    private ComboBox<ExperienciaEducativaDTO> comboExperienciaEducativa;
+    private Label labelSeccion;
     
     @FXML
-    private Label labelSeccion;
+    private Label labelExperienciaEducativa;
+    
+    @FXML
+    private ComboBox<ExperienciaEducativaDTO> comboExperienciaEducativa;
+    
     
     private TipoUsuarioDTO tipoUsuario;
     private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
@@ -242,6 +246,7 @@ public class CoordinadorRegistroAcademicoController {
             
             textSeccion.setVisible(Boolean.FALSE);
             labelSeccion.setVisible(Boolean.FALSE);
+            labelExperienciaEducativa.setVisible(Boolean.FALSE);
             comboExperienciaEducativa.setVisible(Boolean.FALSE);
         }else if (PROFESOR_EE.equals(tipoUsuario.getIdTipo())) {
             

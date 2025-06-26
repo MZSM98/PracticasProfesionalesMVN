@@ -67,7 +67,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
     @Override
     public List<ExperienciaEducativaDTO> listarExperienciaEducativa() throws SQLException, IOException {
         
-        String consultaTodoSQL = "SELECT nrc, nombre FROM experienciaeducativa";
+        String consultaTodoSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa";
         List<ExperienciaEducativaDTO> listaExperienciasEducativas = new ArrayList<>();
         
         try {
@@ -81,6 +81,13 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
                 experienciaEducativa = new ExperienciaEducativaDTO();
                 experienciaEducativa.setNrc(resultadoDeOperacion.getString(NRC));
                 experienciaEducativa.setNombre(resultadoDeOperacion.getString(NOMBRE));
+                
+                String numeroDeTrabajador;
+                numeroDeTrabajador = resultadoDeOperacion.getString(NUMERO_DE_TRABAJADOR);
+                ProfesorExperienciaEducativaDTO profesor;
+                profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
+                experienciaEducativa.setProfesor(profesor);
+                
                 listaExperienciasEducativas.add(experienciaEducativa);
             }
         } finally {
