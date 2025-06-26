@@ -14,7 +14,7 @@
 <AnchorPane id="AnchorPane" prefHeight="527.0" prefWidth="832.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorAsignarProyectoController">
    <children>
       <Label layoutX="14.0" layoutY="116.0" text="Proyecto:" />
-      <ComboBox fx:id="comboOrganizacionVinculada" layoutX="154.0" layoutY="79.0" onAction="#accionComboOrganizacionVinculada" prefHeight="25.0" prefWidth="312.0" promptText="Seleccione una organización vinculada" />
+      <ComboBox fx:id="comboOrganizacionVinculada" layoutX="154.0" layoutY="79.0" onAction="#llenarComboProyectosPorOrganizacion" prefHeight="25.0" prefWidth="312.0" promptText="Seleccione una organización vinculada" />
       <Label layoutX="14.0" layoutY="83.0" prefHeight="17.0" prefWidth="140.0" text="Organización vinculada:" />
       <ComboBox fx:id="comboProyecto" disable="true" layoutX="154.0" layoutY="112.0" onAction="#accionCambioComboProyecto" prefHeight="25.0" prefWidth="312.0" promptText="Seleccione un proyecto" />
       <TableView fx:id="tablaAsignados" layoutX="11.0" layoutY="189.0" prefHeight="247.0" prefWidth="355.0">
@@ -39,7 +39,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="botonAsignar" disable="true" layoutX="372.0" layoutY="276.0" mnemonicParsing="false" onAction="#accionAsignar" prefHeight="25.0" prefWidth="87.0" text="&lt; Asignar" />
+      <Button fx:id="botonAsignar" disable="true" layoutX="372.0" layoutY="276.0" mnemonicParsing="false" onAction="#asignarProyecto" prefHeight="25.0" prefWidth="87.0" text="&lt; Asignar" />
       <GridPane layoutX="189.0" layoutY="483.0" prefHeight="30.0" prefWidth="460.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -50,7 +50,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="botonGuardar" disable="true" mnemonicParsing="false" onAction="#accionGuardar" prefHeight="25.0" prefWidth="155.0" text="Guardar" />
+            <Button fx:id="botonGuardar" disable="true" mnemonicParsing="false" onAction="#guardarAsignacion" prefHeight="25.0" prefWidth="155.0" text="Guardar" />
             <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="25.0" prefWidth="161.0" text="Cancelar" GridPane.columnIndex="2" />
          </children>
       </GridPane>

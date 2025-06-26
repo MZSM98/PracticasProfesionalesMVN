@@ -5,6 +5,7 @@ package com.pdc.modelo.dto;
 public class ExperienciaEducativaDTO {
     private String nrc;
     private String nombre;
+    private ProfesorExperienciaEducativaDTO profesor;
 
     public String getNrc() {
         return nrc;
@@ -22,6 +23,15 @@ public class ExperienciaEducativaDTO {
         this.nombre = nombre;
     }
 
+    public ProfesorExperienciaEducativaDTO getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(ProfesorExperienciaEducativaDTO profesor) {
+        this.profesor = profesor;
+    }
+
+    
     @Override
     public String toString() {
         return (this.nombre != null ? this.nombre : "") + 

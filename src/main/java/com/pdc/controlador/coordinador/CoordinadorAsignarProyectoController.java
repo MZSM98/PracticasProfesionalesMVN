@@ -14,6 +14,7 @@ import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.GmailUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -99,6 +101,7 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         interfazProyectoDAO = new ProyectoDAOImpl();
         interfazEstudianteDAO = new EstudianteDAOImpl();
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
@@ -109,14 +112,16 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     }
 
     @FXML
-    private void accionAsignar(ActionEvent event) {
+    private void asignarProyecto(ActionEvent event) {
         
         EstudianteDTO estudianteSeleccionado = tablaSinAsignar.getSelectionModel().getSelectedItem();
         ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
         
         if (Objects.isNull(estudianteSeleccionado)) {
+            
             AlertaUtil.mostrarAlerta("Alerta", "Debe seleccionar un registro", Alert.AlertType.WARNING);
         }else if(validaVacantesProyecto(proyectoSeleccionado)){
+            
             tablaAsignados.getItems().add(estudianteSeleccionado);
             tablaSinAsignar.getItems().remove(estudianteSeleccionado);
             ProyectoAsignadoDTO proyectoAsignado;
@@ -131,14 +136,19 @@ public class CoordinadorAsignarProyectoController implements Initializable {
 
     @FXML
     private void accionCambioComboProyecto(ActionEvent event) {
-        ProyectoDTO proyecto = comboProyecto.getSelectionModel().getSelectedItem();
+        
+        ProyectoDTO proyecto;
+        proyecto = comboProyecto.getSelectionModel().getSelectedItem();
+        
         if (Objects.nonNull(proyecto)) {
+            
             botonAsignar.setDisable(Boolean.FALSE);
             botonGuardar.setDisable(Boolean.FALSE);
             llenarTablaEstudianteSinAsignar();
             llenarTablaEstudiantesAsignados();
             actualizaVacantes();
         } else {
+            
             botonAsignar.setDisable(Boolean.TRUE);
             botonGuardar.setDisable(Boolean.TRUE);
             actualizaVacantes();
@@ -146,9 +156,12 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     }
 
     @FXML
-    private void accionComboOrganizacionVinculada(ActionEvent event) {
+    private void llenarComboProyectosPorOrganizacion(ActionEvent event) {
         
-        if (Objects.nonNull(comboOrganizacionVinculada.getSelectionModel().getSelectedItem())) {
+        OrganizacionVinculadaDTO organizacionSeleccionada;
+        organizacionSeleccionada = comboOrganizacionVinculada.getSelectionModel().getSelectedItem();
+        
+        if (Objects.nonNull(organizacionSeleccionada)) {
             
             llenarDatosComboProyecto();
             llenarTablaEstudianteSinAsignar();
@@ -166,27 +179,30 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     }
 
     @FXML
-    private void accionGuardar(ActionEvent event) {
+    private void guardarAsignacion(ActionEvent event) {
         
-        ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        ProyectoDTO proyectoSeleccionado;
+        proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
 
         if (Objects.nonNull(proyectoSeleccionado) && !listaProyectosPorAsignar.isEmpty()) {
             
             for (ProyectoAsignadoDTO proyectoAsignado : listaProyectosPorAsignar) {
+                
                 try {
                     
                     interfazProyectoAsignadoDAO.insertarProyectoAsignado(proyectoAsignado);
                     informaCorreo(proyectoAsignado.getEstudiante(), proyectoSeleccionado.getResponsable(), proyectoSeleccionado);
-                } catch (SQLException ex) {
+                } catch (SQLException sqle){
                     
-                    LOG.error(ex);
+                    LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
                     AlertaUtil.mostrarAlertaBaseDatos();
-                } catch (IOException ex) {
+                } catch (IOException ioe) {
                     
-                    LOG.error(ex);
+                    LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
                     AlertaUtil.mostrarAlertaRegistroFallido();
                 }
             }
+            
             AlertaUtil.mostrarAlertaRegistroExitoso();
             accionCancelar(event);
         }else{
@@ -239,12 +255,22 @@ public class CoordinadorAsignarProyectoController implements Initializable {
     }
 
     private void llenarDatosComboOrganizacionesVinculadas() {
+        
         try {
-            comboOrganizacionVinculada.setItems(FXCollections.observableArrayList(interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas()));
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
+            
+            List<OrganizacionVinculadaDTO> organizacionesActivas = interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas()
+                .stream()
+                .filter(organizacion -> "ACTIVO".equalsIgnoreCase(organizacion.getEstadoOV()))
+                .collect(Collectors.toList());
+            comboOrganizacionVinculada.setItems(FXCollections.observableArrayList(organizacionesActivas));
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } catch (IOException ioe) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
 

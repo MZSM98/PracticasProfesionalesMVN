@@ -8,7 +8,8 @@ public class PeriodoEscolarDTO {
     private String nombrePeriodoEscolar;
     private Date fechaInicioPeriodoEscolar;
     private Date fechaFinPeriodoEscolar;
-
+    private String estado;
+    
     public Integer getIdPeriodoEscolar() {
         return idPeriodoEscolar;
     }
@@ -41,6 +42,15 @@ public class PeriodoEscolarDTO {
         this.fechaFinPeriodoEscolar = fechaFinPeriodoEscolar;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
+    
     @Override
     public String toString() {
         return nombrePeriodoEscolar;

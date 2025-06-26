@@ -19,7 +19,8 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
     
     @Override
     public PeriodoEscolarDTO buscarPeriodoEscolar(Integer idPeriodoEscolar)  throws SQLException, IOException {
-        String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar FROM periodoescolar WHERE idperiodoescolar=?";
+        
+        String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar WHERE idperiodoescolar=?";
         PeriodoEscolarDTO periodoEscolar = null;
 
         try {
@@ -29,11 +30,13 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
+                
                 periodoEscolar = new PeriodoEscolarDTO();
                 periodoEscolar.setIdPeriodoEscolar(resultadoDeOperacion.getInt("idperiodoescolar"));
                 periodoEscolar.setNombrePeriodoEscolar(resultadoDeOperacion.getString("nombreperiodoescolar"));
                 periodoEscolar.setFechaInicioPeriodoEscolar(resultadoDeOperacion.getDate("fechainicioperiodoescolar"));
                 periodoEscolar.setFechaFinPeriodoEscolar(resultadoDeOperacion.getDate("fechafinperiodoescolar"));
+                periodoEscolar.setEstado(resultadoDeOperacion.getString("status"));
             }
         } finally {
             if (resultadoDeOperacion != null) resultadoDeOperacion.close();
@@ -45,7 +48,8 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
 
     @Override
     public List<PeriodoEscolarDTO> listarPeriodos()  throws SQLException, IOException {
-        String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar FROM periodoescolar";
+        
+        String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar";
         List<PeriodoEscolarDTO> listaPeriodoEscolar = new ArrayList<>();
 
         try {
@@ -54,14 +58,17 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             while(resultadoDeOperacion.next()) {
+                
                 PeriodoEscolarDTO periodoEscolar = new PeriodoEscolarDTO();
                 periodoEscolar.setIdPeriodoEscolar(resultadoDeOperacion.getInt("idperiodoescolar"));
                 periodoEscolar.setNombrePeriodoEscolar(resultadoDeOperacion.getString("nombreperiodoescolar"));
                 periodoEscolar.setFechaInicioPeriodoEscolar(resultadoDeOperacion.getDate("fechainicioperiodoescolar"));
                 periodoEscolar.setFechaFinPeriodoEscolar(resultadoDeOperacion.getDate("fechafinperiodoescolar"));
+                periodoEscolar.setEstado(resultadoDeOperacion.getString("status"));
                 listaPeriodoEscolar.add(periodoEscolar);
             }
         } finally {
+            
             if (resultadoDeOperacion != null) resultadoDeOperacion.close();
             if (declaracionPreparada != null) declaracionPreparada.close();
             if (conexionBD != null) conexionBD.close();

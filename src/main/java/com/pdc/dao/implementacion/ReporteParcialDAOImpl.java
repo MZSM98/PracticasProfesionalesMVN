@@ -12,12 +12,13 @@ import com.pdc.dao.interfaz.IReporteParcialDAO;
 
 public class ReporteParcialDAOImpl implements IReporteParcialDAO {
 
-    Connection conexionBD;
-    PreparedStatement declaracionPreparada;
-    ResultSet resultadoDeOperacion;
+    private Connection conexionBD;
+    private PreparedStatement declaracionPreparada;
+    private ResultSet resultadoDeOperacion;
 
     @Override
     public boolean insertarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException {
+        
         String insertarSQL = "INSERT INTO reporteparcial (fechaDeReporte, horasReportadas) VALUES (?, ?)";
         boolean insercionExitosa = false;
 
@@ -37,6 +38,7 @@ public class ReporteParcialDAOImpl implements IReporteParcialDAO {
 
     @Override
     public boolean eliminarReporteParcial(Date fechaDeReporte) throws SQLException, IOException {
+        
         String eliminarSQL = "DELETE FROM reporteparcial WHERE fechaDeReporte = ?";
         boolean eliminacionExitosa = false;
 
@@ -55,6 +57,7 @@ public class ReporteParcialDAOImpl implements IReporteParcialDAO {
 
     @Override
     public boolean editarReporteParcial(ReporteParcialDTO reporte) throws SQLException, IOException {
+        
         String actualizarSQL = "UPDATE reporteparcial SET horasReportadas = ? WHERE fechaDeReporte = ?";
         boolean actualizacionExitosa = false;
 
@@ -74,6 +77,7 @@ public class ReporteParcialDAOImpl implements IReporteParcialDAO {
 
     @Override
     public ReporteParcialDTO buscarReporteParcial(Date fechaDeReporte) throws SQLException, IOException {
+        
         String consultaSQL = "SELECT fechaDeReporte, horasReportadas FROM reporteparcial WHERE fechaDeReporte = ?";
         ReporteParcialDTO reporte = null;
 

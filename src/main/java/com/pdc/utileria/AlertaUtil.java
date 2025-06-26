@@ -5,11 +5,11 @@ import javafx.scene.control.ButtonType;
 
 public class AlertaUtil {
 
-    public static final String EXITO = "EXITO";
-    public static final String ADVERTENCIA = "ADVERTENCIA";
-    public static final String ERROR = "ERROR";
-    public static final String INFORMACION = "INFORMACION";
-    public static final String CONFIRMACION = "CONFIRMACION";
+    public static final String EXITO = "Éxito";
+    public static final String ADVERTENCIA = "Advertencia";
+    public static final String ERROR = "Error";
+    public static final String INFORMACION = "Información";
+    public static final String CONFIRMACION = "Confirmación";
     public static final String ALERTA_ERROR_VENTANA = "No se pudo abrir la ventana, intente más tarde";
     public static final String ALERTA_ERROR_BD = "Error de conexión con la base de datos";
     public static final String ALERTA_REGISTRO_EXITOSO = "Registro Exitoso";
