@@ -4,8 +4,6 @@ import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
 import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.utileria.bd.ConexionBD;
-
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,7 +48,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     }
 
     @Override
-    public boolean insertarProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
+    public boolean insertarProyecto(ProyectoDTO proyecto) throws SQLException {
 
         String insertarSQL = "INSERT INTO proyecto (titulo, idperiodoescolar, descripcion, rfcMoral, fechaInicio, fechaFinal, responsable, vacantes,"
                 + "cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -87,7 +85,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     }
 
     @Override
-    public boolean eliminarProyecto(int proyectoID) throws SQLException, IOException {
+    public boolean eliminarProyecto(int proyectoID) throws SQLException {
 
         String eliminarSQL = "DELETE FROM proyecto WHERE proyectoID = ?";
         boolean eliminacionExitosa = false;
@@ -112,7 +110,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     }
 
     @Override
-    public boolean editarProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
+    public boolean editarProyecto(ProyectoDTO proyecto) throws SQLException {
 
         String actualizarSQL = "UPDATE proyecto SET titulo = ?, idperiodoescolar = ?,"
                 + " descripcion = ?, rfcMoral = ?, estadoProyecto = ?, fechaInicio = ?, fechaFinal = ?, responsable = ?, vacantes = ?,"
@@ -152,7 +150,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     }
 
     @Override
-    public List<ProyectoDTO> buscarProyectosPorNombre(String titulo) throws SQLException, IOException {
+    public List<ProyectoDTO> buscarProyectosPorNombre(String titulo) throws SQLException {
 
         String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal,"
                 + " responsable, vacantes FROM proyecto WHERE titulo LIKE ?";
@@ -207,7 +205,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     }
 
     @Override
-    public List<ProyectoDTO> listarProyectos() throws SQLException, IOException {
+    public List<ProyectoDTO> listarProyectos() throws SQLException {
 
         String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
@@ -257,7 +255,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     }
 
     @Override
-    public ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException, IOException {
+    public ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException {
         
         String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal,"
                 + " responsable, vacantes, cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro FROM proyecto WHERE proyectoID = ?";
@@ -320,7 +318,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     }
 
     @Override
-    public List<ProyectoDTO> listarProyectosPorOv(String rfcMoral) throws SQLException, IOException {
+    public List<ProyectoDTO> listarProyectosPorOv(String rfcMoral) throws SQLException {
 
         String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal,"
                 + " responsable, vacantes, cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro FROM proyecto WHERE rfcMoral = ?";
@@ -381,7 +379,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     }
 
     @Override
-    public List<ProyectoDTO> listarProyectosConVacantesDisponibles() throws SQLException, IOException {
+    public List<ProyectoDTO> listarProyectosConVacantesDisponibles() throws SQLException {
 
         String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, "
                 + "estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes, cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro  "
@@ -405,7 +403,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         return proyectosConVacantes;
     }
 
-    private ProyectoDTO construirProyectoDesdeResultSet(ResultSet rs) throws SQLException, IOException {
+    private ProyectoDTO construirProyectoDesdeResultSet(ResultSet rs) throws SQLException {
         ProyectoDTO proyecto = new ProyectoDTO();
         proyecto.setProyectoID(rs.getInt(PROYECTO_ID));
         proyecto.setTituloProyecto(rs.getString(TITULO));
@@ -435,6 +433,24 @@ public class ProyectoDAOImpl implements IProyectoDAO {
 
         return proyecto;
     }
+    
+    @Override
+    public int contarProyectos() throws SQLException {
+    
+        final String contarSQL = "SELECT COUNT(*) FROM proyecto";
+        int totalProyectos = 0;
+
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
+             ResultSet resultado = declaracion.executeQuery()) {
+
+            if (resultado.next()) {
+                totalProyectos = resultado.getInt(1);
+            }
+    }
+    
+    return totalProyectos;
+}
 
     private void cerrarRecursos() throws SQLException {
         if (resultadoDeOperacion != null) {

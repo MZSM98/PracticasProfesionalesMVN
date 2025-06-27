@@ -7,6 +7,7 @@ import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
 import java.net.URL;
@@ -18,7 +19,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.apache.log4j.LogManager;
@@ -59,23 +59,30 @@ public class CoordinadorProyectoAsignadoController implements Initializable {
 
     @FXML
     private void accionReasignarProyecto(ActionEvent event) {
+        
         ProyectoAsignadoDTO proyectoAsginado = tablaProyectoAsignado.getSelectionModel().getSelectedItem();
         if(Objects.nonNull(proyectoAsginado)){
             try {
+                
                 ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.COORDINADOR_REASIGNAR_PROYECTO);
-                CoordinadorReasignarProyectoController controller = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REASIGNAR_PROYECTO);
+                CoordinadorReasignarProyectoController controller;
+                controller = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.COORDINADOR_REASIGNAR_PROYECTO);
                 controller.asignarDatosVentana(proyectoAsginado);
                 ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_REASIGNAR_PROYECTO);
-            } catch (IOException ex) {
-                LOG.error(ex);
+            } catch (IOException ioe) {
+                
+                LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
+                AlertaUtil.mostrarAlertaErrorVentana();
             }
         }else{
-            AlertaUtil.mostrarAlerta("Advertencia", "Debe seleccionar un registro", Alert.AlertType.WARNING);
+            
+            AlertaUtil.mostrarAlertaSeleccionRegistro();
         }
 
     }
 
     private void configurarTablaProyectoAsignado() {
+        
         columnaAlumno.setCellValueFactory(cellData -> {
             EstudianteDTO estudiante = cellData.getValue().getEstudiante();
             if (estudiante != null) {
@@ -96,13 +103,15 @@ public class CoordinadorProyectoAsignadoController implements Initializable {
     }
     
     private void llenarTablaProyectoAsignado(){
+        
         try {
+            
             tablaProyectoAsignado.setItems(FXCollections.observableArrayList(interfazProyectoAsignadoDAO.listaProyectoAsignado()));
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
+        } 
     }
    
 }

@@ -3,8 +3,6 @@ package com.pdc.dao.implementacion;
 import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.utileria.bd.ConexionBD;
 import com.pdc.modelo.dto.UsuarioDTO;
-
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +25,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
     
     @Override
-    public boolean insertarProfesorEE(ProfesorExperienciaEducativaDTO profesor) throws SQLException, IOException {
+    public boolean insertarProfesorEE(ProfesorExperienciaEducativaDTO profesor) throws SQLException {
         String insertarSQL = "INSERT INTO profesoree (numeroDeTrabajador, nombreProfesor, seccion) VALUES (?, ?, ?)";
         boolean insercionExitosa = false;
         
@@ -54,7 +52,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
 
     @Override
-    public boolean eliminarProfesorEE(String numeroTrabajador) throws SQLException, IOException {
+    public boolean eliminarProfesorEE(String numeroTrabajador) throws SQLException {
         String eliminarSQL = "DELETE FROM profesoree WHERE numeroDeTrabajador = ?";
         boolean eliminacionExitosa = false;
         
@@ -72,7 +70,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
 
     @Override
-    public boolean editarProfesorEE(ProfesorExperienciaEducativaDTO profesor) throws SQLException, IOException {
+    public boolean editarProfesorEE(ProfesorExperienciaEducativaDTO profesor) throws SQLException {
         String actualizarSQL = "UPDATE profesoree SET nombreProfesor = ?, seccion = ? WHERE numeroDeTrabajador = ?";
         boolean actualizacionExitosa = false;
         
@@ -92,7 +90,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
 
     @Override
-    public ProfesorExperienciaEducativaDTO buscarProfesorEE(String numeroTrabajador) throws SQLException, IOException {
+    public ProfesorExperienciaEducativaDTO buscarProfesorEE(String numeroTrabajador) throws SQLException {
         String consultaSQL = "SELECT numeroDeTrabajador, nombreProfesor, seccion FROM profesoree WHERE numeroDeTrabajador = ?";
         ProfesorExperienciaEducativaDTO profesor = null;
         
@@ -117,7 +115,7 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
     }
 
     @Override
-    public List<ProfesorExperienciaEducativaDTO> listaProfesorEE() throws SQLException, IOException {
+    public List<ProfesorExperienciaEducativaDTO> listaProfesorEE() throws SQLException {
         String consultaSQL = "SELECT numeroDeTrabajador, nombreProfesor, seccion FROM profesoree";
         List<ProfesorExperienciaEducativaDTO> profesores = new ArrayList<>();
         

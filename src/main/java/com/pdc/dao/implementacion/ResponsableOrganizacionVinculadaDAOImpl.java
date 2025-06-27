@@ -2,10 +2,7 @@ package com.pdc.dao.implementacion;
 
 import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 import com.pdc.utileria.bd.ConexionBD;
-
-import java.io.IOException;
 import java.sql.SQLException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +17,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
     private ResultSet resultadoDeOperacion;
 
     @Override
-    public boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
+    public boolean insertarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException {
         String insertarSQL = "INSERT INTO responsableorganizacionvinculada (rfc, cargo, nombreResponsable, correoResponsable, rfcMoral) VALUES (?, ?, ?, ?, ?)";
         boolean insercionExitosa = false;
 
@@ -42,7 +39,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
     }
 
     @Override
-    public boolean eliminarResponsableOV(String rfc) throws SQLException, IOException {
+    public boolean eliminarResponsableOV(String rfc) throws SQLException {
         String eliminarSQL = "DELETE FROM responsableorganizacionvinculada WHERE rfc = ?";
         boolean eliminacionExitosa = false;
 
@@ -60,7 +57,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
     }
 
     @Override
-    public boolean editarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException, IOException {
+    public boolean editarResponsableOV(ResponsableOrganizacionVinculadaDTO responsable) throws SQLException {
         String actualizarSQL = "UPDATE responsableorganizacionvinculada SET cargo = ?, correoResponsable = ? WHERE rfc = ?";
         boolean actualizacionExitosa = false;
 
@@ -80,7 +77,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
     }
 
     @Override
-    public ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfcMoral) throws SQLException, IOException {
+    public ResponsableOrganizacionVinculadaDTO buscarResponsableOV(String rfcMoral) throws SQLException {
         String consultaSQL = "SELECT rfc, cargo, nombreResponsable, correoResponsable, rfcMoral"
                 + " FROM responsableorganizacionvinculada WHERE rfcMoral = ?";
         ResponsableOrganizacionVinculadaDTO responsable = null;
@@ -109,7 +106,7 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
         return responsable;
     }
     @Override
-    public List<ResponsableOrganizacionVinculadaDTO> listarResponsablesPorOrganizacion(String rfcMoral) throws SQLException, IOException {
+    public List<ResponsableOrganizacionVinculadaDTO> listarResponsablesPorOrganizacion(String rfcMoral) throws SQLException {
         String consultaSQL = "SELECT rfc, nombreResponsable, cargo, correoResponsable, rfcMoral"
                 + " FROM responsableorganizacionvinculada WHERE rfcMoral = ?";
         List<ResponsableOrganizacionVinculadaDTO> responsables = new ArrayList<>();

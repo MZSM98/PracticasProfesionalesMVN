@@ -2,7 +2,6 @@ package com.pdc.dao.implementacion;
 
 import com.pdc.utileria.bd.ConexionBD;
 import com.pdc.modelo.dto.TipoUsuarioDTO;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ public class TipoUsuarioDAOImpl implements ITipoUsuarioDAO {
     private ResultSet resultadoDeOperacion;
     
     @Override
-    public List<TipoUsuarioDTO> listaTipoUsuario() throws SQLException, IOException{
+    public List<TipoUsuarioDTO> listaTipoUsuario() throws SQLException{
         String consultaSQL = "SELECT idtipo, tipo FROM tipousuario";
 
         List<TipoUsuarioDTO> listaTipoUsuario = new ArrayList<>();
@@ -44,7 +43,7 @@ public class TipoUsuarioDAOImpl implements ITipoUsuarioDAO {
     }
 
     @Override
-    public TipoUsuarioDTO buscarTipoUsuario(Integer idtipo) throws SQLException, IOException {
+    public TipoUsuarioDTO buscarTipoUsuario(Integer idtipo) throws SQLException {
         
         String consultaSQL = "SELECT idtipo, tipo FROM tipousuario WHERE idtipo = ?";
 

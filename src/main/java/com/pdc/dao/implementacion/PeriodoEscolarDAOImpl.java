@@ -2,7 +2,6 @@ package com.pdc.dao.implementacion;
 
 import com.pdc.utileria.bd.ConexionBD;
 import com.pdc.modelo.dto.PeriodoEscolarDTO;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
     private ResultSet resultadoDeOperacion;
     
     @Override
-    public PeriodoEscolarDTO buscarPeriodoEscolar(Integer idPeriodoEscolar)  throws SQLException, IOException {
+    public PeriodoEscolarDTO buscarPeriodoEscolar(Integer idPeriodoEscolar)  throws SQLException {
         
         String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar WHERE idperiodoescolar=?";
         PeriodoEscolarDTO periodoEscolar = null;
@@ -47,7 +46,7 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
     }
 
     @Override
-    public List<PeriodoEscolarDTO> listarPeriodos()  throws SQLException, IOException {
+    public List<PeriodoEscolarDTO> listarPeriodos()  throws SQLException {
         
         String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar";
         List<PeriodoEscolarDTO> listaPeriodoEscolar = new ArrayList<>();

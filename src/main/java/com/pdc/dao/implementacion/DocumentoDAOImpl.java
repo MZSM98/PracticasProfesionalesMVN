@@ -3,8 +3,6 @@ package com.pdc.dao.implementacion;
 import com.pdc.dao.interfaz.IDocumentoDAO;
 import com.pdc.modelo.dto.DocumentoDTO;
 import com.pdc.utileria.bd.ConexionBD;
-
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +24,7 @@ public class DocumentoDAOImpl implements IDocumentoDAO {
     }
     
     @Override
-    public DocumentoDTO buscarDocumento(int idDocumento) throws SQLException, IOException {
+    public DocumentoDTO buscarDocumento(int idDocumento) throws SQLException {
         
         String consultaSQL = "SELECT iddocumento, nombredocumento, formatonombre, limiteArchivos, plantilla FROM documento WHERE iddocumento = ?";
         DocumentoDTO documento = null;

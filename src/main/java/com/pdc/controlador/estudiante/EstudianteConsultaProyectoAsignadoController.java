@@ -6,9 +6,9 @@ import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -65,11 +65,11 @@ public class EstudianteConsultaProyectoAsignadoController implements Initializab
         try {
             
             proyectoAsignado = interfazProyectoAsignadoDAO.obtenerProyectoAsignadoPorMatricula(matricula);
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
+        } 
         if(Objects.nonNull(proyectoAsignado)){
             
             ProyectoDTO proyecto = proyectoAsignado.getProyecto();

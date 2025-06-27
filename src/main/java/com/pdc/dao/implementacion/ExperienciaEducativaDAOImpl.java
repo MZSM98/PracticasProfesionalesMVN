@@ -5,7 +5,6 @@ import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.utileria.bd.ConexionBD;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,7 +29,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
     }
     
     @Override
-    public ExperienciaEducativaDTO obtenerExperienciaEducativaPorNRC(String nrc) throws SQLException, IOException {
+    public ExperienciaEducativaDTO obtenerExperienciaEducativaPorNRC(String nrc) throws SQLException {
         
         String consultaSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa WHERE nrc = ?";
         ExperienciaEducativaDTO experienciaEducativa = null;
@@ -65,7 +64,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
     }
     
     @Override
-    public List<ExperienciaEducativaDTO> listarExperienciaEducativa() throws SQLException, IOException {
+    public List<ExperienciaEducativaDTO> listarExperienciaEducativa() throws SQLException {
         
         String consultaTodoSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa";
         List<ExperienciaEducativaDTO> listaExperienciasEducativas = new ArrayList<>();
@@ -105,7 +104,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
     }
     
     @Override
-    public ExperienciaEducativaDTO buscarExperienciaEducativaPorProfesor(String numeroDeTrabajador) throws SQLException, IOException{
+    public ExperienciaEducativaDTO buscarExperienciaEducativaPorProfesor(String numeroDeTrabajador) throws SQLException{
         
         String consultaSQL = "SELECT nrc, nombre FROM experienciaeducativa WHERE numeroDeTrabajador = ?";
         ExperienciaEducativaDTO experienciaEducativa;
@@ -147,7 +146,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
     }
     
     @Override
-    public boolean asignarProfesorAExperienciaEducativa(String nrc, String numeroDeTrabajador) throws SQLException, IOException {
+    public boolean asignarProfesorAExperienciaEducativa(String nrc, String numeroDeTrabajador) throws SQLException {
         String actualizarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = ? WHERE nrc = ?";
         boolean actualizacionExitosa = false;
 
@@ -161,6 +160,45 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
         } finally {
             if (declaracionPreparada != null) declaracionPreparada.close();
             if (conexionBD != null) conexionBD.close();
+        }
+        return actualizacionExitosa;
+    }
+    
+    @Override
+    public boolean reasignarProfesorExperienciaEducativa(String nrcAnterior, String nrcNuevo, String numeroDeTrabajador) throws SQLException {
+        
+        boolean actualizacionExitosa = false;
+
+        try {
+            
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            conexionBD.setAutoCommit(false);
+            if (nrcAnterior != null && !nrcAnterior.equals(nrcNuevo)) {
+                
+                String liberarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = NULL WHERE nrc = ?";
+                declaracionPreparada = conexionBD.prepareStatement(liberarSQL);
+                declaracionPreparada.setString(1, nrcAnterior);
+                declaracionPreparada.executeUpdate();
+                declaracionPreparada.close();
+            }
+
+            String asignarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = ? WHERE nrc = ?";
+            declaracionPreparada = conexionBD.prepareStatement(asignarSQL);
+            declaracionPreparada.setString(1, numeroDeTrabajador);
+            declaracionPreparada.setString(2, nrcNuevo);
+            declaracionPreparada.executeUpdate();
+
+            conexionBD.commit();
+            actualizacionExitosa = true;
+
+        } finally {
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.setAutoCommit(true);
+                conexionBD.close();
+            }
         }
         return actualizacionExitosa;
     }

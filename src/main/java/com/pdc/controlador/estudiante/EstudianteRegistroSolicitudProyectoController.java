@@ -61,9 +61,7 @@ public class EstudianteRegistroSolicitudProyectoController implements Initializa
             estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorIdDocumento(idDocumento);
         } catch (SQLException ex) {
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } 
 
         if (Objects.nonNull(estudianteDocumento)) {
             String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getNombreArchivo());

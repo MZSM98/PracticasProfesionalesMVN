@@ -63,6 +63,6 @@
       </Label>
       <Label layoutX="11.0" layoutY="443.0" text="Vacantes del proyecto:" />
       <Label fx:id="labelVacantes" layoutX="142.0" layoutY="443.0" text="0 / 0" />
-      <Button fx:id="botonReiniciar" disable="true" layoutX="372.0" layoutY="353.0" mnemonicParsing="false" onAction="#accionReiniciar" prefHeight="25.0" prefWidth="87.0" text="Reiniciar" />
+      <Button fx:id="botonReiniciar" disable="true" layoutX="372.0" layoutY="353.0" mnemonicParsing="false" onAction="#reiniciarAsignacionEnCurso" prefHeight="25.0" prefWidth="87.0" text="Reiniciar" />
    </children>
 </AnchorPane>

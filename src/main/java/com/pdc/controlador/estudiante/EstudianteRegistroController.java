@@ -14,7 +14,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import com.pdc.dao.implementacion.EstudianteDAOImpl;
@@ -141,12 +140,7 @@ public class EstudianteRegistroController implements Initializable {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        }catch (IOException slqe){
-            
-            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION);
-            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
-        
         textAvanceCrediticio.setText(estudiante.getAvanceCrediticio().toString());
         textPromedio.setText(estudiante.getPromedio().toString());
         textMatricula.setDisable(modoEdicion);
@@ -168,11 +162,7 @@ public class EstudianteRegistroController implements Initializable {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(ioe);
-            AlertaUtil.mostrarAlertaRegistroFallido();
-        }
+        } 
     }
     
     private void editarEstudiante(EstudianteDTO estudiante) {
@@ -185,11 +175,7 @@ public class EstudianteRegistroController implements Initializable {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(ioe);
-            AlertaUtil.mostrarAlertaActualizacionFallida();
-        }
+        } 
     }
     
     private void poblarInformacionCombos(){
@@ -217,10 +203,6 @@ public class EstudianteRegistroController implements Initializable {
             
             LOG.error(ex);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ex) {
-            
-            LOG.error(ex);
-            AlertaUtil.mostrarAlertaRegistroFallido();
         }
     }
     

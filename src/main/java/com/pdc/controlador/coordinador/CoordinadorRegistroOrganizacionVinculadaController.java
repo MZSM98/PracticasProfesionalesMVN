@@ -3,7 +3,6 @@ package com.pdc.controlador.coordinador;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO.EstadoOrganizacionVinculada;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
@@ -128,10 +127,6 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
             
             LOG.error(sqle.getMessage(), sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(AlertaUtil.ALERTA_REGISTRO_FALLIDO, ioe);
-            AlertaUtil.mostrarAlertaRegistroFallido();
         } 
     }
     
@@ -142,7 +137,7 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
             boolean actualizacionExitosa = interfazOrganizacionVinculadaDAO.editarOrganizacionVinculada(organizacionVinculadaDTO);            
             if (actualizacionExitosa) {
                 
-                AlertaUtil.mostrarAlerta(AlertaUtil.EXITO, ConstantesUtil.ALERTA_ACTUALIZACION_EXITOSA, Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlertaActualizacionExitosa();
                 cerrarVentana();
             } else {
                 
@@ -153,11 +148,7 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ACTUALIZACION_FALLIDA, ioe);
-            AlertaUtil.mostrarAlertaActualizacionFallida();
-        }
+        } 
     }
     
     @FXML

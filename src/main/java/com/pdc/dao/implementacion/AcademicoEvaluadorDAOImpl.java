@@ -3,10 +3,7 @@ package com.pdc.dao.implementacion;
 import com.pdc.modelo.dto.AcademicoEvaluadorDTO;
 import com.pdc.utileria.bd.ConexionBD;
 import com.pdc.modelo.dto.UsuarioDTO;
-
-import java.io.IOException;
 import java.sql.SQLException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +26,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
     }
     
     @Override
-    public boolean insertarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException, IOException{
+    public boolean insertarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException{
         
         String insertarSQL = "INSERT INTO academicoevaluador (numeroDeTrabajador, nombreAcademico) VALUES (?,?)";
         boolean insercionExitosa = false;
@@ -61,7 +58,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
     }
 
     @Override
-    public boolean eliminarAcademicoEvaluador(String numeroDeTrabajador) throws SQLException, IOException{
+    public boolean eliminarAcademicoEvaluador(String numeroDeTrabajador) throws SQLException{
 
         String eliminarSQL = "DELETE FROM academicoevaluador WHERE numeroDeTrabajador = ?";
         boolean eliminacionExitosa = false;
@@ -87,7 +84,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
     
 
     @Override
-    public boolean editarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException, IOException{
+    public boolean editarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException{
         String actualizarSQL = "UPDATE academicoevaluador SET nombreAcademico = ? WHERE numeroDeTrabajador = ?";
         boolean actualizacionExitosa = false;
 
@@ -108,7 +105,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
     }
     
     @Override
-    public AcademicoEvaluadorDTO buscarAcademicoEvaluador (String numeroDeTrabajador) throws SQLException, IOException{
+    public AcademicoEvaluadorDTO buscarAcademicoEvaluador (String numeroDeTrabajador) throws SQLException{
         String consultaSQL = "SELECT numeroDeTrabajador, nombreAcademico FROM academicoevaluador WHERE numeroDeTrabajador = ?";
         AcademicoEvaluadorDTO academico = null;
 
@@ -135,7 +132,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
     }
 
     @Override
-    public List<AcademicoEvaluadorDTO> listarAcademicoEvaluador() throws SQLException, IOException {
+    public List<AcademicoEvaluadorDTO> listarAcademicoEvaluador() throws SQLException {
         String consultaSQL = "SELECT numeroDeTrabajador, nombreAcademico FROM academicoevaluador";
         List<AcademicoEvaluadorDTO> academicos = new ArrayList<>();
 

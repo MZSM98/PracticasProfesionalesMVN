@@ -2,7 +2,6 @@ package com.pdc.dao.implementacion;
 
 import com.pdc.utileria.bd.ConexionBD;
 import com.pdc.modelo.dto.SeccionDTO;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ public class SeccionDAOImpl implements ISeccionDAO {
     private ResultSet resultadoDeOperacion;
         
     @Override
-    public SeccionDTO buscarSeccion(Integer idSeccion) throws SQLException, IOException{
+    public SeccionDTO buscarSeccion(Integer idSeccion) throws SQLException{
         String consultaSQL = "SELECT idseccion, nombreseccion FROM seccion WHERE idseccion = ?";
         SeccionDTO seccion = null;
 
@@ -42,7 +41,7 @@ public class SeccionDAOImpl implements ISeccionDAO {
     }
 
     @Override
-    public List<SeccionDTO> listarSecciones() throws SQLException, IOException{
+    public List<SeccionDTO> listarSecciones() throws SQLException{
         String consultaSQL = "SELECT idseccion, nombreseccion FROM seccion";
         List<SeccionDTO> listaSeccion = new ArrayList<>();
 

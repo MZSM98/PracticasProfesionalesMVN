@@ -99,10 +99,10 @@ public class CoordinadorReasignarProyectoController implements Initializable {
             proyectoAsginado.setProyecto(proyectoSeleccionado);
             interfazProyectoAsignadoDAO.editarProyectoAsignado(proyectoAsginado);
         } catch (SQLException ex) {
+            
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+            AlertaUtil.mostrarAlertaError("No se pudo reasignar el proyecto");
+        } 
     }
     
     @FXML
@@ -120,9 +120,7 @@ public class CoordinadorReasignarProyectoController implements Initializable {
             comboProyecto.getItems().remove(proyectoAsginado.getProyecto());
         } catch (SQLException ex) {
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } 
     }
 
     private void llenarDatosComboOrganizacionesVinculadas() {
@@ -130,8 +128,6 @@ public class CoordinadorReasignarProyectoController implements Initializable {
             comboOrganizacionVinculada.setItems(FXCollections.observableArrayList(interfazOrganizacionVinculadaDAO.listarOrganizacionesVinculadas()));
         } catch (SQLException ex) {
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } 
     }
 }

@@ -2,7 +2,6 @@ package com.pdc.dao.implementacion;
 
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.utileria.bd.ConexionBD;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +17,7 @@ public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
     private ResultSet resultadoDeOperacion;
 
     @Override
-    public boolean insertarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException, IOException {
+    public boolean insertarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException {
         
         String insertarSQL = "INSERT INTO organizacionvinculada (rfcMoral, nombreOV, direccionOV, telefonoOV) VALUES (?, ?, ?, ?)";
         boolean insercionExitosa = false;
@@ -43,7 +42,7 @@ public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
     }
 
     @Override
-    public boolean eliminarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException {
+    public boolean eliminarOrganizacionVinculada(String rfcMoral) throws SQLException {
         
         final String eliminarSQL = "DELETE FROM organizacionvinculada WHERE rfcMoral = ?";
         boolean eliminacionExitosa = false;
@@ -62,7 +61,7 @@ public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
     }
 
     @Override
-    public boolean editarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException, IOException {
+    public boolean editarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException {
         final String actualizarSQL = "UPDATE organizacionvinculada SET nombreOV = ?, direccionOV = ?, telefonoOV = ?, estadoOV = ? WHERE rfcMoral = ?";
         boolean actualizacionExitosa = false;
 
@@ -87,7 +86,7 @@ public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
     }
 
     @Override
-    public OrganizacionVinculadaDTO buscarOrganizacionVinculada(String rfcMoral) throws SQLException, IOException {
+    public OrganizacionVinculadaDTO buscarOrganizacionVinculada(String rfcMoral) throws SQLException {
         
         final String consultaSQL = "SELECT rfcMoral, nombreOV, direccionOV, telefonoOV, estadoOV FROM organizacionvinculada WHERE rfcMoral = ?";
         OrganizacionVinculadaDTO organizacionVinculada;
@@ -119,7 +118,7 @@ public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
     }
     
     @Override
-    public List<OrganizacionVinculadaDTO> listarOrganizacionesVinculadas() throws SQLException, IOException {
+    public List<OrganizacionVinculadaDTO> listarOrganizacionesVinculadas() throws SQLException {
         
         final String consultaTodoSQL = "SELECT * FROM organizacionvinculada";
         List<OrganizacionVinculadaDTO> listaOrganizacionVinculada = new ArrayList<>();
@@ -148,4 +147,22 @@ public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
 
         return listaOrganizacionVinculada;
     }
+    
+    @Override
+    public int contarOrganizaciones() throws SQLException {
+    
+        final String contarSQL = "SELECT COUNT(*) FROM organizacionvinculada";
+        int totalOrganizaciones = 0;
+
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
+             ResultSet resultado = declaracion.executeQuery()) {
+
+            if (resultado.next()) {
+                totalOrganizaciones = resultado.getInt(1);
+            }
+        }
+    
+    return totalOrganizaciones;
+}
 }

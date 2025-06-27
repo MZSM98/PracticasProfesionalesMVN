@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface IEstudianteDAO {
     
-    public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException;
-    public boolean eliminarEstudiante(String matricula) throws SQLException, IOException;
-    public boolean editarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException;
-    public EstudianteDTO buscarEstudiante(String matricula) throws SQLException, IOException;
-    public List<EstudianteDTO> listarEstudiantes() throws SQLException, IOException;
-    public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException, IOException;
+    public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException;
+    public boolean eliminarEstudiante(String matricula) throws SQLException;
+    public boolean editarEstudiante(EstudianteDTO estudiante) throws SQLException;
+    public EstudianteDTO buscarEstudiante(String matricula) throws SQLException;
+    public List<EstudianteDTO> listarEstudiantes() throws SQLException;
+    public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException;
 
 }

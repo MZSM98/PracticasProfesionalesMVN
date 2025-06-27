@@ -130,10 +130,6 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             
             LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        }catch (IOException ioe){
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
-            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     
@@ -153,12 +149,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, ioe);
-            AlertaUtil.mostrarAlertaErrorCargarInformacion();
-        }
-        
+        } 
     }
     
     @FXML
@@ -187,12 +178,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, ioe);
-            AlertaUtil.mostrarAlertaErrorCargarInformacion();
-        }
-        
+        }        
     }
     
     public void cambiarAModoEdicion(boolean modoEdicion) {
@@ -240,10 +226,6 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD + sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        }catch(IOException ioe){
-            
-            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION);
-            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     
@@ -289,8 +271,8 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             return true;
         } catch (IllegalArgumentException iae) {
             
-            LOG.error ("Se ingresaron datos inválidos");
-            AlertaUtil.mostrarAlerta("Datos Inválidos o Incompletos", iae.getMessage(), Alert.AlertType.WARNING);
+            LOG.error (ConstantesUtil.LOG_DATOS_NO_VALIDOS, iae);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, iae.getMessage(), Alert.AlertType.WARNING);
             return false;
         }
     }
@@ -305,21 +287,17 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             
             if (exito) {
                 
-                AlertaUtil.mostrarAlerta("Éxito", "Proyecto registrado correctamente", Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlertaRegistroExitoso();
                 cerrarVentana();
             } else {
                 
-                AlertaUtil.mostrarAlerta("Error", "No se pudo registrar el proyecto", Alert.AlertType.ERROR);
+                AlertaUtil.mostrarAlertaRegistroFallido();
             }
             
         } catch (SQLException sqle) {
             
-            LOG.error("Error con la conexión de base de datos", sqle);
-            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
-        } catch (IOException ioe) {
-            
-            LOG.error("Error al registrar el proyecto", ioe);
-            AlertaUtil.mostrarAlerta("Error", "Error al registrar el proyecto", Alert.AlertType.ERROR);
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         }
     }
     
@@ -341,13 +319,8 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         } catch (SQLException sqle) {
             
             LOG.error("Error con la conexión de base de datos", sqle);
-            AlertaUtil.mostrarAlerta("Error", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
-        } catch (IOException ioe) {
-            
-            LOG.error("Error al actualizar el proyecto", ioe);
-            AlertaUtil.mostrarAlerta("Error", "Error al actualizar el proyecto", Alert.AlertType.ERROR);
-        }
-        
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } 
     }
     
     @FXML

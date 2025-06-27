@@ -4,7 +4,6 @@ import com.pdc.modelo.dto.AcademicoEvaluadorDTO;
 import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.modelo.dto.TipoUsuarioDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,6 +28,7 @@ import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
 import com.pdc.dao.interfaz.ITipoUsuarioDAO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
+import java.io.IOException;
 
 public class CoordinadorGestionAcademicoController implements Initializable{
     
@@ -52,14 +52,14 @@ public class CoordinadorGestionAcademicoController implements Initializable{
     private ComboBox<TipoUsuarioDTO> comboTipoAcademico;
     
     private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
-    private IProfesorExperienciaEducativaDAO interfazProfesorEEDAO;
+    private IProfesorExperienciaEducativaDAO interfazProfesorExperienciaEducativaDAO;
     private ITipoUsuarioDAO interfazTipoUsuarioDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
        interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAOImpl();
-       interfazProfesorEEDAO = new ProfesorExperienciaEducativaDAOImpl();
+       interfazProfesorExperienciaEducativaDAO = new ProfesorExperienciaEducativaDAOImpl();
        interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
        configurarComboBox();
        configurarColumnas();
@@ -84,7 +84,6 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             columnNumeroEmpleado.setCellValueFactory(new PropertyValueFactory<>("numeroTrabajador"));
             columnSeccion.setCellValueFactory(new PropertyValueFactory<>("seccion"));
         }
- 
     }
     
     private void configurarComboBox(){
@@ -102,59 +101,33 @@ public class CoordinadorGestionAcademicoController implements Initializable{
         } catch (SQLException sqle) {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_VENTANA, ioe);
-            
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     
     private void cargarListaAcademico(){
         
         try {
-            ObservableList<UsuarioDTO> listaObservableUsuarioDTO = FXCollections.observableArrayList();
-
-            List<AcademicoEvaluadorDTO> listaAcademicoEvaluador = interfazAcademicoEvaluadorDAO.listarAcademicoEvaluador();
-            ObservableList<AcademicoEvaluadorDTO> listaObservableAcademicoEvaluador = FXCollections.observableArrayList(listaAcademicoEvaluador);
-                        
-            for (AcademicoEvaluadorDTO academico : listaObservableAcademicoEvaluador) {
-                
-                listaObservableUsuarioDTO.add(academico); 
-            }
-
-            tableGestionAcademicos.setItems(listaObservableUsuarioDTO);
+            
+            List<AcademicoEvaluadorDTO> listaAcademicoEvaluador;
+            listaAcademicoEvaluador = interfazAcademicoEvaluadorDAO.listarAcademicoEvaluador();
+            tableGestionAcademicos.setItems(FXCollections.observableArrayList(listaAcademicoEvaluador));
         } catch (SQLException sqle) {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
-        } catch (IOException ioe){
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, Alert.AlertType.ERROR);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     
-    private void cargarListaProfesorEvaluador(){
+    private void cargarListaProfesorExperienciaEducativa(){
         
             try {
-            ObservableList<UsuarioDTO> listaObservableUsuarioDTO = FXCollections.observableArrayList();
-
-            List<ProfesorExperienciaEducativaDTO> listaAcademicoEvaluador = interfazProfesorEEDAO.listaProfesorEE();
-            ObservableList<ProfesorExperienciaEducativaDTO> listaObservableAcademicoEvaluador = FXCollections.observableArrayList(listaAcademicoEvaluador);
-                        
-            for (ProfesorExperienciaEducativaDTO academico : listaObservableAcademicoEvaluador) {
-                
-                listaObservableUsuarioDTO.add(academico); 
-            }
-            tableGestionAcademicos.setItems(listaObservableUsuarioDTO);
+            List<ProfesorExperienciaEducativaDTO> listaProfesorExperienciaEducativa;
+            listaProfesorExperienciaEducativa = interfazProfesorExperienciaEducativaDAO.listaProfesorEE();
+            tableGestionAcademicos.setItems(FXCollections.observableArrayList(listaProfesorExperienciaEducativa));
         } catch (SQLException e) {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, e);
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
-        } catch (IOException e){
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION,e);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }    
@@ -174,7 +147,7 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             if (tipoUsuarioSeleccionado.getIdTipo().equals(ACADEMICO_EVALUADOR)) {
                 cargarListaAcademico();
             } else if (tipoUsuarioSeleccionado.getIdTipo().equals(PROFESOR_EE)) {
-                cargarListaProfesorEvaluador();
+                cargarListaProfesorExperienciaEducativa();
             }
 
         } catch (IOException e) {
@@ -209,7 +182,7 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             if (tipoUsuarioSeleccionado.getIdTipo().equals(ACADEMICO_EVALUADOR)) {
                 cargarListaAcademico();
             } else if (tipoUsuarioSeleccionado.getIdTipo().equals(PROFESOR_EE)) {
-                cargarListaProfesorEvaluador();
+                cargarListaProfesorExperienciaEducativa();
             }
         } catch (IOException ioe) {
             
@@ -230,7 +203,7 @@ public class CoordinadorGestionAcademicoController implements Initializable{
             cargarListaAcademico();
         }else if(tipoUsuarioSeleccionado.getIdTipo().equals(PROFESOR_EE)){
             
-            cargarListaProfesorEvaluador();
+            cargarListaProfesorExperienciaEducativa();
         }
     }
     

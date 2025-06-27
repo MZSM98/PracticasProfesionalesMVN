@@ -5,6 +5,7 @@ import com.pdc.dao.interfaz.IResponsableOrganizacionVinculadaDAO;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
 import java.net.URL;
@@ -72,11 +73,7 @@ public class CoordinadorGestionResponsableOrganizacionController implements Init
             tableResponsablesOrganizacion.setItems(listaResponsablesOrganizacion);            
         } catch (SQLException sqle) {
             
-            LOG.error("Error al cargar las organizaciones vinculadas: " + sqle.getMessage());
-            AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe){
-            
-            LOG.error("No se lograron cargar los registros" + ioe.getMessage());
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }

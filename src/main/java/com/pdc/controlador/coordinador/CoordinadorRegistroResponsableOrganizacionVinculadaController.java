@@ -119,10 +119,6 @@ public class CoordinadorRegistroResponsableOrganizacionVinculadaController imple
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(AlertaUtil.ALERTA_REGISTRO_FALLIDO, ioe);
-            AlertaUtil.mostrarAlertaRegistroFallido();
         } 
     }
     

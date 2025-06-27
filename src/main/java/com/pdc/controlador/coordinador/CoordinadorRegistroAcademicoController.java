@@ -24,6 +24,7 @@ import com.pdc.utileria.manejador.ManejadorDeVistas;
 import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
@@ -144,10 +145,6 @@ public class CoordinadorRegistroAcademicoController {
                 
                 LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
                 AlertaUtil.mostrarAlertaBaseDatos();
-            }catch(IOException ioe){
-                
-                LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
-                AlertaUtil.mostrarAlertaErrorCargarInformacion();
             }
         }
         textNumeroDeTrabajador.setDisable(modoEdicion);
@@ -179,10 +176,6 @@ public class CoordinadorRegistroAcademicoController {
             
             LOG.error (AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(AlertaUtil.ALERTA_REGISTRO_FALLIDO, ioe);
-            AlertaUtil.mostrarAlertaRegistroFallido();
         }
     }
     
@@ -195,27 +188,23 @@ public class CoordinadorRegistroAcademicoController {
                 interfazAcademicoEvaluadorDAO.editarAcademicoEvaluador((AcademicoEvaluadorDTO) academico);
             }else if(academico instanceof ProfesorExperienciaEducativaDTO){
                 
-                ExperienciaEducativaDTO experienciaEducativa;
-                experienciaEducativa = comboExperienciaEducativa.getSelectionModel().getSelectedItem();
-                
-                String nrc;
-                nrc= experienciaEducativa.getNrc();
-                String numeroDeTrabajador;
-                numeroDeTrabajador = ((ProfesorExperienciaEducativaDTO) academico).getNumeroTrabajador();
-                
-                interfazProfesorEEDAO.editarProfesorEE((ProfesorExperienciaEducativaDTO) academico);
-                interfazExperienciaEducativaDAO.asignarProfesorAExperienciaEducativa(nrc, numeroDeTrabajador);
+             editarProfesorExperienciaEducativa((ProfesorExperienciaEducativaDTO) academico);
+            
             }
-            AlertaUtil.mostrarAlerta(ConstantesUtil.ACTUALIZAR, ConstantesUtil.ALERTA_ACTUALIZACION_EXITOSA, Alert.AlertType.INFORMATION);
+            AlertaUtil.mostrarAlertaActualizacionExitosa();
             volverAGestionAcademico();
         } catch (SQLException sqle) {
             
-            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
         } catch (IOException ioe) {
             
             LOG.error(ConstantesUtil.LOG_ACTUALIZACION_FALLIDA, ioe);
             AlertaUtil.mostrarAlertaActualizacionFallida();
+        } catch (IllegalStateException ise){
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_ESTADO_INESPERADO,ise);
+            AlertaUtil.mostrarAlertaErrorInesperado();
         }
     }
     
@@ -269,13 +258,32 @@ public class CoordinadorRegistroAcademicoController {
             
             LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        }catch(IOException ioe){
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
-            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     
+    private Optional<String> obtenerNrcAnterior(String numeroDeTrabajador) throws SQLException, IOException {
+        
+        ExperienciaEducativaDTO experienciaAnterior;
+        experienciaAnterior = interfazExperienciaEducativaDAO.buscarExperienciaEducativaPorProfesor(numeroDeTrabajador);
+        return Optional.ofNullable(experienciaAnterior)
+                       .map(ExperienciaEducativaDTO::getNrc);
+    }
+    
+    
+    private void editarProfesorExperienciaEducativa(ProfesorExperienciaEducativaDTO profesor) throws SQLException, IOException {
+    
+        String numeroDeTrabajador = profesor.getNumeroTrabajador();
+        String nrcNuevo = comboExperienciaEducativa.getSelectionModel().getSelectedItem().getNrc();
+
+        String nrcAnterior = obtenerNrcAnterior(numeroDeTrabajador)
+            .orElseThrow(() -> new IllegalStateException(
+                "Error del sistema: No se encontró experiencia educativa anterior para el profesor " + numeroDeTrabajador));
+
+        interfazProfesorEEDAO.editarProfesorEE(profesor);
+        interfazExperienciaEducativaDAO.reasignarProfesorExperienciaEducativa(nrcAnterior, nrcNuevo, numeroDeTrabajador);
+
+    }
+
     @FXML
     private void volverAGestionAcademico() {
         

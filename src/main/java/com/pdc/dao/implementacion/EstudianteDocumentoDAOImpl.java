@@ -7,8 +7,6 @@ import com.pdc.modelo.dto.EstudianteDocumentoDTO;
 import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.modelo.dto.DocumentoDTO;
 import com.pdc.utileria.bd.ConexionBD;
-
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,7 +32,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
     }
 
     @Override
-    public boolean insertarEstudianteDocumento(EstudianteDocumentoDTO estudianteDocumento) throws SQLException, IOException {
+    public boolean insertarEstudianteDocumento(EstudianteDocumentoDTO estudianteDocumento) throws SQLException {
 
         String insertarSQL = "INSERT INTO estudiantedocumento (matriculaestudiante, iddocumento, ruta, nombrearchivo) VALUES (?, ?, ?, ?)";
         boolean insercionExitosa = false;
@@ -62,7 +60,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
     }
 
     @Override
-    public boolean editarEstudianteDocumento(EstudianteDocumentoDTO estudianteDocumento) throws SQLException, IOException {
+    public boolean editarEstudianteDocumento(EstudianteDocumentoDTO estudianteDocumento) throws SQLException {
 
         String actualizarSQL = "UPDATE estudiantedocumento SET matriculaestudiante = ?, iddocumento = ?, ruta = ?, nombrearchivo = ? WHERE idregistro = ?";
         boolean actualizacionExitosa = false;
@@ -91,7 +89,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
     }
 
     @Override
-    public EstudianteDocumentoDTO obtenerEstudianteDocumentoPorMatricula(String matriculaEstudiante) throws SQLException, IOException {
+    public EstudianteDocumentoDTO obtenerEstudianteDocumentoPorMatricula(String matriculaEstudiante) throws SQLException {
 
         String consultaSQL = "SELECT idregistro, matriculaestudiante, iddocumento, ruta, nombrearchivo FROM estudiantedocumento WHERE matriculaestudiante = ?";
         EstudianteDocumentoDTO estudianteDocumento = null;
@@ -135,7 +133,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
     }
 
     @Override
-    public EstudianteDocumentoDTO obtenerEstudianteDocumentoPorNombreArchivoYMatricula(String nombreArchivo, String matriculaEstudiante) throws SQLException, IOException {
+    public EstudianteDocumentoDTO obtenerEstudianteDocumentoPorNombreArchivoYMatricula(String nombreArchivo, String matriculaEstudiante) throws SQLException {
 
         String consultaSQL = "SELECT idregistro, matriculaestudiante, iddocumento, ruta, nombrearchivo FROM estudiantedocumento WHERE nombrearchivo = ? AND matriculaestudiante = ?";
         EstudianteDocumentoDTO estudianteDocumento = null;
@@ -180,7 +178,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
     }
 
     @Override
-    public EstudianteDocumentoDTO obtenerEstudianteDocumentoPorIdDocumento(int idDocumento) throws SQLException, IOException {
+    public EstudianteDocumentoDTO obtenerEstudianteDocumentoPorIdDocumento(int idDocumento) throws SQLException {
 
         String consultaSQL = "SELECT idregistro, matriculaestudiante, iddocumento, ruta, nombrearchivo FROM estudiantedocumento WHERE iddocumento = ?";
         EstudianteDocumentoDTO estudianteDocumento = null;

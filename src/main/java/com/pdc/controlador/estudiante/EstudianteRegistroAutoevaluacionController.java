@@ -13,6 +13,7 @@ import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.modelo.enums.DocumentoEnum;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.FTPUtil;
 import static com.pdc.utileria.FTPUtil.SEPARADOR;
 import com.pdc.utileria.FileSelectorUtil;
@@ -70,13 +71,12 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
         EstudianteDocumentoDTO estudianteDocumento = null;
 
         try {
+            
             estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorIdDocumento(idDocumento);
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
         }
-
         if (Objects.nonNull(estudianteDocumento)) {
             String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getDocumento().getFormatoNombre());
             FTPUtil.configurar();
@@ -106,9 +106,7 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
             }
         } catch (SQLException ex) {
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } 
     }
 
     @FXML
@@ -130,14 +128,17 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
                 AlertaUtil.mostrarAlertaExito("Se actualizó guardo la solicitud.");
             }
         } catch (SQLException ex) {
+            
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
+        } catch (IOException ioe){
+            
         }
     }
 
     private void llenarDatosPlantilla(File archivoPlantilla, ProyectoDTO proyecto, DocumentoDTO documento) {
+        
         try {
+            
             EstudianteDTO estudiante = (EstudianteDTO) ManejadorDeSesion.getUsuario();
             FileInputStream fis = new FileInputStream(archivoPlantilla);
             XWPFDocument word = new XWPFDocument(fis);
@@ -158,9 +159,10 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
             POIUtil.reemplazarMarcadores(word, remplazos);
             pdfSelector.mostrarDialogoGuardarDocx(word, documento);
 
-        } catch (IOException ex) {
-            LOG.error("Error al procesar plantilla: ", ex);
-            AlertaUtil.mostrarAlertaError("Error al procesar la plantilla");
+        } catch (IOException ioe) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_PLANTILLA, ioe);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
 
@@ -172,20 +174,23 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
         try {
 
             proyectoAsignado = interfazProyectoAsignadoDAO.obtenerProyectoAsignadoPorMatricula(matricula);
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD,sqle);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
+        } 
         if (Objects.nonNull(proyectoAsignado)) {
+            
             return proyectoAsignado.getProyecto();
         } else {
+            
             AlertaUtil.mostrarAlerta("Informativo", "Aún no cuentas con un proyecto asignado", Alert.AlertType.WARNING);
             return null;
         }
     }
 
     private void guardarDocumentoEstudiante(DocumentoDTO documento, EstudianteDTO estudiante) throws SQLException, IOException {
+        
         FTPUtil.configurar();
         Stage escenarioPadre = ManejadorDeVistas.getInstancia().obtenerEscenarioPrincipal();
         String origen = pdfSelector.seleccionarArchivoPDF(escenarioPadre);
@@ -200,6 +205,7 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
     }
     
     private void actualizarDocumentoEstudiante(DocumentoDTO documento, EstudianteDocumentoDTO estudianteDocumento, String matricula) throws SQLException, IOException {
+        
         FTPUtil.configurar();
         Stage escenarioPadre = ManejadorDeVistas.getInstancia().obtenerEscenarioPrincipal();
         String origen = pdfSelector.seleccionarArchivoPDF(escenarioPadre);
@@ -207,5 +213,4 @@ public class EstudianteRegistroAutoevaluacionController implements Initializable
         FTPUtil.cargarArchivo(origen, destino);
         interfazEstudianteDocumentoDAO.editarEstudianteDocumento(estudianteDocumento);
     }
-
 }

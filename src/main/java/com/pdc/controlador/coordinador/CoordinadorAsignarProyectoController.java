@@ -130,7 +130,7 @@ public class CoordinadorAsignarProyectoController implements Initializable {
             proyectoAsignado.setProyecto(proyectoSeleccionado);
             listaProyectosPorAsignar.add(proyectoAsignado);
             botonReiniciar.setDisable(Boolean.FALSE);
-            actualizaVacantes();
+            actualizarVacantes();
         }
     }
 
@@ -146,12 +146,12 @@ public class CoordinadorAsignarProyectoController implements Initializable {
             botonGuardar.setDisable(Boolean.FALSE);
             llenarTablaEstudianteSinAsignar();
             llenarTablaEstudiantesAsignados();
-            actualizaVacantes();
+            actualizarVacantes();
         } else {
             
             botonAsignar.setDisable(Boolean.TRUE);
             botonGuardar.setDisable(Boolean.TRUE);
-            actualizaVacantes();
+            actualizarVacantes();
         }
     }
 
@@ -191,32 +191,29 @@ public class CoordinadorAsignarProyectoController implements Initializable {
                 try {
                     
                     interfazProyectoAsignadoDAO.insertarProyectoAsignado(proyectoAsignado);
-                    informaCorreo(proyectoAsignado.getEstudiante(), proyectoSeleccionado.getResponsable(), proyectoSeleccionado);
+                    informarConCorreo(proyectoAsignado.getEstudiante(), proyectoSeleccionado.getResponsable(), proyectoSeleccionado);
                 } catch (SQLException sqle){
                     
                     LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
                     AlertaUtil.mostrarAlertaBaseDatos();
-                } catch (IOException ioe) {
-                    
-                    LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
-                    AlertaUtil.mostrarAlertaRegistroFallido();
                 }
             }
-            
             AlertaUtil.mostrarAlertaRegistroExitoso();
             accionCancelar(event);
         }else{
+            
             AlertaUtil.mostrarAlerta("Advertencia", "No hay cambios por guardar", Alert.AlertType.WARNING);
         }
-
     }
     
     @FXML
-    private void accionReiniciar(ActionEvent event) {
+    private void reiniciarAsignacionEnCurso(ActionEvent event) {
+        
         if(!listaProyectosPorAsignar.isEmpty()){
+            
             llenarTablaEstudianteSinAsignar();
             llenarTablaEstudiantesAsignados();
-            actualizaVacantes();
+            actualizarVacantes();
             listaProyectosPorAsignar.clear();
             botonReiniciar.setDisable(Boolean.FALSE);
         }
@@ -246,10 +243,6 @@ public class CoordinadorAsignarProyectoController implements Initializable {
         } catch (SQLException sqle) {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION, ioe);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
@@ -266,51 +259,56 @@ public class CoordinadorAsignarProyectoController implements Initializable {
         } catch (SQLException sqle) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
 
     private void llenarTablaEstudianteSinAsignar() {
-        ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        
+        ProyectoDTO proyectoSeleccionado;
+        proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        
         if (Objects.isNull(proyectoSeleccionado)) {
             tablaSinAsignar.getItems().clear();
             return;
         }
         try {
+            
             tablaSinAsignar.setItems(FXCollections.observableArrayList(interfazEstudianteDAO.listarEstudiantesSinProyectoAsignado()));
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
 
     private void llenarTablaEstudiantesAsignados() {
-        ProyectoDTO proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        
+        ProyectoDTO proyectoSeleccionado;
+        proyectoSeleccionado = comboProyecto.getSelectionModel().getSelectedItem();
+        
         if (Objects.isNull(proyectoSeleccionado)) {
             tablaAsignados.getItems().clear();
             listaProyectosPorAsignar.clear();
             return;
         }
         try {
+            
             List<ProyectoAsignadoDTO> listaProyectoAsignado = interfazProyectoAsignadoDAO.listaProyectoAsignadoPorProyectoID(proyectoSeleccionado.getProyectoID());
             List<EstudianteDTO> listaEstudianteAsignado = new ArrayList<>();
             for (ProyectoAsignadoDTO proyectoAsignado : listaProyectoAsignado) {
                 listaEstudianteAsignado.add(proyectoAsignado.getEstudiante());
             }
             tablaAsignados.setItems(FXCollections.observableArrayList(listaEstudianteAsignado));
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
         }
     }
 
     private void configurarTablasEstudiante() {
+        
         columnaMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
         columnaNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEstudiante"));
         columnaMatriculaAsignado.setCellValueFactory(new PropertyValueFactory<>("matricula"));
@@ -321,7 +319,8 @@ public class CoordinadorAsignarProyectoController implements Initializable {
         columnaPromedioAsignado.setCellValueFactory(new PropertyValueFactory<>("promedio"));
     }
 
-    private void actualizaVacantes(){
+    private void actualizarVacantes(){
+        
         ProyectoDTO proyecto = comboProyecto.getSelectionModel().getSelectedItem();
         if(Objects.nonNull(proyecto)){
             labelVacantes.setText(String.format("%d / %d", tablaAsignados.getItems().size(), proyecto.getVacantes()));
@@ -330,9 +329,10 @@ public class CoordinadorAsignarProyectoController implements Initializable {
         }
     }
     
-    private void informaCorreo(EstudianteDTO estudiante, ResponsableOrganizacionVinculadaDTO responsable, ProyectoDTO proyecto){
+    private void informarConCorreo(EstudianteDTO estudiante, ResponsableOrganizacionVinculadaDTO responsable, ProyectoDTO proyecto){
         //GmailUtil.enviarCorreoHTML(estudiante.getCorreo(), asunto, nombre, mensaje);
         try {
+            
             GmailUtil.enviarCorreoHTML(responsable.getCorreoResponsable(), 
                     "Proyecto asignado", responsable.getNombreResponsable(), 
                     String.format("El estudiante %s con matricula %s ha sido asignado al proyecto %s",

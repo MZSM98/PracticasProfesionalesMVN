@@ -195,10 +195,6 @@ public class InicioDeSesionController implements Initializable {
             
             LOG.error(AlertaUtil.ALERTA_ERROR_BD,sqle);
             AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION,ioe);
-            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
     

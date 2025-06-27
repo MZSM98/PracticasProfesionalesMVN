@@ -4,7 +4,6 @@ package com.pdc.dao.implementacion;
 import com.pdc.utileria.bd.ConexionBD;
 import com.pdc.modelo.dto.TipoUsuarioDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +17,7 @@ import com.pdc.dao.interfaz.IUsuarioDAO;
 public class UsuarioDAOImpl implements IUsuarioDAO{
     
     @Override
-    public UsuarioDTO buscarUsuario(String usuario) throws SQLException, IOException{
+    public UsuarioDTO buscarUsuario(String usuario) throws SQLException{
         String consultaSQL = "SELECT usuario, tipousuario, salt  FROM usuario WHERE usuario = ?";
         UsuarioDTO usuarioDevuelto = null;
         Connection conexionBD = null;
@@ -47,7 +46,7 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
         return usuarioDevuelto;    }
 
     @Override
-    public boolean insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException{
+    public boolean insertarUsuario(UsuarioDTO usuario) throws SQLException{
         String insertarSQL = "INSERT INTO usuario (usuario, contrasena, tipousuario, salt) VALUES (?, SHA2(?, 256), ?, ?)";
         boolean insercionExitosa = false;
         Connection conexionBD = null;
@@ -70,7 +69,7 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
     }
 
     @Override
-    public boolean editarUsuario(UsuarioDTO usuario) throws SQLException, IOException{
+    public boolean editarUsuario(UsuarioDTO usuario) throws SQLException{
         String actualizarSQL = "UPDATE usuario SET contrasena = SHA2(?, 256), salt = ? WHERE usuario = ?";
         boolean actualizacionExitosa = false;
         Connection conexionBD = null;
@@ -98,12 +97,7 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
     }
 
     @Override
-    public boolean eliminarUsuario(UsuarioDTO usuario) throws SQLException, IOException{
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean autenticarUsuario(UsuarioDTO usuario) throws SQLException, IOException {
+    public boolean autenticarUsuario(UsuarioDTO usuario) throws SQLException {
         String consultaSQL = "SELECT usuario, tipousuario  FROM usuario WHERE usuario = ? AND contrasena = SHA2(?, 256) AND tipousuario = ?";
         UsuarioDTO usuarioDevuelto = null;
         Connection conexionBD = null;

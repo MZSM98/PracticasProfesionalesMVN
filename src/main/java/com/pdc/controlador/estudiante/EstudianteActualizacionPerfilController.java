@@ -4,6 +4,7 @@ import com.pdc.dao.implementacion.UsuarioDAOImpl;
 import com.pdc.dao.interfaz.IUsuarioDAO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.io.IOException;
@@ -58,10 +59,10 @@ public class EstudianteActualizacionPerfilController implements Initializable {
                 AlertaUtil.mostrarAlerta("Advertencia","Debe ingresar la contraseña actual.", Alert.AlertType.ERROR);
             }
         } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } 
     }
 
     @FXML

@@ -22,6 +22,7 @@ public class AlertaUtil {
     public static final String ALERTA_HEADER_CANCELACION = "¿Está seguro que desea cancelar?";
     public static final String ALERTA_ACTUALIZACION_FALLIDA = "Falló la actualización del registro, intente más tarde";
     public static final String ALERTA_SELECCION_REGISTRO = "Por favor, seleccione un registro para editar";
+    public static final String ALERTA_ERROR_INESPERADO = "Ha ocurrido algo inesperado, contacte con un administrador";
 
     private AlertaUtil() {
 
@@ -151,5 +152,14 @@ public class AlertaUtil {
         seleccionRegistro.setHeaderText(null);
         seleccionRegistro.setContentText(ALERTA_SELECCION_REGISTRO);
         seleccionRegistro.showAndWait();
+    }
+    
+    public static void mostrarAlertaErrorInesperado(){
+        
+        Alert errorInesperado = new Alert (Alert.AlertType.ERROR);
+        errorInesperado.setTitle(ERROR);
+        errorInesperado.setHeaderText(null);
+        errorInesperado.setContentText(ALERTA_ERROR_INESPERADO);
+        errorInesperado.showAndWait();
     }
 }

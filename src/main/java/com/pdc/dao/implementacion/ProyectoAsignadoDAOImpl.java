@@ -7,8 +7,6 @@ import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.utileria.bd.ConexionBD;
-
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,7 +32,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
     }
 
     @Override
-    public boolean insertarProyectoAsignado(ProyectoAsignadoDTO proyectoAsignado) throws SQLException, IOException {
+    public boolean insertarProyectoAsignado(ProyectoAsignadoDTO proyectoAsignado) throws SQLException {
 
         String insertarSQL = "INSERT INTO proyectoasignado (idproyecto, matriculaestudiante) VALUES (?, ?)";
         boolean insercionExitosa = false;
@@ -58,7 +56,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
     }
 
     @Override
-    public ProyectoAsignadoDTO obtenerProyectoAsignadoPorID(int proyectoAsignadoID) throws SQLException, IOException {
+    public ProyectoAsignadoDTO obtenerProyectoAsignadoPorID(int proyectoAsignadoID) throws SQLException {
 
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE idproyectoasignado = ?";
         ProyectoAsignadoDTO proyectoAsignado = null;
@@ -96,7 +94,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
     }
 
     @Override
-    public List<ProyectoAsignadoDTO> listaProyectoAsignado() throws SQLException, IOException {
+    public List<ProyectoAsignadoDTO> listaProyectoAsignado() throws SQLException {
 
         String consultaTodoSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado";
         List<ProyectoAsignadoDTO> listaProyectosAsignados = new ArrayList<>();
@@ -135,7 +133,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
     }
 
     @Override
-    public boolean editarProyectoAsignado(ProyectoAsignadoDTO proyectoAsignado) throws SQLException, IOException {
+    public boolean editarProyectoAsignado(ProyectoAsignadoDTO proyectoAsignado) throws SQLException {
 
         String actualizarSQL = "UPDATE proyectoasignado SET idproyecto = ?, matriculaestudiante = ? WHERE idproyectoasignado = ?";
         boolean actualizacionExitosa = false;
@@ -160,7 +158,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
     }
 
     @Override
-    public List<ProyectoAsignadoDTO> listaProyectoAsignadoPorProyectoID(int proyectoID) throws SQLException, IOException {
+    public List<ProyectoAsignadoDTO> listaProyectoAsignadoPorProyectoID(int proyectoID) throws SQLException {
 
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE idproyecto = ?";
         List<ProyectoAsignadoDTO> listaProyectosAsignados = new ArrayList<>();
@@ -200,7 +198,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
     }
 
     @Override
-    public ProyectoAsignadoDTO obtenerProyectoAsignadoPorMatricula(String matriculaEstudiante) throws SQLException, IOException {
+    public ProyectoAsignadoDTO obtenerProyectoAsignadoPorMatricula(String matriculaEstudiante) throws SQLException {
 
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE matriculaestudiante = ?";
         ProyectoAsignadoDTO proyectoAsignado = null;

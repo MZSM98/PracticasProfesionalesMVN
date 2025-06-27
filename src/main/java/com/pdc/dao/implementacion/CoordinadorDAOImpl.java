@@ -3,10 +3,7 @@ package com.pdc.dao.implementacion;
 
 import com.pdc.modelo.dto.CoordinadorDTO;
 import com.pdc.utileria.bd.ConexionBD;
-
-import java.io.IOException;
 import java.sql.SQLException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +16,7 @@ public class CoordinadorDAOImpl implements ICoordinadorDAO {
     ResultSet resultadoDeOperacion;
     
     @Override
-    public boolean insertarCoordinador(CoordinadorDTO coordinador) throws SQLException, IOException {
+    public boolean insertarCoordinador(CoordinadorDTO coordinador) throws SQLException {
         String insertarSQL = "INSERT INTO coordinador (numeroDeTrabajador, nombreCoordinador, telefono) VALUES (?, ?, ?)";
         boolean insercionExitosa = false;
         
@@ -39,7 +36,7 @@ public class CoordinadorDAOImpl implements ICoordinadorDAO {
     }
 
     @Override
-    public boolean eliminarCoordinador(String numeroDeTrabajador) throws SQLException, IOException {
+    public boolean eliminarCoordinador(String numeroDeTrabajador) throws SQLException {
         String eliminarSQL = "DELETE FROM coordinador WHERE numeroDeTrabajador = ?";
         boolean eliminacionExitosa = false;
         
@@ -57,7 +54,7 @@ public class CoordinadorDAOImpl implements ICoordinadorDAO {
     }
 
     @Override
-    public boolean editarCoordinador(CoordinadorDTO coordinador) throws SQLException, IOException {
+    public boolean editarCoordinador(CoordinadorDTO coordinador) throws SQLException {
         String actualizarSQL = "UPDATE coordinador SET nombreCoordinador = ?, telefono = ? WHERE numeroDeTrabajador = ?";
         boolean actualizacionExitosa = false;
         
@@ -77,7 +74,7 @@ public class CoordinadorDAOImpl implements ICoordinadorDAO {
     }
 
     @Override
-    public CoordinadorDTO buscarCoordinador(String numeroDeTrabajador) throws SQLException, IOException {
+    public CoordinadorDTO buscarCoordinador(String numeroDeTrabajador) throws SQLException {
         String consultaSQL = "SELECT numeroDeTrabajador, nombreCoordinador, telefono FROM coordinador WHERE numeroDeTrabajador = ?";
         CoordinadorDTO coordinador = null;
         

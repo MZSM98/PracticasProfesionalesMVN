@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -92,16 +91,13 @@ public class CoordinadorGestionProyectoController implements Initializable {
         
         try {
             
-            List<ProyectoDTO> proyectos = interfazProyectoDAO.listarProyectos();
+            List<ProyectoDTO> proyectos;
+            proyectos = interfazProyectoDAO.listarProyectos();
             listaProyectos = FXCollections.observableArrayList(proyectos);
             tableProyectos.setItems(listaProyectos);
         } catch (SQLException sqle) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
@@ -114,16 +110,13 @@ public class CoordinadorGestionProyectoController implements Initializable {
                 return;
             }
             
-            List<ProyectoDTO> proyectosEncontrados = interfazProyectoDAO.buscarProyectosPorNombre(titulo);
+            List<ProyectoDTO> proyectosEncontrados;
+            proyectosEncontrados = interfazProyectoDAO.buscarProyectosPorNombre(titulo);
             listaProyectos = FXCollections.observableArrayList(proyectosEncontrados);
             tableProyectos.setItems(listaProyectos);
         } catch (SQLException sqle) {
             
             LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ioe) {
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
@@ -159,16 +152,20 @@ public class CoordinadorGestionProyectoController implements Initializable {
     @FXML
     private void cambiarEstadoProyecto(ActionEvent event) {
         
-        ProyectoDTO proyectoSeleccionado = tableProyectos.getSelectionModel().getSelectedItem();
+        ProyectoDTO proyectoSeleccionado;
+        proyectoSeleccionado = tableProyectos.getSelectionModel().getSelectedItem();
         
         if (proyectoSeleccionado == null) {
+            
             AlertaUtil.mostrarAlerta("Aviso", "Por favor, seleccione un proyecto para cambiar su estado", Alert.AlertType.WARNING);
             return;
         }
         
-        String estadoActual = proyectoSeleccionado.getEstadoProyecto();
+        String estadoActual;
+        estadoActual = proyectoSeleccionado.getEstadoProyecto();
         
-        String nuevoEstado = estadoActual.equalsIgnoreCase(EstadoProyecto.ACTIVO.name()) ? 
+        String nuevoEstado;
+        nuevoEstado = estadoActual.equalsIgnoreCase(EstadoProyecto.ACTIVO.name()) ? 
                 EstadoProyecto.INACTIVO.name() : EstadoProyecto.ACTIVO.name();
         
         proyectoSeleccionado.setEstadoProyecto(nuevoEstado);
@@ -178,20 +175,16 @@ public class CoordinadorGestionProyectoController implements Initializable {
             
             if (actualizacionExitosa) {
                 
-                AlertaUtil.mostrarAlerta("Éxito", "Estado del proyecto cambiado a: " + nuevoEstado, Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlerta(AlertaUtil.EXITO, ConstantesUtil.ALERTA_CAMBIO_ESTADO_PROYECTO + nuevoEstado, Alert.AlertType.INFORMATION);
                 cargarProyectos();
             } else {
-                AlertaUtil.mostrarAlerta("Error", "No se pudo cambiar el estado del proyecto", Alert.AlertType.ERROR);
+                AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, "No se pudo cambiar el estado del proyecto", Alert.AlertType.WARNING);
             }
-        } catch (SQLException e) {
+        } catch (SQLException sqle) {
             
-            LOG.error("Error de conexión con la base de datos: " + e.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "Error al conectar con la base de datos: ", Alert.AlertType.ERROR);
-        } catch (IOException e) {
-            
-            LOG.error("Error al cambiar estado del proyecto: " + e.getMessage());
-            AlertaUtil.mostrarAlerta("Error", "Error al actualizar el registro", Alert.AlertType.ERROR);
-        }
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaBaseDatos();
+        } 
     }
     
     @FXML

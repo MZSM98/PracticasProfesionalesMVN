@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.pdc.dao.implementacion.EstudianteDAOImpl;
 import org.apache.log4j.Logger;
 import com.pdc.dao.interfaz.IEstudianteDAO;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 
@@ -116,6 +117,7 @@ public class EstudianteGestionController implements Initializable {
         columnAvance.setCellValueFactory(new PropertyValueFactory<>("avanceCrediticio"));
         columnPromedio.setCellValueFactory(new PropertyValueFactory<>("promedio"));
     }
+    
     private void poblarTablaEstudiante(){
         
         try {
@@ -125,11 +127,7 @@ public class EstudianteGestionController implements Initializable {
             tableEstudiantes.setItems(listaObservableEstudiantes);
         } catch (SQLException sqle) {
             
-            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
-            AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException ex) {
-            
-            LOG.error(AlertaUtil.ALERTA_ERROR_CARGAR_INFORMACION);
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }

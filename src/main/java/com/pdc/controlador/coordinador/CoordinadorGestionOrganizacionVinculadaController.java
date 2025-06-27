@@ -77,10 +77,6 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
             
             LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaErrorCargarInformacion();
-        } catch (IOException ioe){
-            
-            LOG.error(ConstantesUtil.LOG_ERROR_CARGAR_INFORMACION, ioe);
-            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
         
@@ -137,24 +133,21 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         
         try {
             
-            boolean actualizacionExitosa = organizacionVinculadaDAO.editarOrganizacionVinculada(organizacionSeleccionada);
+            boolean actualizacionExitosa;
+            actualizacionExitosa = organizacionVinculadaDAO.editarOrganizacionVinculada(organizacionSeleccionada);
             
             if (actualizacionExitosa) {
                 
-                AlertaUtil.mostrarAlerta(AlertaUtil.EXITO, "Estado de la organización cambiado a: " + nuevoEstado, Alert.AlertType.INFORMATION);
+                AlertaUtil.mostrarAlerta(AlertaUtil.EXITO, ConstantesUtil.ALERTA_CAMBIO_ESTADO_ORGANIZACION + nuevoEstado, Alert.AlertType.INFORMATION);
                 cargarOrganizacionesVinculadas();                
             } else {
                 
-                AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, "No se pudo cambiar el estado de la organización", Alert.AlertType.ERROR);
+                AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, ConstantesUtil.ALERTA_ERROR_ESTADO_ORGANIZACION, Alert.AlertType.WARNING);
             }
-        } catch (SQLException e) {
+        } catch (SQLException sqle) {
             
-            LOG.error(AlertaUtil.ALERTA_ERROR_BD + e.getMessage());
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
-        } catch (IOException e){
-            
-            LOG.error("Error al cambiar estado de la organización: " + e.getMessage());
-            AlertaUtil.mostrarAlertaActualizacionFallida();
         }
     }
     

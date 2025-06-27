@@ -4,8 +4,6 @@ import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.utileria.bd.ConexionBD;
 import com.pdc.modelo.dto.UsuarioDTO;
 import com.pdc.utileria.ContrasenaUtil;
-
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,7 +35,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     }
 
     @Override
-    public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException {
+    public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException {
         String insertarSQL = "INSERT INTO estudiante (matricula, nombreEstudiante, periodoEscolar,seccionEstudiante, avanceCrediticio, promedio) VALUES (?, ?, ?, ?, ?, ?)";
         boolean insercionExitosa = false;
         
@@ -68,7 +66,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     }
 
     @Override
-    public boolean eliminarEstudiante(String matricula) throws SQLException, IOException {
+    public boolean eliminarEstudiante(String matricula) throws SQLException {
         String eliminarSQL = "DELETE FROM estudiante WHERE matricula = ?";
         boolean eliminacionExitosa = false;
 
@@ -86,7 +84,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     }
 
     @Override
-    public boolean editarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException {
+    public boolean editarEstudiante(EstudianteDTO estudiante) throws SQLException {
         String actualizarSQL = "UPDATE estudiante SET nombreEstudiante = ?, periodoEscolar = ?, promedio = ?, seccionEstudiante = ?, avanceCrediticio = ? WHERE matricula = ?";
         boolean actualizacionExitosa = false;
 
@@ -111,7 +109,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     }
 
     @Override
-    public EstudianteDTO buscarEstudiante(String matricula) throws SQLException, IOException {
+    public EstudianteDTO buscarEstudiante(String matricula) throws SQLException {
         String consultaSQL = "SELECT matricula, nombreEstudiante, periodoEscolar,seccionEstudiante, avanceCrediticio, promedio  FROM estudiante WHERE matricula = ?";
         EstudianteDTO estudiante = null;
 
@@ -141,7 +139,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     }
     
     @Override
-    public List<EstudianteDTO> listarEstudiantes() throws SQLException, IOException {
+    public List<EstudianteDTO> listarEstudiantes() throws SQLException {
         final String CONSULTA_SQL = "SELECT * FROM estudiante";
         List<EstudianteDTO> listaEstudiantes = new ArrayList<>();
 
@@ -173,7 +171,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     }
     
     @Override
-    public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException, IOException {
+    public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException {
         String consultaSQL = "SELECT e.matricula, e.nombreEstudiante, e.periodoEscolar, e.seccionEstudiante, e.avanceCrediticio, e.promedio "
                 + "FROM estudiante e "
                 + "LEFT JOIN proyectoasignado pa ON e.matricula = pa.matriculaestudiante "

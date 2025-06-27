@@ -96,9 +96,7 @@ public class EstudianteRegistroReporteMensualController implements Initializable
             }
         } catch (SQLException ex) {
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } 
     }
 
     @FXML
@@ -160,10 +158,7 @@ public class EstudianteRegistroReporteMensualController implements Initializable
             estudianteDocumento = interfazEstudianteDocumentoDAO.obtenerEstudianteDocumentoPorNombreArchivoYMatricula(nombreDocumento, matricula);
         } catch (SQLException ex) {
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
-
+        } 
         if (Objects.nonNull(estudianteDocumento)) {
             String archivoSolicitud = matricula.concat(SEPARADOR).concat(estudianteDocumento.getNombreArchivo());
             FTPUtil.configurar();
@@ -216,8 +211,6 @@ public class EstudianteRegistroReporteMensualController implements Initializable
             }
         } catch (SQLException ex) {
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
         } catch (NullPointerException ex) {
             LOG.error(ex);
         }
@@ -237,8 +230,6 @@ public class EstudianteRegistroReporteMensualController implements Initializable
             proyectoAsignado = interfazProyectoAsignadoDAO.obtenerProyectoAsignadoPorMatricula(matricula);
 
         } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
             LOG.error(ex);
         } catch (NullPointerException ex) {
             LOG.error(ex);

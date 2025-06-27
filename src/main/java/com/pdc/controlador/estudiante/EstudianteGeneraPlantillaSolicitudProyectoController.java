@@ -8,6 +8,7 @@ import com.pdc.modelo.dto.DocumentoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.modelo.enums.DocumentoEnum;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.FTPUtil;
 import com.pdc.utileria.POIUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
@@ -80,20 +81,17 @@ public class EstudianteGeneraPlantillaSolicitudProyectoController implements Ini
             }
         } catch (SQLException ex) {
             LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
-
+        } 
     }
 
     private void llenarComboProyecto() {
         try {
             comboProyecto.setItems(FXCollections.observableArrayList(interfazProyectoDAO.listarProyectosConVacantesDisponibles()));
-        } catch (SQLException ex) {
-            LOG.error(ex);
-        } catch (IOException ex) {
-            LOG.error(ex);
-        }
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD, sqle);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
+        } 
     }
 
     private void llenarDatosPlantilla(File archivoPlantilla, ProyectoDTO proyecto, DocumentoDTO documento) {

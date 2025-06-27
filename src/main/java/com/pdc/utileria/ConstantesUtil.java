@@ -19,7 +19,7 @@ public class ConstantesUtil {
     public static final String MENU_PRINCIPAL = "Menu Principal";
     public static final String ESPACIO = " ";
     
-    public static final String REGEX_LETRAS_Y_NUMEROS = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]+$";
+    public static final String REGEX_LETRAS_Y_NUMEROS = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\n]+$";
     public static final String REGEX_SOLO_LETRAS = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
     public static final String REGEX_RFC_MORAL = "^[A-Z]{3}[0-9]{6}[A-Z][0-9]{2}$";
     public static final String REGEX_RFC_FISICO = "^[A-Z]{4}[0-9]{6}[A-Z][0-9]{2}$";
@@ -33,7 +33,6 @@ public class ConstantesUtil {
     
     public static final String ALERTA_CLASE_UTILERIA = "Clase de utilería...";
     public static final String ALERTA_DATOS_NO_VALIDOS = "Datos inválidos o Incompletos";
-    public static final String ALERTA_ACTUALIZACION_EXITOSA = "Registro actualizado exitosamente";
     public static final String ALERTA_REGISTRO_RFC_MORAL_DUPLICADO = "Esa Organización vinculada ya se encuentra registrada";
     public static final String ALERTA_REGISTRO_NUMERO_EMPLEADO_DUPLICADO = "Ese Academico ya se encuentra registrado";
     public static final String ALERTA_RFC_INVALIDO = "RFC no válido";
@@ -59,10 +58,12 @@ public class ConstantesUtil {
     public static final String ALERTA_LONGITUD_TELEFONO = "El número de telefono debe tener 10 dígitos";
     public static final String ALERTA_TELEFONO_OBLIGATORIO = "El número de telefono es obligatorio";
     public static final String ALERTA_FORMATO_TELEFONO = "El telefono sólo puede contener números";
-    public static final String ALERTA_CAMBIO_ESTADO = "Estado de la organización cambiado a:";
+    public static final String ALERTA_CAMBIO_ESTADO_ORGANIZACION = "Estado de la organización cambiado a:";
+    public static final String ALERTA_CAMBIO_ESTADO_PROYECTO = "Estado del proyecto cambiado a: ";
     public static final String ALERTA_TIPO_USUARIO_NO_VALIDO = "El tipo de usuario no existe";
     public static final String ALERTA_SELECCION_EDITAR = "Por favor selecciona un registro para editar";
     public static final String ALERTA_SELECCION_ORGANIZACION_VINCULADA ="Por favor, seleccione una organización";
+    public static final String ALERTA_ERROR_ESTADO_ORGANIZACION = "No se pudo cambiar el estado de la organización";
     
     public static final String LOG_ACTUALIZACION_FALLIDA = "Error al actualizar el registro";
     public static final String LOG_ERROR_VENTANA = "No se pudo cargar la ventana";
@@ -70,4 +71,6 @@ public class ConstantesUtil {
     public static final String LOG_ERROR_REGISTRO_DUPLICADO = "Se intentó registrar una clave primaria ya existente";
     public static final String LOG_DATOS_NO_VALIDOS = "Se ingresaron datos no válidos";
     public static final String LOG_ERROR_CARGAR_INFORMACION = "No se pudo cargar la información";
+    public static final String LOG_ERROR_ESTADO_INESPERADO = "Error del sistema, estado inesperado";
+    public static final String LOG_ERROR_CARGAR_PLANTILLA = "Error al cargar el documento de plantilla";
 }

@@ -7,7 +7,6 @@ import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
 import com.pdc.utileria.bd.ConexionBD;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +33,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     }
     
     @Override
-    public boolean insertarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException, IOException {
+    public boolean insertarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException {
         
         String insertarSQL = "INSERT INTO estudianteexperienciaeducativa (nrc, matricula) VALUES (?, ?)";
         boolean insercionExitosa = false;
@@ -58,7 +57,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     }
     
     @Override
-    public boolean editarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException, IOException {
+    public boolean editarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException {
         String actualizarSQL = "UPDATE estudianteexperienciaeducativa SET nrc = ?, matricula = ? WHERE idexperienciaasignada = ?";
         boolean actualizacionExitosa = false;
         
@@ -83,7 +82,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     }
     
     @Override
-    public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorID(Integer idExperienciaAsignada) throws SQLException, IOException {
+    public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorID(Integer idExperienciaAsignada) throws SQLException {
         
         String consultaSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa WHERE idexperienciaasignada = ?";
         EstudianteExperienciaEducativaDTO estudianteAsignado = null;
@@ -125,7 +124,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     }
     
     @Override
-    public List<EstudianteExperienciaEducativaDTO> listarExperienciaAsignada() throws SQLException, IOException {
+    public List<EstudianteExperienciaEducativaDTO> listarExperienciaAsignada() throws SQLException {
         
         String consultaTodoSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa";
         List<EstudianteExperienciaEducativaDTO> listaEstudiantesAsignados;
@@ -171,7 +170,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
     }
     
     @Override
-    public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorEstudiante(String matriculaEstudiante) throws SQLException, IOException{
+    public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorEstudiante(String matriculaEstudiante) throws SQLException{
         
         String consultaSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa WHERE matricula = ?";
         EstudianteExperienciaEducativaDTO experienciaAsignada = null;
