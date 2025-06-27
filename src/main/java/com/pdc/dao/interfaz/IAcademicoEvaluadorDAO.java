@@ -11,4 +11,5 @@ public interface IAcademicoEvaluadorDAO {
     public boolean editarAcademicoEvaluador (AcademicoEvaluadorDTO academicoEvaluador) throws SQLException;
     public AcademicoEvaluadorDTO buscarAcademicoEvaluador(String numeroDeTrabajador) throws SQLException;
     public List<AcademicoEvaluadorDTO> listarAcademicoEvaluador() throws SQLException;
+    public int contarAcademicosEvaluador() throws SQLException;
 }

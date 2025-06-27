@@ -1,8 +1,6 @@
 package com.pdc.dao.implementacion;
 
 import com.pdc.dao.interfaz.IEstudianteDAO;
-import com.pdc.dao.interfaz.IEstudianteExperienciaEducativa;
-import com.pdc.dao.interfaz.IExperienciaEducativa;
 import com.pdc.modelo.dto.EstudianteDTO;
 import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
@@ -13,15 +11,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.pdc.dao.interfaz.IEstudianteExperienciaEducativaDAO;
+import com.pdc.dao.interfaz.IExperienciaEducativaDAO;
 
-public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperienciaEducativa {
-
+public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperienciaEducativaDAO {
+    
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;
     private ResultSet resultadoDeOperacion;
-    private final IEstudianteDAO interfazEstudianteDAO;
-    private final IExperienciaEducativa interfazExperienciaEducativaDAO;
-
+    private final IEstudianteDAO interfazEstudianteDAO; 
+    private final IExperienciaEducativaDAO interfazExperienciaEducativaDAO;
+    
     public static final String ID_EXPERIENCIA_ASIGNADA = "idexperienciaasignada";
     public static final String NRC = "nrc";
     public static final String MATRICULA = "matricula";

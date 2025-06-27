@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public interface IExperienciaEducativa {
+public interface IExperienciaEducativaDAO {
     
     public ExperienciaEducativaDTO obtenerExperienciaEducativaPorNRC(String nrc) throws SQLException;
     public List<ExperienciaEducativaDTO> listarExperienciaEducativa() throws SQLException;

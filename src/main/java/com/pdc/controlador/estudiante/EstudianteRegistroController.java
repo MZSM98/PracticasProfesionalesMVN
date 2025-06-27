@@ -5,7 +5,6 @@ import com.pdc.modelo.dto.PeriodoEscolarDTO;
 import com.pdc.modelo.dto.SeccionDTO;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.validador.EstudianteValidador;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -25,13 +24,13 @@ import org.apache.log4j.Logger;
 import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
 import com.pdc.dao.interfaz.ISeccionDAO;
 import com.pdc.dao.interfaz.IEstudianteDAO;
-import com.pdc.dao.interfaz.IEstudianteExperienciaEducativa;
-import com.pdc.dao.interfaz.IExperienciaEducativa;
 import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.pdc.dao.interfaz.IEstudianteExperienciaEducativaDAO;
+import com.pdc.dao.interfaz.IExperienciaEducativaDAO;
 
 public class EstudianteRegistroController implements Initializable {
     
@@ -61,8 +60,8 @@ public class EstudianteRegistroController implements Initializable {
     private IEstudianteDAO interfazEstudianteDAO;
     private IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
     private ISeccionDAO interfazSeccionDAO;
-    private IExperienciaEducativa interfazExperienciaEducativaDAO;
-    private IEstudianteExperienciaEducativa interfazEstudianteExperienciaEducativaDAO;
+    private IExperienciaEducativaDAO interfazExperienciaEducativaDAO;
+    private IEstudianteExperienciaEducativaDAO interfazEstudianteExperienciaEducativaDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public interface IEstudianteExperienciaEducativa {
+public interface IEstudianteExperienciaEducativaDAO {
 
     public boolean insertarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException;
     public boolean editarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException;

@@ -447,10 +447,10 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             if (resultado.next()) {
                 totalProyectos = resultado.getInt(1);
             }
-    }
+        }
     
-    return totalProyectos;
-}
+        return totalProyectos;
+    }
 
     private void cerrarRecursos() throws SQLException {
         if (resultadoDeOperacion != null) {

@@ -11,4 +11,5 @@ public interface IProfesorExperienciaEducativaDAO {
     public boolean editarProfesorEE(ProfesorExperienciaEducativaDTO profesor) throws SQLException;
     public ProfesorExperienciaEducativaDTO buscarProfesorEE(String numeroTrabajador) throws SQLException;
     public List<ProfesorExperienciaEducativaDTO> listaProfesorEE() throws SQLException;
+    public int contarProfesores() throws SQLException;
 }

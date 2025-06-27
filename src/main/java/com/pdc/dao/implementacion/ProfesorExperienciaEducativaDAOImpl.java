@@ -138,4 +138,22 @@ public class ProfesorExperienciaEducativaDAOImpl implements IProfesorExperiencia
         }
         return profesores;
     }
+    
+    @Override
+    public int contarProfesores() throws SQLException{
+        
+        final String contarSQL = "SELECT COUNT(*) FROM profesoree";
+        int totalProfesores = 0;
+
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+            PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
+            ResultSet resultado = declaracion.executeQuery()) {
+
+            if (resultado.next()) {
+                totalProfesores = resultado.getInt(1);
+            }
+        }
+    
+        return totalProfesores;
+    }
 }

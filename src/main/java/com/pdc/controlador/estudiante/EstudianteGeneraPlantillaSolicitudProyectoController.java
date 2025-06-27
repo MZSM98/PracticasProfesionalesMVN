@@ -153,7 +153,9 @@ public class EstudianteGeneraPlantillaSolicitudProyectoController implements Ini
                 AlertaUtil.mostrarAlertaError("Error al guardar el documento");
             }
         } else {
+            
             try {
+                
                 document.close();
             } catch (IOException ex) {
                 LOG.error("Error al cerrar documento: ", ex);

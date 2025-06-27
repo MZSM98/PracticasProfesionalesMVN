@@ -131,6 +131,7 @@ public class EstudianteGestionController implements Initializable {
     private void poblarTablaEstudiante() {
 
         try {
+            
             List<EstudianteDTO> listaEstudiantes;
             UsuarioDTO usuario = ManejadorDeSesion.getUsuario();
             

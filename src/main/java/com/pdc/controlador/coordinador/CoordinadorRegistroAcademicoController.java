@@ -19,7 +19,6 @@ import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.validador.AcademicoValidador;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
-import com.pdc.dao.interfaz.IExperienciaEducativa;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
@@ -28,6 +27,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
+import com.pdc.dao.interfaz.IExperienciaEducativaDAO;
 
 public class CoordinadorRegistroAcademicoController {
     
@@ -57,7 +57,7 @@ public class CoordinadorRegistroAcademicoController {
     private TipoUsuarioDTO tipoUsuario;
     private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
     private IProfesorExperienciaEducativaDAO interfazProfesorEEDAO;
-    private IExperienciaEducativa interfazExperienciaEducativaDAO;
+    private IExperienciaEducativaDAO interfazExperienciaEducativaDAO;
     private boolean modoEdicion;
     
     public void initialize() {

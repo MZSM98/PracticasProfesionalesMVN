@@ -235,4 +235,21 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         }
         return proyectoAsignado;
     }
+    
+    @Override
+    public int contarProyectosAsignados ()throws SQLException {
+        final String contarSQL = "SELECT COUNT(*) FROM proyectoasignado";
+        int totalProyectosAsignados = 0;
+
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
+             ResultSet resultado = declaracion.executeQuery()) {
+
+            if (resultado.next()) {
+                totalProyectosAsignados = resultado.getInt(1);
+            }
+        }
+    
+        return totalProyectosAsignados;
+    }
 }
