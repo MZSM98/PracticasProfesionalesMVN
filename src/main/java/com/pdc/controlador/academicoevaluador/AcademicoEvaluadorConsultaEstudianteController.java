@@ -104,8 +104,10 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
             AlertaUtil.mostrarAlertaError("Debe seleccionar un registro.");
             return;
         }
-        
-        if(!SI.equalsIgnoreCase(columnaEvaluado.getText())){
+        int indiceColumnaEvaluado = tablaEstudiante.getSelectionModel().getSelectedIndex();
+        String evaluado = columnaEvaluado.getCellData(indiceColumnaEvaluado);
+
+        if(!SI.equalsIgnoreCase(evaluado)){
             AlertaUtil.mostrarAlertaError("El estudiante aún no tiene evaluaciones.");
             return;
         }
@@ -134,8 +136,9 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
             AlertaUtil.mostrarAlertaError("El alumno aún no tiene un proyecto asignado.");
             return;
         }
-        
-        if(SI.equalsIgnoreCase(columnaEvaluado.getText())){
+        int indiceColumnaEvaluado = tablaEstudiante.getSelectionModel().getSelectedIndex();
+        String evaluado = columnaEvaluado.getCellData(indiceColumnaEvaluado);
+        if(SI.equalsIgnoreCase(evaluado)){
             AlertaUtil.mostrarAlertaError("El estudiante ya tiene una evaluación.");
             return;
         }
