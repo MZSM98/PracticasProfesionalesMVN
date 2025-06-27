@@ -9,16 +9,12 @@ import com.pdc.modelo.dto.UsuarioDTO;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -59,9 +55,6 @@ public class InicioDeSesionController implements Initializable {
     private PasswordField textContrasena;
 
     @FXML
-    private ComboBox<TipoUsuarioDTO> comboTipoUsuario;
-    
-    @FXML
     private Button botonIniciarSesion;
 
     private IUsuarioDAO interfazUsuarioDAO;
@@ -82,7 +75,6 @@ public class InicioDeSesionController implements Initializable {
         interfazEstudianteDAO = new EstudianteDAOImpl();
         interfazAcademicoEvaluadorDAO = new AcademicoEvaluadorDAOImpl();
         
-        poblarComboTipoUsuario();
         aplicarRestriccionesLongitudACampos();
         GmailUtil.configurarCorreo();
     }    
@@ -100,7 +92,6 @@ public class InicioDeSesionController implements Initializable {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setUsuario(textUsuario.getText().trim());
         usuarioDTO.setContrasena(textContrasena.getText().trim());
-        usuarioDTO.setTipoUsuario(comboTipoUsuario.getValue());
         
         if(!validarCamposInicioSesion(usuarioDTO)){
             limpiarCampos();
@@ -114,7 +105,7 @@ public class InicioDeSesionController implements Initializable {
             if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
                 
                 ManejadorDeSesion.iniciarSesion(obtenerTipoUsuario(usuarioBusqueda));
-                abrirMenuPrincipal(usuarioDTO.getTipoUsuario());
+                abrirMenuPrincipal(usuarioBusqueda.getTipoUsuario());
             } else {
 
                 AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, ConstantesUtil.ALERTA_CREDENCIALES_INVALIDAS, Alert.AlertType.WARNING);
@@ -180,22 +171,6 @@ public class InicioDeSesionController implements Initializable {
         usuarioFinal.setSalt(usuario.getSalt());
         
         return usuarioFinal;
-    }
-    
-    private void poblarComboTipoUsuario(){
-        
-        List<TipoUsuarioDTO> listaTipoUsuario;
-        
-        try {
-            
-            listaTipoUsuario = interfazTipoUsuarioDAO.listaTipoUsuario();
-            ObservableList<TipoUsuarioDTO> listaObservableTipoUsuario = FXCollections.observableArrayList(listaTipoUsuario);
-            comboTipoUsuario.setItems(listaObservableTipoUsuario);
-        } catch (SQLException sqle) {
-            
-            LOG.error(AlertaUtil.ALERTA_ERROR_BD,sqle);
-            AlertaUtil.mostrarAlerta(AlertaUtil.ERROR, AlertaUtil.ALERTA_ERROR_BD, Alert.AlertType.ERROR);
-        }
     }
     
     private boolean validarCamposInicioSesion(UsuarioDTO usuarioDTO) {

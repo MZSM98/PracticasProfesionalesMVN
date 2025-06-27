@@ -26,8 +26,8 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     private final IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
     private final IUsuarioDAO interfazUsuarioDAO;
     private final ITipoUsuarioDAO interfazTipoUsuarioDAO;
-    
-    public EstudianteDAOImpl(){
+
+    public EstudianteDAOImpl() {
         interfazSeccionDAO = new SeccionDAOImpl();
         interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
         interfazUsuarioDAO = new UsuarioDAOImpl();
@@ -38,7 +38,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
     public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException {
         String insertarSQL = "INSERT INTO estudiante (matricula, nombreEstudiante, periodoEscolar,seccionEstudiante, avanceCrediticio, promedio) VALUES (?, ?, ?, ?, ?, ?)";
         boolean insercionExitosa = false;
-        
+
         try {
 
             UsuarioDTO usuario = new UsuarioDTO();
@@ -46,21 +46,25 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
             usuario.setTipoUsuario(interfazTipoUsuarioDAO.buscarTipoUsuario(ESTUDIANTE));
             usuario.setContrasena(ContrasenaUtil.crearContrasenaPorDefecto(estudiante));
             interfazUsuarioDAO.insertarUsuario(usuario);
-            
+
             conexionBD = new ConexionBD().getConexionBaseDatos();
 
             declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, estudiante.getMatricula());
-            declaracionPreparada.setString(2, estudiante.getNombreEstudiante());            
+            declaracionPreparada.setString(2, estudiante.getNombreEstudiante());
             declaracionPreparada.setInt(3, estudiante.getPeriodoEscolar().getIdPeriodoEscolar());
             declaracionPreparada.setInt(4, estudiante.getSeccionEstudiante().getIdSeccion());
-            declaracionPreparada.setInt(5, estudiante.getAvanceCrediticio());           
+            declaracionPreparada.setInt(5, estudiante.getAvanceCrediticio());
             declaracionPreparada.setDouble(6, estudiante.getPromedio());
             declaracionPreparada.executeUpdate();
             insercionExitosa = true;
         } finally {
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return insercionExitosa;
     }
@@ -77,8 +81,12 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
             declaracionPreparada.executeUpdate();
             eliminacionExitosa = true;
         } finally {
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return eliminacionExitosa;
     }
@@ -89,21 +97,25 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         boolean actualizacionExitosa = false;
 
         try {
-            
+
             conexionBD = new ConexionBD().getConexionBaseDatos();
             declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
-            declaracionPreparada.setString(1, estudiante.getNombreEstudiante());            
+            declaracionPreparada.setString(1, estudiante.getNombreEstudiante());
             declaracionPreparada.setInt(2, estudiante.getPeriodoEscolar().getIdPeriodoEscolar());
             declaracionPreparada.setDouble(3, estudiante.getPromedio());
             declaracionPreparada.setInt(4, estudiante.getSeccionEstudiante().getIdSeccion());
-            declaracionPreparada.setInt(5, estudiante.getAvanceCrediticio());  
+            declaracionPreparada.setInt(5, estudiante.getAvanceCrediticio());
             declaracionPreparada.setString(6, estudiante.getMatricula());
             declaracionPreparada.executeUpdate();
             actualizacionExitosa = true;
         } finally {
-            
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return actualizacionExitosa;
     }
@@ -124,20 +136,26 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
                 estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
                 estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
                 int idSeccion = resultadoDeOperacion.getInt("seccionEstudiante");
-                estudiante.setSeccionEstudiante(interfazSeccionDAO.buscarSeccion(idSeccion)); 
+                estudiante.setSeccionEstudiante(interfazSeccionDAO.buscarSeccion(idSeccion));
                 int idPeriodoEscolar = resultadoDeOperacion.getInt("periodoEscolar");
                 estudiante.setPeriodoEscolar(interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar));
                 estudiante.setAvanceCrediticio(resultadoDeOperacion.getInt("avanceCrediticio"));
                 estudiante.setPromedio(resultadoDeOperacion.getDouble("promedio"));
             }
         } finally {
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
         return estudiante;
     }
-    
+
     @Override
     public List<EstudianteDTO> listarEstudiantes() throws SQLException {
         final String CONSULTA_SQL = "SELECT * FROM estudiante";
@@ -148,12 +166,12 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
             declaracionPreparada = conexionBD.prepareStatement(CONSULTA_SQL);
             resultadoDeOperacion = declaracionPreparada.executeQuery();
 
-            while(resultadoDeOperacion.next()) {
+            while (resultadoDeOperacion.next()) {
                 EstudianteDTO estudiante = new EstudianteDTO();
                 estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
                 estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
                 int idSeccion = resultadoDeOperacion.getInt("seccionEstudiante");
-                estudiante.setSeccionEstudiante(interfazSeccionDAO.buscarSeccion(idSeccion)); 
+                estudiante.setSeccionEstudiante(interfazSeccionDAO.buscarSeccion(idSeccion));
                 int idPeriodoEscolar = resultadoDeOperacion.getInt("periodoEscolar");
                 estudiante.setPeriodoEscolar(interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar));
                 estudiante.setAvanceCrediticio(resultadoDeOperacion.getInt("avanceCrediticio"));
@@ -162,14 +180,20 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
                 listaEstudiantes.add(estudiante);
             }
         } finally {
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
         }
 
         return listaEstudiantes;
     }
-    
+
     @Override
     public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException {
         String consultaSQL = "SELECT e.matricula, e.nombreEstudiante, e.periodoEscolar, e.seccionEstudiante, e.avanceCrediticio, e.promedio "
@@ -231,5 +255,53 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         }
     
         return totalEstudiantes;
+    }
+    
+    @Override
+    public List<EstudianteDTO> listarEstudiantesAsignadosPorProfesor(String numeroDeTrabajador) throws SQLException {
+        
+        String consultaSQL = "SELECT e.matricula, e.nombreEstudiante, e.periodoEscolar, e.seccionEstudiante, e.avanceCrediticio, e.promedio "
+                + "FROM estudiante e "
+                + "INNER JOIN estudianteexperienciaeducativa eee ON e.matricula = eee.matricula "
+                + "INNER JOIN experienciaeducativa ee ON eee.nrc = ee.nrc "
+                + "WHERE ee.numeroDeTrabajador = ?";
+
+        List<EstudianteDTO> listaEstudiantesAsignados = new ArrayList<>();
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+            declaracionPreparada.setString(1, numeroDeTrabajador);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            while (resultadoDeOperacion.next()) {
+                EstudianteDTO estudiante = new EstudianteDTO();
+                estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
+                estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
+
+                int idSeccion = resultadoDeOperacion.getInt("seccionEstudiante");
+                estudiante.setSeccionEstudiante(interfazSeccionDAO.buscarSeccion(idSeccion));
+
+                int idPeriodoEscolar = resultadoDeOperacion.getInt("periodoEscolar");
+                estudiante.setPeriodoEscolar(interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar));
+
+                estudiante.setAvanceCrediticio(resultadoDeOperacion.getInt("avanceCrediticio"));
+                estudiante.setPromedio(resultadoDeOperacion.getDouble("promedio"));
+
+                listaEstudiantesAsignados.add(estudiante);
+            }
+        } finally {
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        }
+
+        return listaEstudiantesAsignados;
     }
 }

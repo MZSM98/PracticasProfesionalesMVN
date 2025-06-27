@@ -5,7 +5,6 @@ import com.pdc.modelo.dto.PeriodoEscolarDTO;
 import com.pdc.modelo.dto.SeccionDTO;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.validador.EstudianteValidador;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;

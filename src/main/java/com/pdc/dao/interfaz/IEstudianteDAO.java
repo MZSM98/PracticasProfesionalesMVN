@@ -13,4 +13,5 @@ public interface IEstudianteDAO {
     public List<EstudianteDTO> listarEstudiantes() throws SQLException;
     public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException;
     public int contarEstudiantes() throws SQLException;
+    public List<EstudianteDTO> listarEstudiantesAsignadosPorProfesor(String numeroDeTrabajador) throws SQLException;
 }
