@@ -67,10 +67,11 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
     private void cargarOrganizacionesVinculadas() {
         
         ObservableList<OrganizacionVinculadaDTO> listaOrganizacionesVinculadas;
+        List<OrganizacionVinculadaDTO> organizaciones;
         
         try {            
             
-            List<OrganizacionVinculadaDTO> organizaciones = organizacionVinculadaDAO.listarOrganizacionesVinculadas();
+            organizaciones = organizacionVinculadaDAO.listarOrganizacionesVinculadas();
             listaOrganizacionesVinculadas = FXCollections.observableArrayList(organizaciones);
             tableOrganizacionesVinculadas.setItems(listaOrganizacionesVinculadas);            
         } catch (SQLException sqle) {

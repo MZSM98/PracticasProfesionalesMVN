@@ -1,6 +1,5 @@
 package com.pdc.dao.implementacion;
 
-import com.pdc.dao.interfaz.IExperienciaEducativa;
 import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 import com.pdc.modelo.dto.ExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
@@ -11,8 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.pdc.dao.interfaz.IExperienciaEducativaDAO;
 
-public class ExperienciaEducativaDAOImpl implements IExperienciaEducativa {
+public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
     
     private Connection conexionBD;
     private PreparedStatement declaracionPreparada;

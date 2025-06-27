@@ -39,6 +39,7 @@ public class ManejadorDeVistas {
         COORDINADOR_MENU_PRINCIPAL("/com/pdc/vista/coordinador/CoordinadorMenuPrincipal.fxml", false,""),
         COORDINADOR_GESTION_ACADEMICO("/com/pdc/vista/coordinador/CoordinadorGestionAcademico.fxml", false,""),
         COORDINADOR_GESTION_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorGestionOrganizacionVinculada.fxml", false,""),
+        COORDINADOR_CONSULTA_ESTADISTICA("/com/pdc/vista/coordinador/CoordiandorConsultaEstadistica.fxml", false,""),
         COORDINADOR_GESTION_PROYECTO("/com/pdc/vista/coordinador/CoordinadorGestionProyecto.fxml", false,""),
         COORDINADOR_GESTION_RESPONSABLE_ORGANIZACION ("/com/pdc/vista/coordinador/CoordinadorGestionResponsableOrganizacion.fxml",false,""),
         COORDINADOR_REGISTRO_ACADEMICO("/com/pdc/vista/coordinador/CoordinadorRegistroAcademico.fxml", false,"Registro académicos"),

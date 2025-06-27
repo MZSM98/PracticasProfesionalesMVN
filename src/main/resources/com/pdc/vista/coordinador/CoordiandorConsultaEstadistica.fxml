@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="384.0" prefWidth="414.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.pdc.controlador.coordinador.CoordiandorConsultaEstadisticaController">
+<AnchorPane id="AnchorPane" prefHeight="384.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordiandorConsultaEstadisticaController">
    <children>
       <Label fx:id="labelTituloEstadisticas" layoutX="96.0" layoutY="31.0" text="Estadísticas de Registros">
          <font>
@@ -42,7 +41,7 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <Label fx:id="labelSubtituloProyectosAsignados" text="Proyectos Asignados:" GridPane.rowIndex="2">
+            <Label fx:id="labelSubtituloProyectosAsignados" text="Asignaciones de Proyecto:" GridPane.rowIndex="2">
                <padding>
                   <Insets left="5.0" />
                </padding>

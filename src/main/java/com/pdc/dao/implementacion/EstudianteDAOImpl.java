@@ -214,4 +214,22 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
         return listaEstudiantesSinProyecto;
     }
+    
+    @Override
+    public int contarEstudiantes() throws SQLException {
+        
+        final String contarSQL = "SELECT COUNT(*) FROM estudiante";
+        int totalEstudiantes = 0;
+
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
+             ResultSet resultado = declaracion.executeQuery()) {
+
+            if (resultado.next()) {
+                totalEstudiantes = resultado.getInt(1);
+            }
+        }
+    
+        return totalEstudiantes;
+    }
 }

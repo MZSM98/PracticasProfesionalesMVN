@@ -18,6 +18,13 @@ public class CoordinadorMenuPrincipalController implements Initializable {
     
     private static final Logger LOG = Logger.getLogger(CoordinadorGestionOrganizacionVinculadaController.class);
     
+        
+    @FXML
+    private Label labelCerrarSesion; 
+    
+    @FXML
+    private Label labelNombreUsuario;
+    
     ICoordinadorDAO interfazCoordinadorDAO;
     
     @Override
@@ -25,39 +32,46 @@ public class CoordinadorMenuPrincipalController implements Initializable {
         interfazCoordinadorDAO = new CoordinadorDAOImpl();
         configurarSesion();
     }
-    @FXML
-    private Label labelCerrarSesion; 
-    
-    @FXML
-    private Label labelNombreUsuario;
     
     @FXML    
     private void abrirGestionOrganizacionVinculada(ActionEvent event){
+        
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ORGANIZACION_VINCULADA);
     }
     
     @FXML    
     private void abrirGestionAcademico(ActionEvent event){
+        
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_ACADEMICO);
     }
     
     @FXML
     private void abrirGestionProyecto(){
+        
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_PROYECTO);
     }
     
     @FXML
     private void abrirProyectosAsignados(ActionEvent event) {
+        
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_PROYECTO_ASIGNADO);
     }
     
     @FXML
     private void abrirGestionEstudiantes(ActionEvent event) {
+        
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_GESTION);
     }
     
     @FXML
+    private void abrirConsultaEstadisticas(ActionEvent event){
+        
+        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_CONSULTA_ESTADISTICA);
+    }
+    
+    @FXML
     private void cerrarSesion() {
+        
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.INICIO_SESION);
     }

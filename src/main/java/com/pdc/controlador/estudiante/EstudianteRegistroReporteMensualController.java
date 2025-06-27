@@ -6,7 +6,6 @@ import com.pdc.dao.implementacion.EstudianteExperienciaEducativaDAOImpl;
 import com.pdc.dao.implementacion.ProyectoAsignadoDAOImpl;
 import com.pdc.dao.interfaz.IDocumentoDAO;
 import com.pdc.dao.interfaz.IEstudianteDocumentoDAO;
-import com.pdc.dao.interfaz.IEstudianteExperienciaEducativa;
 import com.pdc.dao.interfaz.IProyectoAsignadoDAO;
 import com.pdc.modelo.dto.DocumentoDTO;
 import com.pdc.modelo.dto.EstudianteDTO;
@@ -45,6 +44,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import com.pdc.dao.interfaz.IEstudianteExperienciaEducativaDAO;
 
 public class EstudianteRegistroReporteMensualController implements Initializable {
 
@@ -55,7 +55,7 @@ public class EstudianteRegistroReporteMensualController implements Initializable
 
     private IProyectoAsignadoDAO interfazProyectoAsignadoDAO;
     private IDocumentoDAO interfazDocumentoDAO;
-    private IEstudianteExperienciaEducativa interfazEstudianteExperienciaEducativa;
+    private IEstudianteExperienciaEducativaDAO interfazEstudianteExperienciaEducativa;
     private IEstudianteDocumentoDAO interfazEstudianteDocumentoDAO;
     FileSelectorUtil pdfSelector;
 

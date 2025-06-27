@@ -156,6 +156,22 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
 
         return academicos;    
     }
+    
+    @Override
+    public int contarAcademicosEvaluador() throws SQLException{
+        
+        final String contarSQL = "SELECT COUNT(*) FROM academicoevaluador";
+        int totalAcademicosEvaluadores = 0;
 
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+            PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
+            ResultSet resultado = declaracion.executeQuery()) {
 
+            if (resultado.next()) {
+                totalAcademicosEvaluadores = resultado.getInt(1);
+            }
+        }
+    
+        return totalAcademicosEvaluadores;
+    }
 }
