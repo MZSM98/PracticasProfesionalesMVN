@@ -5,8 +5,8 @@ import com.pdc.dao.implementacion.EstudianteExperienciaEducativaDAOImpl;
 import com.pdc.dao.implementacion.ExperienciaEducativaDAOImpl;
 import com.pdc.dao.implementacion.ProyectoAsignadoDAOImpl;
 import com.pdc.dao.interfaz.IEstudianteEvaluacionDAO;
-import com.pdc.dao.interfaz.IEstudianteExperienciaEducativa;
-import com.pdc.dao.interfaz.IExperienciaEducativa;
+import com.pdc.dao.interfaz.IEstudianteExperienciaEducativaDAO;
+import com.pdc.dao.interfaz.IExperienciaEducativaDAO;
 import com.pdc.dao.interfaz.IProyectoAsignadoDAO;
 import com.pdc.modelo.dto.EstudianteEvaluacionDTO;
 import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,9 +57,9 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
 
     private IEstudianteEvaluacionDAO interfazEstudianteEvaluacion;
 
-    private IEstudianteExperienciaEducativa interfazEstudianteExperienciaEducativa;
+    private IEstudianteExperienciaEducativaDAO interfazEstudianteExperienciaEducativa;
 
-    private IExperienciaEducativa interfazExperienciaEducativa;
+    private IExperienciaEducativaDAO interfazExperienciaEducativa;
 
     private IProyectoAsignadoDAO interfazProyectoAsignado;
 
