@@ -13,10 +13,8 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="labelRegistrar" layoutX="115.0" layoutY="118.0" text="Registrar" />
-      <Label fx:id="labelConsultar" layoutX="437.0" layoutY="118.0" text="Consultar" />
-      <Button fx:id="botonEvaluacionParcial" layoutX="84.0" layoutY="164.0" mnemonicParsing="false" onAction="#abrirRegistroEvaluacionParcial" text="Evaluacion parcial" />
-      <Button fx:id="botonListaEvaluaciones" layoutX="399.0" layoutY="164.0" mnemonicParsing="false" onAction="#abrirListaEvaluaciones" text="Lista de evaluaciones" />
+      <Label fx:id="labelRegistrar" layoutX="277.0" layoutY="97.0" text="Registrar" />
+      <Button fx:id="botonEvaluacionParcial" layoutX="245.0" layoutY="131.0" mnemonicParsing="false" onAction="#abrirRegistroEvaluacionParcial" text="Evaluacion parcial" />
       <Label fx:id="labelCerrarSesion" layoutX="511.0" layoutY="236.0" onMouseClicked="#cerrarSesion" text="Cerrar Sesión" textFill="#0095ff" underline="true">
          <font>
             <Font name="System Bold" size="12.0" />
