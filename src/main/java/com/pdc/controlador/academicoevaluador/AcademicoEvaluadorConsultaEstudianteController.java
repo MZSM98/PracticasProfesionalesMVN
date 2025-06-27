@@ -5,8 +5,8 @@ import com.pdc.dao.implementacion.EstudianteExperienciaEducativaDAOImpl;
 import com.pdc.dao.implementacion.ExperienciaEducativaDAOImpl;
 import com.pdc.dao.implementacion.ProyectoAsignadoDAOImpl;
 import com.pdc.dao.interfaz.IEstudianteEvaluacionDAO;
-import com.pdc.dao.interfaz.IEstudianteExperienciaEducativa;
-import com.pdc.dao.interfaz.IExperienciaEducativa;
+import com.pdc.dao.interfaz.IEstudianteExperienciaEducativaDAO;
+import com.pdc.dao.interfaz.IExperienciaEducativaDAO;
 import com.pdc.dao.interfaz.IProyectoAsignadoDAO;
 import com.pdc.modelo.dto.EstudianteEvaluacionDTO;
 import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
@@ -57,11 +57,8 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
     private TableView<EstudianteExperienciaEducativaDTO> tablaEstudiante;
 
     private IEstudianteEvaluacionDAO interfazEstudianteEvaluacion;
-
-    private IEstudianteExperienciaEducativa interfazEstudianteExperienciaEducativa;
-
-    private IExperienciaEducativa interfazExperienciaEducativa;
-
+    private IEstudianteExperienciaEducativaDAO interfazEstudianteExperienciaEducativa;
+    private IExperienciaEducativaDAO interfazExperienciaEducativa;
     private IProyectoAsignadoDAO interfazProyectoAsignado;
 
     @Override
