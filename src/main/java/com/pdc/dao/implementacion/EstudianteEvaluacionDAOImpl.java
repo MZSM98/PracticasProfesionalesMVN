@@ -238,4 +238,49 @@ public class EstudianteEvaluacionDAOImpl implements IEstudianteEvaluacionDAO {
         return evaluacion;
     }
 
+    @Override
+    public List<EstudianteEvaluacionDTO> listarEvaluacionesPorProfesor(String numeroDeTrabajador) throws SQLException {
+        String consultaSQL = "SELECT ee.idvaluacion, ee.matricula, ee.numeroDeTrabajador, ee.proyectoID, "
+                + "ee.criteriouno, ee.criteriodos, ee.criteriotres, ee.criteriocuatro "
+                + "FROM estudianteevaluacion ee "
+                + "INNER JOIN estudiante e ON ee.matricula = e.matricula "
+                + "INNER JOIN estudianteexperienciaeducativa eee ON e.matricula = eee.matricula "
+                + "INNER JOIN experienciaeducativa ex ON eee.nrc = ex.nrc "
+                + "WHERE ex.numeroDeTrabajador = ?";
+
+        List<EstudianteEvaluacionDTO> listaEvaluaciones = new ArrayList<>();
+
+        try {
+            conexionBD = new ConexionBD().getConexionBaseDatos();
+            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+            declaracionPreparada.setString(1, numeroDeTrabajador);
+            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            while (resultadoDeOperacion.next()) {
+                EstudianteEvaluacionDTO evaluacion = new EstudianteEvaluacionDTO();
+                evaluacion.setIdvaluacion(resultadoDeOperacion.getInt("idvaluacion"));
+                evaluacion.setMatricula(resultadoDeOperacion.getString("matricula"));
+                evaluacion.setNumeroDeTrabajador(resultadoDeOperacion.getString("numeroDeTrabajador"));
+                evaluacion.setProyectoID(resultadoDeOperacion.getInt("proyectoID"));
+                evaluacion.setCriterioUno(resultadoDeOperacion.getInt("criteriouno"));
+                evaluacion.setCriterioDos(resultadoDeOperacion.getInt("criteriodos"));
+                evaluacion.setCriterioTres(resultadoDeOperacion.getInt("criteriotres"));
+                evaluacion.setCriterioCuatro(resultadoDeOperacion.getInt("criteriocuatro"));
+
+                listaEvaluaciones.add(evaluacion);
+            }
+        } finally {
+            if (resultadoDeOperacion != null) {
+                resultadoDeOperacion.close();
+            }
+            if (declaracionPreparada != null) {
+                declaracionPreparada.close();
+            }
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        }
+
+        return listaEvaluaciones;
+    }
 }

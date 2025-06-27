@@ -16,6 +16,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -128,17 +129,23 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
         }
     }
 
-    public void llenarDatosPantallaEdicion(EstudianteEvaluacionDTO estudianteEvaluacion) {
-        modoEdicion = Boolean.TRUE;
-        this.estudianteEvaluacionEdicion = estudianteEvaluacion;
-        textCriterioUno.setText(String.valueOf(estudianteEvaluacion.getCriterioUno()));
-        textCriterioDos.setText(String.valueOf(estudianteEvaluacion.getCriterioDos()));
-        textCriterioTres.setText(String.valueOf(estudianteEvaluacion.getCriterioTres()));
-        textCriterioCuatro.setText(String.valueOf(estudianteEvaluacion.getCriterioCuatro()));
-
-        labelNombreEstudiante.setText(estudianteEvaluacion.getMatricula());
-        labelNombreProyecto.setText(String.valueOf(estudianteEvaluacion.getProyectoID()));
-        labelNumeroEvaluacion.setText(String.valueOf(estudianteEvaluacion.getIdvaluacion()));
+    public void llenarDatosPantallaEdicion(EstudianteEvaluacionDTO estudianteEvaluacion, EstudianteExperienciaEducativaDTO estudianteExperienciaEducativa) {
+        try {
+            modoEdicion = Boolean.TRUE;
+            this.estudianteEvaluacionEdicion = estudianteEvaluacion;
+            textCriterioUno.setText(String.valueOf(estudianteEvaluacion.getCriterioUno()));
+            textCriterioDos.setText(String.valueOf(estudianteEvaluacion.getCriterioDos()));
+            textCriterioTres.setText(String.valueOf(estudianteEvaluacion.getCriterioTres()));
+            textCriterioCuatro.setText(String.valueOf(estudianteEvaluacion.getCriterioCuatro()));
+            
+            String matricula = estudianteExperienciaEducativa.getEstudiante().getMatricula();
+            ProyectoAsignadoDTO proyectoAsignado = interfazProyectoAsignado.obtenerProyectoAsignadoPorMatricula(matricula);
+            labelNombreEstudiante.setText(estudianteExperienciaEducativa.getEstudiante().getNombreEstudiante());
+            labelNombreProyecto.setText(proyectoAsignado.getProyecto().getTituloProyecto());
+            labelNumeroEvaluacion.setText(String.valueOf(estudianteEvaluacion.getIdvaluacion()));
+        } catch (SQLException ex) {
+            LOG.error(ex);
+        }
     }
 
     public void llenarDatosPantallaRegistro(EstudianteExperienciaEducativaDTO estudianteExperienciaEducativa) {
