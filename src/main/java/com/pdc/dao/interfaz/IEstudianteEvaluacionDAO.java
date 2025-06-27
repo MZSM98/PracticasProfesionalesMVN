@@ -18,4 +18,6 @@ public interface IEstudianteEvaluacionDAO {
     
     public EstudianteEvaluacionDTO obtenerEstudianteEvaluacionPorMatricula(String matricula) throws SQLException;
 
+    public List<EstudianteEvaluacionDTO> listarEvaluacionesPorProfesor(String numeroDeTrabajador) throws SQLException;
+
 }

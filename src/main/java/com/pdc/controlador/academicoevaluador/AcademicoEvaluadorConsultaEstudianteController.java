@@ -115,7 +115,7 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
             AcademicoEvaluadorRegistroEvaluacionParcialController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_REGISTRO_EVALUACION_PARCIAL);
             String matricula = estudianteSeleccionado.getEstudiante().getMatricula();
             EstudianteEvaluacionDTO estudianteEvaluacion = interfazEstudianteEvaluacion.obtenerEstudianteEvaluacionPorMatricula(matricula);
-            controlador.llenarDatosPantallaEdicion(estudianteEvaluacion);
+            controlador.llenarDatosPantallaEdicion(estudianteEvaluacion, estudianteSeleccionado);
             ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_REGISTRO_EVALUACION_PARCIAL);
         } catch (IOException ex) {
             LOG.error(ex);
