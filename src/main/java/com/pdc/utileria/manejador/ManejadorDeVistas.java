@@ -51,7 +51,7 @@ public class ManejadorDeVistas {
         COORDINADOR_REGISTRO_RESPONSABLE_ORGANIZACION_VINCULADA("/com/pdc/vista/coordinador/CoordinadorRegistroResponsableOrganizacionVinculada.fxml", false,""),
 
         ACADEMICO_EVALUADOR_MENU_PRINCIPAL("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorMenuPrincipal.fxml", false,""),
-        ACADEMICO_EVALUADOR_CONSULTA_EVALUACION("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorConsultaListaEvaluacion.fxml", false,""),
+        ACADEMICO_EVALUADOR_CONSULTA_EVALUACION_PARCIAL("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorConsultaEstudiante.fxml", true,"Consulta evaluación parcial"),
         ACADEMICO_EVALUADOR_REGISTRO_EVALUACION_PARCIAL("/com/pdc/vista/academicoevaluador/AcademicoEvaluadorRegistroEvaluacionParcial.fxml", false,"");
 
         private final String rutaFXML;

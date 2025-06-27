@@ -12,5 +12,6 @@ public interface IEstudianteExperienciaEducativa {
     public boolean editarExperienciaAsignada(EstudianteExperienciaEducativaDTO estudianteAsignado) throws SQLException;
     public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorID(Integer idExperienciaAsignada) throws SQLException;
     public EstudianteExperienciaEducativaDTO obtenerExperienciaAsignadaPorEstudiante(String matricula) throws SQLException;
-    public List<EstudianteExperienciaEducativaDTO> listarExperienciaAsignada() throws SQLException;    
+    public List<EstudianteExperienciaEducativaDTO> listarExperienciaAsignada() throws SQLException; 
+    public List<EstudianteExperienciaEducativaDTO> listaExperienciaAsignadaPorNRC(String nrcExperiencia) throws SQLException;
 }
