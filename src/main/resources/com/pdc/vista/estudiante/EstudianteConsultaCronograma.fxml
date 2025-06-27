@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="368.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.pdc.controlador.estudiante.EstudianteConsultaCronogramaController">
+<AnchorPane id="AnchorPane" prefHeight="368.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.estudiante.EstudianteConsultaCronogramaController">
    <children>
       <Label layoutX="210.0" layoutY="22.0" text="Cronograma de actividades">
          <font>
@@ -36,12 +35,12 @@
             <Label text="Mes dos:" GridPane.rowIndex="2" />
             <Label text="Mes tres:" GridPane.rowIndex="4" />
             <Label text="Mes cuatro:" GridPane.rowIndex="6" />
-            <TextArea fx:id="textMesUno" prefHeight="24.0" prefWidth="252.0" GridPane.columnIndex="1" />
-            <TextArea fx:id="textMesDos" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextArea fx:id="textMesTres" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextArea fx:id="textMesCuatro" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextArea fx:id="textMesUno" editable="false" prefHeight="24.0" prefWidth="252.0" GridPane.columnIndex="1" />
+            <TextArea fx:id="textMesDos" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextArea fx:id="textMesTres" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextArea fx:id="textMesCuatro" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
-      <Button layoutX="269.0" layoutY="319.0" mnemonicParsing="false" onAction="#accionCancelar" text="Cancelar" />
+      <Button fx:id="botonCancelar" layoutX="269.0" layoutY="319.0" mnemonicParsing="false" onAction="#cerrarVentana" text="Cancelar" />
    </children>
 </AnchorPane>

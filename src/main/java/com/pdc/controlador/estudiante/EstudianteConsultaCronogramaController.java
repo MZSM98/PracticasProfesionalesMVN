@@ -46,7 +46,7 @@ public class EstudianteConsultaCronogramaController implements Initializable {
     }
 
     @FXML
-    private void accionCancelar(ActionEvent event) {
+    private void cerrarVentana(ActionEvent event) {
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
     }
@@ -62,6 +62,7 @@ public class EstudianteConsultaCronogramaController implements Initializable {
     }
 
     private ProyectoDTO consultaProyectoAsingado() {
+        
         EstudianteDTO estudiante = (EstudianteDTO) ManejadorDeSesion.getUsuario();
         String matricula = estudiante.getMatricula();
         ProyectoAsignadoDTO proyectoAsignado = null;
@@ -74,8 +75,10 @@ public class EstudianteConsultaCronogramaController implements Initializable {
         }
 
         if (Objects.nonNull(proyectoAsignado)) {
+            
             return proyectoAsignado.getProyecto();
         } else {
+            
             AlertaUtil.mostrarAlerta("Informativo", "Aún no cuentas con un proyecto asignado", Alert.AlertType.WARNING);
             return null;
         }
