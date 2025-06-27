@@ -2,7 +2,6 @@ package com.pdc.dao.interfaz;
 
 import com.pdc.modelo.dto.EstudianteDTO;
 import java.sql.SQLException;
-import java.io.IOException;
 import java.util.List;
 
 public interface IEstudianteDAO {
@@ -13,5 +12,6 @@ public interface IEstudianteDAO {
     public EstudianteDTO buscarEstudiante(String matricula) throws SQLException;
     public List<EstudianteDTO> listarEstudiantes() throws SQLException;
     public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException;
+    public List<EstudianteDTO> listarEstudiantesAsignadosPorProfesor(String numeroDeTrabajador) throws SQLException;
 
-}
+    }

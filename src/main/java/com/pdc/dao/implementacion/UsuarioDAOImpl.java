@@ -98,7 +98,7 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
 
     @Override
     public boolean autenticarUsuario(UsuarioDTO usuario) throws SQLException {
-        String consultaSQL = "SELECT usuario, tipousuario  FROM usuario WHERE usuario = ? AND contrasena = SHA2(?, 256) AND tipousuario = ?";
+        String consultaSQL = "SELECT usuario, tipousuario  FROM usuario WHERE usuario = ? AND contrasena = SHA2(?, 256)";
         UsuarioDTO usuarioDevuelto = null;
         Connection conexionBD = null;
         PreparedStatement declaracionPreparada = null;
@@ -109,7 +109,6 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
             declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, usuario.getUsuario());
             declaracionPreparada.setString(2, usuario.getContrasena().concat(usuario.getSalt()));
-            declaracionPreparada.setInt(3, usuario.getTipoUsuario().getIdTipo());
             resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             if (resultadoDeOperacion.next()) {
