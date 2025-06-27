@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,6 +62,7 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         interfazEstudianteEvaluacion = new EstudianteEvaluacionDAOImpl();
         interfazEstudianteExperienciaEducativa = new EstudianteExperienciaEducativaDAOImpl();
         interfazExperienciaEducativa = new ExperienciaEducativaDAOImpl();
