@@ -62,6 +62,8 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
     private IExperienciaEducativaDAO interfazExperienciaEducativa;
 
     private IProyectoAsignadoDAO interfazProyectoAsignado;
+    
+    private static final String SI = "SÍ";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,6 +106,11 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
             AlertaUtil.mostrarAlertaError("Debe seleccionar un registro.");
             return;
         }
+        
+        if(!SI.equalsIgnoreCase(columnaEvaluado.getText())){
+            AlertaUtil.mostrarAlertaError("El estudiante aún no tiene evaluaciones.");
+            return;
+        }
         try {
             AcademicoEvaluadorRegistroEvaluacionParcialController controlador = ManejadorDeVistas.getInstancia().obtenerControlador(ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_REGISTRO_EVALUACION_PARCIAL);
             String matricula = estudianteSeleccionado.getEstudiante().getMatricula();
@@ -127,6 +134,11 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
 
         if (!verificarProyectoAsignado()) {
             AlertaUtil.mostrarAlertaError("El alumno aún no tiene un proyecto asignado.");
+            return;
+        }
+        
+        if(SI.equalsIgnoreCase(columnaEvaluado.getText())){
+            AlertaUtil.mostrarAlertaError("El estudiante ya tiene una evaluación.");
             return;
         }
         try {
@@ -172,7 +184,7 @@ public class AcademicoEvaluadorConsultaEstudianteController implements Initializ
         columnaEvaluado.setCellValueFactory(cellData -> {
             String matricula = cellData.getValue().getEstudiante().getMatricula();
             boolean evaluado = verificarSiEstaEvaluado(matricula);
-            return new javafx.beans.property.SimpleStringProperty(evaluado ? "SÍ" : "NO");
+            return new javafx.beans.property.SimpleStringProperty(evaluado ? SI : "NO");
         });
     }
 
