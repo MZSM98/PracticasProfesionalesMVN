@@ -5,9 +5,9 @@ import com.pdc.dao.interfaz.IUsuarioDAO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
+import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -35,11 +35,14 @@ public class EstudianteActualizacionPerfilController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         usuarioDAO = new UsuarioDAOImpl();
+        aplicarRestriccionesLongitudACampos();
     }        
     
     @FXML
     void guardarPerfil(ActionEvent event) {
+        
         UsuarioDTO usuarioSesion = ManejadorDeSesion.getUsuario();
 
         UsuarioDTO usuario = new UsuarioDTO();
@@ -69,6 +72,13 @@ public class EstudianteActualizacionPerfilController implements Initializable {
     void volverAMenuPrincipal(ActionEvent event) {
         ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
+    }
+    
+    private void aplicarRestriccionesLongitudACampos(){
+        
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textContrasenaActual, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textNuevaContrasena, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textConfirmeNuevaContrasena, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
     }
     
 }

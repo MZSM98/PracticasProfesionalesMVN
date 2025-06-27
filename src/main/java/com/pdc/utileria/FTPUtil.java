@@ -24,14 +24,12 @@ public class FTPUtil {
     private static final String RUTA_BASE_SERVIDOR = "/fei/pdc/";
 
     private FTPUtil() {
+        
         throw new IllegalStateException(ConstantesUtil.ALERTA_CLASE_UTILERIA);
     }
 
-    /**
-     * Método para cargar la configuración al inicio de la aplicación Debe ser
-     * llamado una sola vez al iniciar la aplicación
-     */
     public static void configurar() {
+        
         if (configuracionCargada) {
             return;
         }
@@ -62,24 +60,31 @@ public class FTPUtil {
     }
 
     private static void validarConfiguracion() {
+        
         if (host == null || host.isEmpty()) {
+            
             throw new IllegalArgumentException("Host FTP no configurado en serverfei.properties");
         }
         if (usuario == null || usuario.isEmpty()) {
+            
             throw new IllegalArgumentException("Usuario FTP no configurado en serverfei.properties");
         }
         if (contrasena == null || contrasena.isEmpty()) {
+            
             throw new IllegalArgumentException("Contraseña FTP no configurada en serverfei.properties");
         }
     }
 
     private static void verificarConfiguracion() {
+        
         if (!configuracionCargada) {
-            throw new IllegalStateException("La configuración FTP no ha sido cargada. Llame a FTPUtil.configurar() primero.");
+            
+            throw new IllegalStateException("La configuración FTP no ha sido cargada");
         }
     }
 
     private static FTPClient conectar() throws IOException {
+        
         FTPClient ftpClient = new FTPClient();
 
         try {
@@ -93,7 +98,8 @@ public class FTPUtil {
                 throw new ConnectException("Error al conectar al servidor FTP. Código: " + codigoRespuesta);
             }
 
-            boolean loginExitoso = ftpClient.login(usuario, contrasena);
+            boolean loginExitoso;
+            loginExitoso= ftpClient.login(usuario, contrasena);
             if (!loginExitoso) {
                 
                 ftpClient.disconnect();
@@ -117,12 +123,16 @@ public class FTPUtil {
     }
 
     private static void desconectar(FTPClient ftpClient) {
+        
         if (ftpClient != null && ftpClient.isConnected()) {
+            
             try {
+                
                 ftpClient.logout();
                 ftpClient.disconnect();
-            } catch (IOException e) {
-                LOG.error("Error al cerrar conexión FTP: {}", e);
+            } catch (IOException ioe) {
+                
+                LOG.error("Error al cerrar conexión FTP: {}", ioe);
             }
         }
     }
@@ -151,7 +161,8 @@ public class FTPUtil {
 
             archivoLocal = new FileInputStream(archivo);
 
-            boolean resultado = ftpClient.storeFile(destino, archivoLocal);
+            boolean resultado;
+            resultado = ftpClient.storeFile(destino, archivoLocal);
 
             if (resultado) {
                 LOG.info("Archivo cargado: {} -> {}{}"+ origen+ RUTA_BASE_SERVIDOR+ destino);
@@ -161,9 +172,10 @@ public class FTPUtil {
 
             return resultado;
 
-        } catch (IOException e) {
-            LOG.error("Error al cargar archivo: {}", e);
-            return false;
+        } catch (IOException ioe) {
+            
+            LOG.error("Error al cargar archivo: {}", ioe);
+            return false;   
         } finally {
             
             if (archivoLocal != null) {
@@ -178,23 +190,22 @@ public class FTPUtil {
     }
 
     public static boolean descargarArchivo(String archivo, String destinoLocal) {
+        
         verificarConfiguracion();
 
         FTPClient ftpClient = null;
         FileOutputStream archivoDestino = null;
 
         try {
-            // Conectar al servidor FTP
+            
             ftpClient = conectar();
 
-            // Crear directorios locales si no existen
             File archivoLocal = new File(destinoLocal);
             File directorioLocal = archivoLocal.getParentFile();
             if (directorioLocal != null && !directorioLocal.exists()) {
                 directorioLocal.mkdirs();
             }
 
-            // Abrir stream de salida local
             archivoDestino = new FileOutputStream(destinoLocal);
 
             boolean resultado = ftpClient.retrieveFile(archivo, archivoDestino);
@@ -211,33 +222,28 @@ public class FTPUtil {
 
             return resultado;
 
-        } catch (IOException e) {
-            LOG.error("Error al descargar archivo: {}", e);
+        } catch (IOException ioe) {
+            LOG.error("Error al descargar archivo: {}", ioe);
             return false;
         } finally {
             if (archivoDestino != null) {
                 try {
                     archivoDestino.close();
-                } catch (IOException e) {
-                    LOG.error("Error al cerrar archivo local: {}", e);
+                } catch (IOException ioe) {
+                    LOG.error("Error al cerrar archivo local: {}", ioe);
                 }
             }
             desconectar(ftpClient);
         }
     }
 
-    /**
-     * Crea los directorios remotos necesarios para la ruta especificada
-     *
-     * @param ftpClient Cliente FTP conectado
-     * @param rutaArchivo Ruta relativa del archivo (incluyendo nombre)
-     */
     private static void crearDirectoriosRemotos(FTPClient ftpClient, String rutaArchivo) {
+        
         try {
-            // Obtener solo el directorio (sin el nombre del archivo)
+            
             int ultimaBarra = rutaArchivo.lastIndexOf('/');
             if (ultimaBarra == -1) {
-                return; // No hay directorio que crear
+                return;
             }
 
             String directorio = rutaArchivo.substring(0, ultimaBarra);
@@ -271,6 +277,7 @@ public class FTPUtil {
         verificarConfiguracion();
 
         try {
+            
             String archivoTemporal = System.getProperty("java.io.tmpdir") + "/"
                     + archivoRemoto.substring(archivoRemoto.lastIndexOf('/') + 1);
 
@@ -279,13 +286,16 @@ public class FTPUtil {
             return descargado ? new File(archivoTemporal) : null;
 
         } catch (Exception e) {
+            
             LOG.error("Error al descargar plantilla: ", e);
             return null;
         }
     }
 
     public static String obtenerInformacionConfiguracion() {
+        
         if (!configuracionCargada) {
+            
             return "Configuración FTP no cargada";
         }
 

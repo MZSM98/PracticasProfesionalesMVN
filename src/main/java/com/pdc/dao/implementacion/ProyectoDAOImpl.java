@@ -18,12 +18,10 @@ import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 
 public class ProyectoDAOImpl implements IProyectoDAO {
 
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada;
-    private ResultSet resultadoDeOperacion;
     private final IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
     private final IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
     private final IResponsableOrganizacionVinculadaDAO interfazResponsableOrganizacionVinculadaDAO;
+
     public static final String RESPONSABLE = "responsable";
     public static final String FECHA_INICIO = "fechaInicio";
     public static final String FECHA_FINAL = "fechaFinal";
@@ -40,8 +38,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     public static final String CRONOGRAMA_MES_DOS = "cronogramaMesDos";
     public static final String CRONOGRAMA_MES_TRES = "cronogramaMesTres";
     public static final String CRONOGRAMA_MES_CUATRO = "cronogramaMesCuatro";
-    
-    public ProyectoDAOImpl(){
+
+    public ProyectoDAOImpl() {
         interfazPeriodoEscolarDAO = new PeriodoEscolarDAOImpl();
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         interfazResponsableOrganizacionVinculadaDAO = new ResponsableOrganizacionVinculadaDAOImpl();
@@ -52,12 +50,10 @@ public class ProyectoDAOImpl implements IProyectoDAO {
 
         String insertarSQL = "INSERT INTO proyecto (titulo, idperiodoescolar, descripcion, rfcMoral, fechaInicio, fechaFinal, responsable, vacantes,"
                 + "cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        boolean insercionExitosa = false;
 
-        try {
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(insertarSQL)) {
 
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
             declaracionPreparada.setInt(2, proyecto.getPeriodoEscolar().getIdPeriodoEscolar());
             declaracionPreparada.setString(3, proyecto.getDescripcionProyecto());
@@ -71,42 +67,22 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             declaracionPreparada.setString(11, proyecto.getCronogramaMesTres());
             declaracionPreparada.setString(12, proyecto.getCronogramaMesCuatro());
             declaracionPreparada.executeUpdate();
-            insercionExitosa = true;
-        } finally {
-
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+            return true;
         }
-        return insercionExitosa;
     }
 
     @Override
     public boolean eliminarProyecto(int proyectoID) throws SQLException {
 
         String eliminarSQL = "DELETE FROM proyecto WHERE proyectoID = ?";
-        boolean eliminacionExitosa = false;
 
-        try {
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(eliminarSQL)) {
 
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
             declaracionPreparada.setInt(1, proyectoID);
             declaracionPreparada.executeUpdate();
-            eliminacionExitosa = true;
-        } finally {
-
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+            return true;
         }
-        return eliminacionExitosa;
     }
 
     @Override
@@ -115,12 +91,10 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         String actualizarSQL = "UPDATE proyecto SET titulo = ?, idperiodoescolar = ?,"
                 + " descripcion = ?, rfcMoral = ?, estadoProyecto = ?, fechaInicio = ?, fechaFinal = ?, responsable = ?, vacantes = ?,"
                 + "cronogramaMesUno = ?, cronogramaMesDos = ?, cronogramaMesTres = ?, cronogramaMesCuatro = ? WHERE proyectoID = ?";
-        boolean actualizacionExitosa = false;
 
-        try {
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(actualizarSQL)) {
 
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
             declaracionPreparada.setInt(2, proyecto.getPeriodoEscolar().getIdPeriodoEscolar());
             declaracionPreparada.setString(3, proyecto.getDescripcionProyecto());
@@ -136,17 +110,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
             declaracionPreparada.setString(13, proyecto.getCronogramaMesCuatro());
             declaracionPreparada.setInt(14, proyecto.getProyectoID());
             declaracionPreparada.executeUpdate();
-            actualizacionExitosa = true;
-        } finally {
-
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+            return true;
         }
-        return actualizacionExitosa;
     }
 
     @Override
@@ -156,49 +121,38 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 + " responsable, vacantes FROM proyecto WHERE titulo LIKE ?";
         List<ProyectoDTO> proyectosEncontrados = new ArrayList<>();
 
-        try {
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
 
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, "%" + titulo + "%");
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+            try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
-            while (resultadoDeOperacion.next()) {
+                while (resultadoDeOperacion.next()) {
 
-                ProyectoDTO proyecto = new ProyectoDTO();
-                proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
-                proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
+                    ProyectoDTO proyecto = new ProyectoDTO();
+                    proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
+                    proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
 
-                Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
-                PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
-                proyecto.setPeriodoEscolar(periodoEscolar);
+                    Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
+                    PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
+                    proyecto.setPeriodoEscolar(periodoEscolar);
 
-                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
+                    proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
 
-                String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
-                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
-                proyecto.setOrganizacion(organizacionVinculada);
+                    String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
+                    OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
+                    proyecto.setOrganizacion(organizacionVinculada);
 
-                proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
-                proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
-                proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
+                    proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
+                    proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
+                    proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
 
-                ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
-                proyecto.setResponsable(responsable);
+                    ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
+                    proyecto.setResponsable(responsable);
 
-                proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
-                proyectosEncontrados.add(proyecto);
-            }
-        } finally {
-
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
+                    proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
+                    proyectosEncontrados.add(proyecto);
+                }
             }
         }
         return proyectosEncontrados;
@@ -210,11 +164,9 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
-        try {
-
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
+             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {
 
@@ -239,79 +191,52 @@ public class ProyectoDAOImpl implements IProyectoDAO {
 
                 listaProyectos.add(proyecto);
             }
-        } finally {
-
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
         return listaProyectos;
     }
 
     @Override
     public ProyectoDTO obtenerProyectoPorID(int proyectoID) throws SQLException {
-        
+
         String consultaSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal,"
                 + " responsable, vacantes, cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro FROM proyecto WHERE proyectoID = ?";
         ProyectoDTO proyecto = null;
 
-        try {
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
 
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, proyectoID);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+            try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
-            if (resultadoDeOperacion.next()) {
+                if (resultadoDeOperacion.next()) {
 
-                proyecto = new ProyectoDTO();
-                proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
-                proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
-                
-                Integer idPeriodoEscolar;
-                idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
-                PeriodoEscolarDTO periodoEscolar;
-                periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
-                proyecto.setPeriodoEscolar(periodoEscolar);
-                
-                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
-                
-                String rfcMoral;
-                rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
-                OrganizacionVinculadaDTO organizacionVinculada;
-                organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
-                proyecto.setOrganizacion(organizacionVinculada);
-                
-                proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
-                proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
-                proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
-                
-                ResponsableOrganizacionVinculadaDTO responsable;
-                responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
-                proyecto.setResponsable(responsable);
-                
-                proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
-                proyecto.setCronogramaMesUno(resultadoDeOperacion.getString(CRONOGRAMA_MES_UNO));
-                proyecto.setCronogramaMesDos(resultadoDeOperacion.getString(CRONOGRAMA_MES_DOS));
-                proyecto.setCronogramaMesTres(resultadoDeOperacion.getString(CRONOGRAMA_MES_TRES));
-                proyecto.setCronogramaMesCuatro(resultadoDeOperacion.getString(CRONOGRAMA_MES_CUATRO));
-            }
-        } finally {
+                    proyecto = new ProyectoDTO();
+                    proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
+                    proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
 
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
+                    Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
+                    PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
+                    proyecto.setPeriodoEscolar(periodoEscolar);
+
+                    proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
+
+                    String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
+                    OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
+                    proyecto.setOrganizacion(organizacionVinculada);
+
+                    proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
+                    proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
+                    proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
+
+                    ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
+                    proyecto.setResponsable(responsable);
+
+                    proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
+                    proyecto.setCronogramaMesUno(resultadoDeOperacion.getString(CRONOGRAMA_MES_UNO));
+                    proyecto.setCronogramaMesDos(resultadoDeOperacion.getString(CRONOGRAMA_MES_DOS));
+                    proyecto.setCronogramaMesTres(resultadoDeOperacion.getString(CRONOGRAMA_MES_TRES));
+                    proyecto.setCronogramaMesCuatro(resultadoDeOperacion.getString(CRONOGRAMA_MES_CUATRO));
+                }
             }
         }
         return proyecto;
@@ -324,55 +249,43 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 + " responsable, vacantes, cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro FROM proyecto WHERE rfcMoral = ?";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
-        try {
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
 
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setString(1, rfcMoral);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+            try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
-            while (resultadoDeOperacion.next()) {
+                while (resultadoDeOperacion.next()) {
 
-                ProyectoDTO proyecto = new ProyectoDTO();
-                proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
-                proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
+                    ProyectoDTO proyecto = new ProyectoDTO();
+                    proyecto.setProyectoID(resultadoDeOperacion.getInt(PROYECTO_ID));
+                    proyecto.setTituloProyecto(resultadoDeOperacion.getString(TITULO));
 
-                Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
-                PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
-                proyecto.setPeriodoEscolar(periodoEscolar);
+                    Integer idPeriodoEscolar = resultadoDeOperacion.getInt(ID_PERIODO_ESCOLAR);
+                    PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
+                    proyecto.setPeriodoEscolar(periodoEscolar);
 
-                proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
+                    proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
 
-                String rfcMoralResult;
-                rfcMoralResult= resultadoDeOperacion.getString(RFC_MORAL);
-                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoralResult);
-                proyecto.setOrganizacion(organizacionVinculada);
+                    String rfcMoralResult = resultadoDeOperacion.getString(RFC_MORAL);
+                    OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoralResult);
+                    proyecto.setOrganizacion(organizacionVinculada);
 
-                proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
-                proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
-                proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
+                    proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
+                    proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
+                    proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
 
-                ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoralResult);
-                proyecto.setResponsable(responsable);
-                
-                proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
-                proyecto.setCronogramaMesUno(resultadoDeOperacion.getString(CRONOGRAMA_MES_UNO));
-                proyecto.setCronogramaMesDos(resultadoDeOperacion.getString(CRONOGRAMA_MES_DOS));
-                proyecto.setCronogramaMesTres(resultadoDeOperacion.getString(CRONOGRAMA_MES_TRES));
-                proyecto.setCronogramaMesCuatro(resultadoDeOperacion.getString(CRONOGRAMA_MES_CUATRO));
+                    ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoralResult);
+                    proyecto.setResponsable(responsable);
 
-                listaProyectos.add(proyecto);
-            }
-        } finally {
+                    proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
+                    proyecto.setCronogramaMesUno(resultadoDeOperacion.getString(CRONOGRAMA_MES_UNO));
+                    proyecto.setCronogramaMesDos(resultadoDeOperacion.getString(CRONOGRAMA_MES_DOS));
+                    proyecto.setCronogramaMesTres(resultadoDeOperacion.getString(CRONOGRAMA_MES_TRES));
+                    proyecto.setCronogramaMesCuatro(resultadoDeOperacion.getString(CRONOGRAMA_MES_CUATRO));
 
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
+                    listaProyectos.add(proyecto);
+                }
             }
         }
         return listaProyectos;
@@ -388,55 +301,52 @@ public class ProyectoDAOImpl implements IProyectoDAO {
 
         List<ProyectoDTO> proyectosConVacantes = new ArrayList<>();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {
                 ProyectoDTO proyecto = construirProyectoDesdeResultSet(resultadoDeOperacion);
                 proyectosConVacantes.add(proyecto);
             }
-        } finally {
-            cerrarRecursos();
         }
         return proyectosConVacantes;
     }
 
-    private ProyectoDTO construirProyectoDesdeResultSet(ResultSet rs) throws SQLException {
+    private ProyectoDTO construirProyectoDesdeResultSet(ResultSet resultado) throws SQLException {
         ProyectoDTO proyecto = new ProyectoDTO();
-        proyecto.setProyectoID(rs.getInt(PROYECTO_ID));
-        proyecto.setTituloProyecto(rs.getString(TITULO));
+        proyecto.setProyectoID(resultado.getInt(PROYECTO_ID));
+        proyecto.setTituloProyecto(resultado.getString(TITULO));
 
-        Integer idPeriodoEscolar = rs.getInt(ID_PERIODO_ESCOLAR);
+        Integer idPeriodoEscolar = resultado.getInt(ID_PERIODO_ESCOLAR);
         PeriodoEscolarDTO periodoEscolar = interfazPeriodoEscolarDAO.buscarPeriodoEscolar(idPeriodoEscolar);
         proyecto.setPeriodoEscolar(periodoEscolar);
 
-        proyecto.setDescripcionProyecto(rs.getString(DESCRIPCION));
+        proyecto.setDescripcionProyecto(resultado.getString(DESCRIPCION));
 
-        String rfcMoral = rs.getString(RFC_MORAL);
+        String rfcMoral = resultado.getString(RFC_MORAL);
         OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
         proyecto.setOrganizacion(organizacionVinculada);
 
-        proyecto.setEstadoProyecto(rs.getString(ESTADO_PROYECTO));
-        proyecto.setFechaInicio(rs.getDate(FECHA_INICIO));
-        proyecto.setFechaFinal(rs.getDate(FECHA_FINAL));
+        proyecto.setEstadoProyecto(resultado.getString(ESTADO_PROYECTO));
+        proyecto.setFechaInicio(resultado.getDate(FECHA_INICIO));
+        proyecto.setFechaFinal(resultado.getDate(FECHA_FINAL));
 
         ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
         proyecto.setResponsable(responsable);
 
-        proyecto.setVacantes(rs.getInt(VACANTES));
-        proyecto.setCronogramaMesUno(rs.getString(CRONOGRAMA_MES_UNO));
-        proyecto.setCronogramaMesDos(rs.getString(CRONOGRAMA_MES_DOS));
-        proyecto.setCronogramaMesTres(rs.getString(CRONOGRAMA_MES_TRES));
-        proyecto.setCronogramaMesCuatro(rs.getString(CRONOGRAMA_MES_CUATRO));
+        proyecto.setVacantes(resultado.getInt(VACANTES));
+        proyecto.setCronogramaMesUno(resultado.getString(CRONOGRAMA_MES_UNO));
+        proyecto.setCronogramaMesDos(resultado.getString(CRONOGRAMA_MES_DOS));
+        proyecto.setCronogramaMesTres(resultado.getString(CRONOGRAMA_MES_TRES));
+        proyecto.setCronogramaMesCuatro(resultado.getString(CRONOGRAMA_MES_CUATRO));
 
         return proyecto;
     }
-    
+
     @Override
     public int contarProyectos() throws SQLException {
-    
+
         final String contarSQL = "SELECT COUNT(*) FROM proyecto";
         int totalProyectos = 0;
 
@@ -448,19 +358,6 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 totalProyectos = resultado.getInt(1);
             }
         }
-    
         return totalProyectos;
-    }
-
-    private void cerrarRecursos() throws SQLException {
-        if (resultadoDeOperacion != null) {
-            resultadoDeOperacion.close();
-        }
-        if (declaracionPreparada != null) {
-            declaracionPreparada.close();
-        }
-        if (conexionBD != null) {
-            conexionBD.close();
-        }
     }
 }

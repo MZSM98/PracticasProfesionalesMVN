@@ -3,7 +3,6 @@ package com.pdc.controlador.coordinador;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.ProyectoDTO.EstadoProyecto;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -31,6 +30,7 @@ import com.pdc.dao.interfaz.IResponsableOrganizacionVinculadaDAO;
 import com.pdc.modelo.dto.PeriodoEscolarDTO;
 import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 import com.pdc.utileria.ConstantesUtil;
+import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.sql.Date;
 import java.util.Objects;
@@ -104,6 +104,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         cargarPeriodosEscolares();
         cargarOrganizacionesVinculadas();
         configurarSpinnerVacantes();
+        aplicarRestriccionesLongitudACampos();
     }
     
     private void configurarSpinnerVacantes(){
@@ -334,4 +335,13 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.COORDINADOR_GESTION_PROYECTO);
     }
     
+    private void aplicarRestriccionesLongitudACampos(){
+        
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textCronogramaMesUno, ConstantesUtil.RESTRICCION_LONGITUD_TEXTAREA);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textCronogramaMesDos, ConstantesUtil.RESTRICCION_LONGITUD_TEXTAREA);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textCronogramaMesTres, ConstantesUtil.RESTRICCION_LONGITUD_TEXTAREA);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textCronogramaMesCuatro, ConstantesUtil.RESTRICCION_LONGITUD_TEXTAREA);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textDescripcionProyecto, ConstantesUtil.RESTRICCION_LONGITUD_TEXTAREA);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textTituloProyecto, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+    }
 }

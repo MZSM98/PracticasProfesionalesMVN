@@ -15,131 +15,110 @@ import com.pdc.dao.interfaz.IUsuarioDAO;
 
 public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
     
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada;
-    private ResultSet resultadoDeOperacion;
-    
-    private IUsuarioDAO interfazUsuarioDAO;
+    private final IUsuarioDAO interfazUsuarioDAO;
     
     public AcademicoEvaluadorDAOImpl(){
         interfazUsuarioDAO = new UsuarioDAOImpl();
     }
     
     @Override
-    public boolean insertarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException{
+    public boolean insertarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException {
         
         String insertarSQL = "INSERT INTO academicoevaluador (numeroDeTrabajador, nombreAcademico) VALUES (?,?)";
-        boolean insercionExitosa = false;
-        
-        try {
-            
-            conexionBD = new ConexionBD().getConexionBaseDatos();
+
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
+
+            conexion.setAutoCommit(false);
+
             UsuarioDTO usuario = new UsuarioDTO();
             usuario.setUsuario(academicoEvaluador.getNumeroDeTrabajador());
             usuario.setTipoUsuario(academicoEvaluador.getTipoUsuario());
             usuario.setContrasena(ContrasenaUtil.crearContrasenaPorDefecto(academicoEvaluador));
             interfazUsuarioDAO.insertarUsuario(usuario);
-            
-            declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
+
             declaracionPreparada.setString(1, academicoEvaluador.getNumeroDeTrabajador());
             declaracionPreparada.setString(2, academicoEvaluador.getNombreAcademico());
-            declaracionPreparada.executeUpdate();
-            
-            insercionExitosa = true;
-            
-        } finally {
-            
-            if (declaracionPreparada != null) declaracionPreparada.close();  
-            if (conexionBD != null) conexionBD.close();
-        
+
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                conexion.commit();
+                return true;
+            } else {
+                conexion.rollback();
+                return false;
+            }
         }
-        
-        return insercionExitosa;       
     }
 
     @Override
-    public boolean eliminarAcademicoEvaluador(String numeroDeTrabajador) throws SQLException{
-
+    public boolean eliminarAcademicoEvaluador(String numeroDeTrabajador) throws SQLException {
+        
         String eliminarSQL = "DELETE FROM academicoevaluador WHERE numeroDeTrabajador = ?";
-        boolean eliminacionExitosa = false;
-        
-        try {
-            
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
+
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(eliminarSQL)) {
+
             declaracionPreparada.setString(1, numeroDeTrabajador);
-            declaracionPreparada.executeUpdate();
-            eliminacionExitosa = true;          
 
-        } finally {
+            int filasAfectadas = declaracionPreparada.executeUpdate();
 
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
-            
+            return filasAfectadas > 0;
         }
-
-        return eliminacionExitosa;
     }
 
-    
-
     @Override
-    public boolean editarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException{
-        String actualizarSQL = "UPDATE academicoevaluador SET nombreAcademico = ? WHERE numeroDeTrabajador = ?";
-        boolean actualizacionExitosa = false;
+    public boolean editarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException {
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
+        String actualizarSQL = "UPDATE academicoevaluador SET nombreAcademico = ? WHERE numeroDeTrabajador = ?";
+
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
+
             declaracionPreparada.setString(1, academicoEvaluador.getNombreAcademico());
             declaracionPreparada.setString(2, academicoEvaluador.getNumeroDeTrabajador());
-            declaracionPreparada.executeUpdate();
-        } finally {
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
-            
-        }
 
-        return actualizacionExitosa;
-        
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
+        }
     }
     
     @Override
-    public AcademicoEvaluadorDTO buscarAcademicoEvaluador (String numeroDeTrabajador) throws SQLException{
-        String consultaSQL = "SELECT numeroDeTrabajador, nombreAcademico FROM academicoevaluador WHERE numeroDeTrabajador = ?";
-        AcademicoEvaluadorDTO academico = null;
+    public AcademicoEvaluadorDTO buscarAcademicoEvaluador(String numeroDeTrabajador) throws SQLException {
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            declaracionPreparada.setString(1, numeroDeTrabajador);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+       String consultaSQL = "SELECT numeroDeTrabajador, nombreAcademico FROM academicoevaluador WHERE numeroDeTrabajador = ?";
+       AcademicoEvaluadorDTO academico = null;
 
-            if (resultadoDeOperacion.next()) {
-                academico = new AcademicoEvaluadorDTO();
-                academico.setNumeroDeTrabajador(resultadoDeOperacion.getString("numeroDeTrabajador"));
-                academico.setNombreAcademico(resultadoDeOperacion.getString("nombreAcademico"));
-                
-            }
-        } finally {
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
-            
-        }
+       try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+            PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
-        return academico;
+           declaracionPreparada.setString(1, numeroDeTrabajador);
+
+           ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+           if (resultadoDeOperacion.next()) {
+               
+               academico = new AcademicoEvaluadorDTO();
+               academico.setNumeroDeTrabajador(resultadoDeOperacion.getString("numeroDeTrabajador"));
+               academico.setNombreAcademico(resultadoDeOperacion.getString("nombreAcademico"));
+           }
+       }
+
+       return academico;
     }
 
     @Override
     public List<AcademicoEvaluadorDTO> listarAcademicoEvaluador() throws SQLException {
+        
         String consultaSQL = "SELECT numeroDeTrabajador, nombreAcademico FROM academicoevaluador";
-        List<AcademicoEvaluadorDTO> academicos = new ArrayList<>();
+        List<AcademicoEvaluadorDTO> academicos;
+        academicos = new ArrayList<>();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+            PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()){
 
             while(resultadoDeOperacion.next()) {
                 AcademicoEvaluadorDTO academico = new AcademicoEvaluadorDTO();
@@ -147,13 +126,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
                 academico.setNombreAcademico(resultadoDeOperacion.getString("nombreAcademico"));
                 academicos.add(academico);
             }
-        } finally {
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
-            
-        }
-
+        } 
         return academicos;    
     }
     

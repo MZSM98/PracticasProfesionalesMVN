@@ -12,67 +12,61 @@ import com.pdc.dao.interfaz.IPeriodoEscolarDAO;
 
 public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
 
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada;
-    private ResultSet resultadoDeOperacion;
+    private static final String COLUMNA_ID_PERIODO_ESCOLAR = "idperiodoescolar";
+    private static final String COLUMNA_NOMBRE_PERIODO_ESCOLAR = "nombreperiodoescolar";
+    private static final String COLUMNA_FECHA_INICIO_PERIODO_ESCOLAR = "fechainicioperiodoescolar";
+    private static final String COLUMNA_FECHA_FIN_PERIODO_ESCOLAR = "fechafinperiodoescolar";
+    private static final String COLUMNA_STATUS = "status";
     
     @Override
-    public PeriodoEscolarDTO buscarPeriodoEscolar(Integer idPeriodoEscolar)  throws SQLException {
+    public PeriodoEscolarDTO buscarPeriodoEscolar(Integer idPeriodoEscolar) throws SQLException {
         
-        String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar WHERE idperiodoescolar=?";
+        String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar WHERE idperiodoescolar = ?";
         PeriodoEscolarDTO periodoEscolar = null;
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setInt(1, idPeriodoEscolar);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
                 
                 periodoEscolar = new PeriodoEscolarDTO();
-                periodoEscolar.setIdPeriodoEscolar(resultadoDeOperacion.getInt("idperiodoescolar"));
-                periodoEscolar.setNombrePeriodoEscolar(resultadoDeOperacion.getString("nombreperiodoescolar"));
-                periodoEscolar.setFechaInicioPeriodoEscolar(resultadoDeOperacion.getDate("fechainicioperiodoescolar"));
-                periodoEscolar.setFechaFinPeriodoEscolar(resultadoDeOperacion.getDate("fechafinperiodoescolar"));
-                periodoEscolar.setEstado(resultadoDeOperacion.getString("status"));
+                periodoEscolar.setIdPeriodoEscolar(resultadoDeOperacion.getInt(COLUMNA_ID_PERIODO_ESCOLAR));
+                periodoEscolar.setNombrePeriodoEscolar(resultadoDeOperacion.getString(COLUMNA_NOMBRE_PERIODO_ESCOLAR));
+                periodoEscolar.setFechaInicioPeriodoEscolar(resultadoDeOperacion.getDate(COLUMNA_FECHA_INICIO_PERIODO_ESCOLAR));
+                periodoEscolar.setFechaFinPeriodoEscolar(resultadoDeOperacion.getDate(COLUMNA_FECHA_FIN_PERIODO_ESCOLAR));
+                periodoEscolar.setEstado(resultadoDeOperacion.getString(COLUMNA_STATUS));
             }
-        } finally {
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
         }
+
         return periodoEscolar;    
     }
 
     @Override
-    public List<PeriodoEscolarDTO> listarPeriodos()  throws SQLException {
+    public List<PeriodoEscolarDTO> listarPeriodos() throws SQLException {
         
         String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar";
         List<PeriodoEscolarDTO> listaPeriodoEscolar = new ArrayList<>();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
+             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
-            while(resultadoDeOperacion.next()) {
+            while (resultadoDeOperacion.next()) {
                 
                 PeriodoEscolarDTO periodoEscolar = new PeriodoEscolarDTO();
-                periodoEscolar.setIdPeriodoEscolar(resultadoDeOperacion.getInt("idperiodoescolar"));
-                periodoEscolar.setNombrePeriodoEscolar(resultadoDeOperacion.getString("nombreperiodoescolar"));
-                periodoEscolar.setFechaInicioPeriodoEscolar(resultadoDeOperacion.getDate("fechainicioperiodoescolar"));
-                periodoEscolar.setFechaFinPeriodoEscolar(resultadoDeOperacion.getDate("fechafinperiodoescolar"));
-                periodoEscolar.setEstado(resultadoDeOperacion.getString("status"));
+                periodoEscolar.setIdPeriodoEscolar(resultadoDeOperacion.getInt(COLUMNA_ID_PERIODO_ESCOLAR));
+                periodoEscolar.setNombrePeriodoEscolar(resultadoDeOperacion.getString(COLUMNA_NOMBRE_PERIODO_ESCOLAR));
+                periodoEscolar.setFechaInicioPeriodoEscolar(resultadoDeOperacion.getDate(COLUMNA_FECHA_INICIO_PERIODO_ESCOLAR));
+                periodoEscolar.setFechaFinPeriodoEscolar(resultadoDeOperacion.getDate(COLUMNA_FECHA_FIN_PERIODO_ESCOLAR));
+                periodoEscolar.setEstado(resultadoDeOperacion.getString(COLUMNA_STATUS));
                 listaPeriodoEscolar.add(periodoEscolar);
             }
-        } finally {
-            
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
         }
+
         return listaPeriodoEscolar;    
     }
-    
 }

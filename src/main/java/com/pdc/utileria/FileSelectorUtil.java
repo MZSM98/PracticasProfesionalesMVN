@@ -62,6 +62,7 @@ public class FileSelectorUtil {
     }
 
     public void mostrarDialogoGuardarPdf(File archivoTemporal, String nombreArchivo) {
+        
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar documento");
         fileChooser.setInitialFileName(nombreArchivo);
@@ -71,6 +72,7 @@ public class FileSelectorUtil {
         File archivoDestino = fileChooser.showSaveDialog(stage);
 
         if (archivoDestino != null) {
+            
             try {
                 Files.copy(archivoTemporal.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 AlertaUtil.mostrarAlertaExito("Documento guardado exitosamente");
@@ -86,6 +88,7 @@ public class FileSelectorUtil {
             }
         } else {
             try {
+                
                 Files.deleteIfExists(archivoTemporal.toPath());
             } catch (IOException ex) {
                 LOG.warn("No se pudo eliminar el archivo temporal: " + archivoTemporal.getAbsolutePath(), ex);

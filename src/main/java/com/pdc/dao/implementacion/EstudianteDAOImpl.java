@@ -19,9 +19,6 @@ import com.pdc.dao.interfaz.ITipoUsuarioDAO;
 public class EstudianteDAOImpl implements IEstudianteDAO {
 
     private static final Integer ESTUDIANTE = 4;
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada;
-    private ResultSet resultadoDeOperacion;
     private final ISeccionDAO interfazSeccionDAO;
     private final IPeriodoEscolarDAO interfazPeriodoEscolarDAO;
     private final IUsuarioDAO interfazUsuarioDAO;
@@ -36,10 +33,13 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
     @Override
     public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException {
+        
         String insertarSQL = "INSERT INTO estudiante (matricula, nombreEstudiante, periodoEscolar,seccionEstudiante, avanceCrediticio, promedio) VALUES (?, ?, ?, ?, ?, ?)";
-        boolean insercionExitosa = false;
 
-        try {
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
+
+            conexion.setAutoCommit(false);
 
             UsuarioDTO usuario = new UsuarioDTO();
             usuario.setUsuario(estudiante.getMatricula());
@@ -47,91 +47,77 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
             usuario.setContrasena(ContrasenaUtil.crearContrasenaPorDefecto(estudiante));
             interfazUsuarioDAO.insertarUsuario(usuario);
 
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-
-            declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
             declaracionPreparada.setString(1, estudiante.getMatricula());
             declaracionPreparada.setString(2, estudiante.getNombreEstudiante());
             declaracionPreparada.setInt(3, estudiante.getPeriodoEscolar().getIdPeriodoEscolar());
             declaracionPreparada.setInt(4, estudiante.getSeccionEstudiante().getIdSeccion());
             declaracionPreparada.setInt(5, estudiante.getAvanceCrediticio());
             declaracionPreparada.setDouble(6, estudiante.getPromedio());
-            declaracionPreparada.executeUpdate();
-            insercionExitosa = true;
-        } finally {
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
+
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                conexion.commit();
+                return true;
+            } else {
+                conexion.rollback();
+                return false;
             }
         }
-        return insercionExitosa;
     }
 
     @Override
     public boolean eliminarEstudiante(String matricula) throws SQLException {
+        
         String eliminarSQL = "DELETE FROM estudiante WHERE matricula = ?";
-        boolean eliminacionExitosa = false;
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(eliminarSQL)) {
+
             declaracionPreparada.setString(1, matricula);
-            declaracionPreparada.executeUpdate();
-            eliminacionExitosa = true;
-        } finally {
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
         }
-        return eliminacionExitosa;
     }
 
     @Override
     public boolean editarEstudiante(EstudianteDTO estudiante) throws SQLException {
+        
         String actualizarSQL = "UPDATE estudiante SET nombreEstudiante = ?, periodoEscolar = ?, promedio = ?, seccionEstudiante = ?, avanceCrediticio = ? WHERE matricula = ?";
-        boolean actualizacionExitosa = false;
 
-        try {
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
             declaracionPreparada.setString(1, estudiante.getNombreEstudiante());
             declaracionPreparada.setInt(2, estudiante.getPeriodoEscolar().getIdPeriodoEscolar());
             declaracionPreparada.setDouble(3, estudiante.getPromedio());
             declaracionPreparada.setInt(4, estudiante.getSeccionEstudiante().getIdSeccion());
             declaracionPreparada.setInt(5, estudiante.getAvanceCrediticio());
             declaracionPreparada.setString(6, estudiante.getMatricula());
-            declaracionPreparada.executeUpdate();
-            actualizacionExitosa = true;
-        } finally {
 
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
         }
-        return actualizacionExitosa;
     }
 
     @Override
     public EstudianteDTO buscarEstudiante(String matricula) throws SQLException {
+        
         String consultaSQL = "SELECT matricula, nombreEstudiante, periodoEscolar,seccionEstudiante, avanceCrediticio, promedio  FROM estudiante WHERE matricula = ?";
         EstudianteDTO estudiante = null;
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setString(1, matricula);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
+                
                 estudiante = new EstudianteDTO();
                 estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
                 estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
@@ -142,31 +128,23 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
                 estudiante.setAvanceCrediticio(resultadoDeOperacion.getInt("avanceCrediticio"));
                 estudiante.setPromedio(resultadoDeOperacion.getDouble("promedio"));
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
+
         return estudiante;
     }
 
     @Override
     public List<EstudianteDTO> listarEstudiantes() throws SQLException {
+        
         final String CONSULTA_SQL = "SELECT * FROM estudiante";
         List<EstudianteDTO> listaEstudiantes = new ArrayList<>();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(CONSULTA_SQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(CONSULTA_SQL);
+             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {
+                
                 EstudianteDTO estudiante = new EstudianteDTO();
                 estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
                 estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
@@ -179,16 +157,6 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
                 listaEstudiantes.add(estudiante);
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
 
         return listaEstudiantes;
@@ -196,6 +164,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
     @Override
     public List<EstudianteDTO> listarEstudiantesSinProyectoAsignado() throws SQLException {
+        
         String consultaSQL = "SELECT e.matricula, e.nombreEstudiante, e.periodoEscolar, e.seccionEstudiante, e.avanceCrediticio, e.promedio "
                 + "FROM estudiante e "
                 + "LEFT JOIN proyectoasignado pa ON e.matricula = pa.matriculaestudiante "
@@ -203,12 +172,12 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
         List<EstudianteDTO> listaEstudiantesSinProyecto = new ArrayList<>();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
+             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {
+                
                 EstudianteDTO estudiante = new EstudianteDTO();
                 estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
                 estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
@@ -223,16 +192,6 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
                 estudiante.setPromedio(resultadoDeOperacion.getDouble("promedio"));
 
                 listaEstudiantesSinProyecto.add(estudiante);
-            }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
             }
         }
 
@@ -268,13 +227,15 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
         List<EstudianteDTO> listaEstudiantesAsignados = new ArrayList<>();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setString(1, numeroDeTrabajador);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             while (resultadoDeOperacion.next()) {
+                
                 EstudianteDTO estudiante = new EstudianteDTO();
                 estudiante.setMatricula(resultadoDeOperacion.getString("matricula"));
                 estudiante.setNombreEstudiante(resultadoDeOperacion.getString("nombreEstudiante"));
@@ -290,18 +251,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
                 listaEstudiantesAsignados.add(estudiante);
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
-
         return listaEstudiantesAsignados;
     }
 }

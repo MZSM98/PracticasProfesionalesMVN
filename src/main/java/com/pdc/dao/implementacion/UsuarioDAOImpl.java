@@ -1,4 +1,3 @@
-
 package com.pdc.dao.implementacion;
 
 import com.pdc.utileria.bd.ConexionBD;
@@ -13,22 +12,19 @@ import java.util.Base64;
 import java.util.Objects;
 import com.pdc.dao.interfaz.IUsuarioDAO;
 
-
-public class UsuarioDAOImpl implements IUsuarioDAO{
+public class UsuarioDAOImpl implements IUsuarioDAO {
     
     @Override
-    public UsuarioDTO buscarUsuario(String usuario) throws SQLException{
-        String consultaSQL = "SELECT usuario, tipousuario, salt  FROM usuario WHERE usuario = ?";
-        UsuarioDTO usuarioDevuelto = null;
-        Connection conexionBD = null;
-        PreparedStatement declaracionPreparada = null;
-        ResultSet resultadoDeOperacion = null;
+    public UsuarioDTO buscarUsuario(String usuario) throws SQLException {
         
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        String consultaSQL = "SELECT usuario, tipousuario, salt FROM usuario WHERE usuario = ?";
+        UsuarioDTO usuarioDevuelto = null;
+
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setString(1, usuario);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             if (resultadoDeOperacion.next()) {
                 usuarioDevuelto = new UsuarioDTO();
@@ -38,79 +34,59 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
                 usuarioDevuelto.setTipoUsuario(tipoUsuario);
                 usuarioDevuelto.setSalt(resultadoDeOperacion.getString("salt"));
             }
-        } finally {
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
         }
-        return usuarioDevuelto;    }
+        return usuarioDevuelto;    
+    }
 
     @Override
-    public boolean insertarUsuario(UsuarioDTO usuario) throws SQLException{
+    public boolean insertarUsuario(UsuarioDTO usuario) throws SQLException {
+        
         String insertarSQL = "INSERT INTO usuario (usuario, contrasena, tipousuario, salt) VALUES (?, SHA2(?, 256), ?, ?)";
-        boolean insercionExitosa = false;
-        Connection conexionBD = null;
-        PreparedStatement declaracionPreparada = null;
         String salt = generateSalt();
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
+
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(insertarSQL)) {
+
             declaracionPreparada.setString(1, usuario.getUsuario());
             declaracionPreparada.setString(2, usuario.getContrasena().concat(salt));
             declaracionPreparada.setInt(3, usuario.getTipoUsuario().getIdTipo());
             declaracionPreparada.setString(4, salt);
             declaracionPreparada.executeUpdate();
-            insercionExitosa = true;
-        } finally {
-            if (declaracionPreparada != null) declaracionPreparada.close();  
-            if (conexionBD != null) conexionBD.close();
+            return true;
         }
-        return insercionExitosa;
     }
 
     @Override
-    public boolean editarUsuario(UsuarioDTO usuario) throws SQLException{
+    public boolean editarUsuario(UsuarioDTO usuario) throws SQLException {
+        
         String actualizarSQL = "UPDATE usuario SET contrasena = SHA2(?, 256), salt = ? WHERE usuario = ?";
-        boolean actualizacionExitosa = false;
-        Connection conexionBD = null;
-        PreparedStatement declaracionPreparada = null;
-
         String nuevoSalt = generateSalt();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, usuario.getContrasena().concat(nuevoSalt));
             declaracionPreparada.setString(2, nuevoSalt); 
             declaracionPreparada.setString(3, usuario.getUsuario()); 
 
             int filasAfectadas = declaracionPreparada.executeUpdate();
-            actualizacionExitosa = (filasAfectadas > 0); 
-
-        } finally {
-            if (declaracionPreparada != null) declaracionPreparada.close();  
-            if (conexionBD != null) conexionBD.close();
+            return filasAfectadas > 0;
         }
-
-        return actualizacionExitosa;
     }
 
     @Override
     public boolean autenticarUsuario(UsuarioDTO usuario) throws SQLException {
-        String consultaSQL = "SELECT usuario, tipousuario  FROM usuario WHERE usuario = ? AND contrasena = SHA2(?, 256)";
-        UsuarioDTO usuarioDevuelto = null;
-        Connection conexionBD = null;
-        PreparedStatement declaracionPreparada = null;
-        ResultSet resultadoDeOperacion = null;
         
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        String consultaSQL = "SELECT usuario, tipousuario FROM usuario WHERE usuario = ? AND contrasena = SHA2(?, 256)";
+        UsuarioDTO usuarioDevuelto = null;
+
+        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setString(1, usuario.getUsuario());
             declaracionPreparada.setString(2, usuario.getContrasena().concat(usuario.getSalt()));
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
-            
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
+
             if (resultadoDeOperacion.next()) {
                 usuarioDevuelto = new UsuarioDTO();
                 usuarioDevuelto.setUsuario(resultadoDeOperacion.getString("usuario"));
@@ -118,10 +94,6 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
                 tipoUsuario.setIdTipo(resultadoDeOperacion.getInt("tipousuario"));
                 usuarioDevuelto.setTipoUsuario(tipoUsuario);
             }
-        } finally {
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
         }
         return Objects.nonNull(usuarioDevuelto);
     }
@@ -132,5 +104,4 @@ public class UsuarioDAOImpl implements IUsuarioDAO{
         secureRandom.nextBytes(salt);
         return Base64.getEncoder().encodeToString(salt);
     }
-
 }

@@ -6,7 +6,9 @@ import com.pdc.modelo.dto.OrganizacionVinculadaDTO;
 import com.pdc.modelo.dto.ResponsableOrganizacionVinculadaDTO;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
+import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
+import com.pdc.validador.ResponsableOrganizacionVinculadaValidador;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -48,8 +50,9 @@ public class CoordinadorRegistroResponsableOrganizacionVinculadaController imple
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        interfazResponsableOrganizacionVinculadaDAO = new ResponsableOrganizacionVinculadaDAOImpl();
         
+        interfazResponsableOrganizacionVinculadaDAO = new ResponsableOrganizacionVinculadaDAOImpl();
+        aplicarRestriccionesLongitudACampos();
     }
     
     public void cambiarAModoEdicion(boolean modoEdicion) {
@@ -122,9 +125,18 @@ public class CoordinadorRegistroResponsableOrganizacionVinculadaController imple
         } 
     }
     
-    private boolean validarCamposResponsableOrganizacion(ResponsableOrganizacionVinculadaDTO responsableOrganizacionVinculadaDTO){
+    private boolean validarCamposResponsableOrganizacion(ResponsableOrganizacionVinculadaDTO responsableOrganizacionVinculadaDTO) {
         
-        return true;
+        try {
+            
+            ResponsableOrganizacionVinculadaValidador.validarResponsable(responsableOrganizacionVinculadaDTO);
+            return true;
+        } catch (IllegalArgumentException iae) {
+            
+            LOG.error(ConstantesUtil.LOG_DATOS_NO_VALIDOS, iae);
+            AlertaUtil.mostrarAlerta(AlertaUtil.ADVERTENCIA, iae.getMessage(), Alert.AlertType.WARNING);
+            return false;
+        }
     }
     
     public void llenarCamposEditablesResponsable(){
@@ -148,4 +160,12 @@ public class CoordinadorRegistroResponsableOrganizacionVinculadaController imple
             AlertaUtil.mostrarAlertaErrorVentana();
         }
     }    
+    
+    private void aplicarRestriccionesLongitudACampos(){
+        
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textCargoResponsable, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textCorreoResponsable, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textRfcResponsable, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+        RestriccionCamposUtil.aplicarRestriccionLongitud(textNombreResponsable, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);
+    }
 }

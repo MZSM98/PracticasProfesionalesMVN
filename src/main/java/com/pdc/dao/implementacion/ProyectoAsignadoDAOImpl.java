@@ -16,58 +16,51 @@ import java.util.List;
 
 public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
 
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada;
-    private ResultSet resultadoDeOperacion;
+    private static final String ID_PROYECTO_ASIGNADO = "idproyectoasignado";
+    private static final String ID_PROYECTO = "idproyecto";
+    private static final String MATRICULA_ESTUDIANTE = "matriculaestudiante";
+
     private final IProyectoDAO interfazProyectoDAO;
     private final IEstudianteDAO interfazEstudianteDAO;
 
-    public static final String ID_PROYECTO_ASIGNADO = "idproyectoasignado";
-    public static final String ID_PROYECTO = "idproyecto";
-    public static final String MATRICULA_ESTUDIANTE = "matriculaestudiante";
-
     public ProyectoAsignadoDAOImpl() {
+        
         interfazProyectoDAO = new ProyectoDAOImpl();
         interfazEstudianteDAO = new EstudianteDAOImpl();
     }
 
     @Override
     public boolean insertarProyectoAsignado(ProyectoAsignadoDTO proyectoAsignado) throws SQLException {
-
+        
         String insertarSQL = "INSERT INTO proyectoasignado (idproyecto, matriculaestudiante) VALUES (?, ?)";
-        boolean insercionExitosa = false;
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
+
             declaracionPreparada.setInt(1, proyectoAsignado.getProyecto().getProyectoID());
             declaracionPreparada.setString(2, proyectoAsignado.getEstudiante().getMatricula());
-            declaracionPreparada.executeUpdate();
-            insercionExitosa = true;
-        } finally {
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
         }
-        return insercionExitosa;
     }
 
     @Override
     public ProyectoAsignadoDTO obtenerProyectoAsignadoPorID(int proyectoAsignadoID) throws SQLException {
-
+        
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE idproyectoasignado = ?";
         ProyectoAsignadoDTO proyectoAsignado = null;
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setInt(1, proyectoAsignadoID);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
+                
                 proyectoAsignado = new ProyectoAsignadoDTO();
                 proyectoAsignado.setIdProyectoAsignado(resultadoDeOperacion.getInt(ID_PROYECTO_ASIGNADO));
 
@@ -79,32 +72,23 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
                 EstudianteDTO estudiante = interfazEstudianteDAO.buscarEstudiante(matriculaEstudiante);
                 proyectoAsignado.setEstudiante(estudiante);
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
+
         return proyectoAsignado;
     }
 
     @Override
     public List<ProyectoAsignadoDTO> listaProyectoAsignado() throws SQLException {
-
+        
         String consultaTodoSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado";
         List<ProyectoAsignadoDTO> listaProyectosAsignados = new ArrayList<>();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaTodoSQL);
+             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {
+                
                 ProyectoAsignadoDTO proyectoAsignado = new ProyectoAsignadoDTO();
                 proyectoAsignado.setIdProyectoAsignado(resultadoDeOperacion.getInt(ID_PROYECTO_ASIGNADO));
 
@@ -118,58 +102,44 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
 
                 listaProyectosAsignados.add(proyectoAsignado);
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
+
         return listaProyectosAsignados;
     }
 
     @Override
     public boolean editarProyectoAsignado(ProyectoAsignadoDTO proyectoAsignado) throws SQLException {
-
+        
         String actualizarSQL = "UPDATE proyectoasignado SET idproyecto = ?, matriculaestudiante = ? WHERE idproyectoasignado = ?";
-        boolean actualizacionExitosa = false;
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
+
             declaracionPreparada.setInt(1, proyectoAsignado.getProyecto().getProyectoID());
             declaracionPreparada.setString(2, proyectoAsignado.getEstudiante().getMatricula());
             declaracionPreparada.setInt(3, proyectoAsignado.getIdProyectoAsignado());
-            declaracionPreparada.executeUpdate();
-            actualizacionExitosa = true;
-        } finally {
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
+
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
         }
-        return actualizacionExitosa;
     }
 
     @Override
     public List<ProyectoAsignadoDTO> listaProyectoAsignadoPorProyectoID(int proyectoID) throws SQLException {
-
+        
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE idproyecto = ?";
         List<ProyectoAsignadoDTO> listaProyectosAsignados = new ArrayList<>();
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setInt(1, proyectoID);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             while (resultadoDeOperacion.next()) {
+                
                 ProyectoAsignadoDTO proyectoAsignado = new ProyectoAsignadoDTO();
                 proyectoAsignado.setIdProyectoAsignado(resultadoDeOperacion.getInt(ID_PROYECTO_ASIGNADO));
 
@@ -183,31 +153,23 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
 
                 listaProyectosAsignados.add(proyectoAsignado);
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
+
         return listaProyectosAsignados;
     }
 
     @Override
     public ProyectoAsignadoDTO obtenerProyectoAsignadoPorMatricula(String matriculaEstudiante) throws SQLException {
-
+        
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE matriculaestudiante = ?";
         ProyectoAsignadoDTO proyectoAsignado = null;
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setString(1, matriculaEstudiante);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
                 
@@ -222,23 +184,15 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
                 EstudianteDTO estudiante = interfazEstudianteDAO.buscarEstudiante(matricula);
                 proyectoAsignado.setEstudiante(estudiante);
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
+
         return proyectoAsignado;
     }
     
     @Override
-    public int contarProyectosAsignados ()throws SQLException {
-        final String contarSQL = "SELECT COUNT(*) FROM proyectoasignado";
+    public int contarProyectosAsignados() throws SQLException {
+        
+        String contarSQL = "SELECT COUNT(*) FROM proyectoasignado";
         int totalProyectosAsignados = 0;
 
         try (Connection conexion = new ConexionBD().getConexionBaseDatos();
@@ -246,6 +200,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
              ResultSet resultado = declaracion.executeQuery()) {
 
             if (resultado.next()) {
+                
                 totalProyectosAsignados = resultado.getInt(1);
             }
         }

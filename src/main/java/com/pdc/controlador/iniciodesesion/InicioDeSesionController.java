@@ -18,7 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import com.pdc.dao.implementacion.TipoUsuarioDAOImpl;
 import com.pdc.dao.implementacion.UsuarioDAOImpl;
 import com.pdc.dao.interfaz.IAcademicoEvaluadorDAO;
 import com.pdc.dao.interfaz.ICoordinadorDAO;
@@ -29,7 +28,6 @@ import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.dao.interfaz.IUsuarioDAO;
-import com.pdc.dao.interfaz.ITipoUsuarioDAO;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
@@ -63,14 +61,12 @@ public class InicioDeSesionController implements Initializable {
     private IProfesorExperienciaEducativaDAO interfazProfesorEEDAO;
     private IAcademicoEvaluadorDAO interfazAcademicoEvaluadorDAO;
     private IEstudianteDAO interfazEstudianteDAO;
-    private ITipoUsuarioDAO interfazTipoUsuarioDAO;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         botonIniciarSesion.setDefaultButton(Boolean.TRUE);
         interfazUsuarioDAO = new UsuarioDAOImpl();
-        interfazTipoUsuarioDAO = new TipoUsuarioDAOImpl();
         interfazCordinadorDao = new CoordinadorDAOImpl();
         interfazProfesorEEDAO = new ProfesorExperienciaEducativaDAOImpl();
         interfazEstudianteDAO = new EstudianteDAOImpl();
@@ -103,6 +99,7 @@ public class InicioDeSesionController implements Initializable {
             UsuarioDTO usuarioBusqueda = interfazUsuarioDAO.buscarUsuario(usuarioDTO.getUsuario());
             if(Objects.isNull(usuarioBusqueda)){
                 AlertaUtil.mostrarAlertaError("Usuario y/o contraseña incorrectos.");
+                limpiarCampos();
                 return;
             }
             
@@ -198,6 +195,7 @@ public class InicioDeSesionController implements Initializable {
         textUsuario.clear();
         textContrasena.clear();
     }
+    
     private void aplicarRestriccionesLongitudACampos(){
         
         RestriccionCamposUtil.aplicarRestriccionLongitud(textContrasena, ConstantesUtil.RESTRICCION_LONGITUD_TEXTFIELD);

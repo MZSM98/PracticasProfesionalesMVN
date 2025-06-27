@@ -9,10 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class DocumentoDAOImpl implements IDocumentoDAO {
-
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada;
-    private ResultSet resultadoDeOperacion;
     
     public static final String ID_DOCUMENTO = "iddocumento";
     public static final String NOMBRE_DOCUMENTO = "nombredocumento";
@@ -20,22 +16,19 @@ public class DocumentoDAOImpl implements IDocumentoDAO {
     public static final String LIMITE_ARCHIVOS = "limiteArchivos";
     public static final String PLANTILLA = "plantilla";
     
-    public DocumentoDAOImpl(){
-    }
-    
     @Override
     public DocumentoDTO buscarDocumento(int idDocumento) throws SQLException {
         
         String consultaSQL = "SELECT iddocumento, nombredocumento, formatonombre, limiteArchivos, plantilla FROM documento WHERE iddocumento = ?";
         DocumentoDTO documento = null;
-
-        try {
+        
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
             
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
             declaracionPreparada.setInt(1, idDocumento);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
-
+            
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
+            
             if (resultadoDeOperacion.next()) {
                 
                 documento = new DocumentoDTO();
@@ -45,12 +38,8 @@ public class DocumentoDAOImpl implements IDocumentoDAO {
                 documento.setLimiteArchivos(resultadoDeOperacion.getInt(LIMITE_ARCHIVOS));
                 documento.setPlantilla(resultadoDeOperacion.getString(PLANTILLA));
             }
-        } finally {
-            
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
         }
+        
         return documento;
     }
 }

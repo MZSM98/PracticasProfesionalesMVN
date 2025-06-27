@@ -14,14 +14,11 @@ import com.pdc.dao.interfaz.IExperienciaEducativaDAO;
 
 public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
     
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada;
-    private ResultSet resultadoDeOperacion;
-    private final IProfesorExperienciaEducativaDAO interfazProfesorExperienciaEducativaDAO;
+    private static final String NRC = "nrc";
+    private static final String NOMBRE = "nombre";
+    private static final String NUMERO_DE_TRABAJADOR = "numeroDeTrabajador";
     
-    public static final String NRC = "nrc";
-    public static final String NOMBRE = "nombre";
-    public static final String NUMERO_DE_TRABAJADOR = "numeroDeTrabajador";
+    private final IProfesorExperienciaEducativaDAO interfazProfesorExperienciaEducativaDAO;
     
     public ExperienciaEducativaDAOImpl() {
         
@@ -34,32 +31,24 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
         String consultaSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa WHERE nrc = ?";
         ExperienciaEducativaDTO experienciaEducativa = null;
         
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setString(1, nrc);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             if (resultadoDeOperacion.next()) {
+                
                 experienciaEducativa = new ExperienciaEducativaDTO();
                 experienciaEducativa.setNrc(resultadoDeOperacion.getString(NRC));
                 experienciaEducativa.setNombre(resultadoDeOperacion.getString(NOMBRE));
                 String numeroDeTrabajador = resultadoDeOperacion.getString(NUMERO_DE_TRABAJADOR);
-                ProfesorExperienciaEducativaDTO profesor;
-                profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
+                ProfesorExperienciaEducativaDTO profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
                 experienciaEducativa.setProfesor(profesor);
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
+
         return experienciaEducativa;
     }
     
@@ -69,53 +58,39 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
         String consultaTodoSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa";
         List<ExperienciaEducativaDTO> listaExperienciasEducativas = new ArrayList<>();
         
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
-            
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaTodoSQL);
+             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
+
             while (resultadoDeOperacion.next()) {
                 
-                ExperienciaEducativaDTO experienciaEducativa;
-                experienciaEducativa = new ExperienciaEducativaDTO();
+                ExperienciaEducativaDTO experienciaEducativa = new ExperienciaEducativaDTO();
                 experienciaEducativa.setNrc(resultadoDeOperacion.getString(NRC));
                 experienciaEducativa.setNombre(resultadoDeOperacion.getString(NOMBRE));
                 
-                String numeroDeTrabajador;
-                numeroDeTrabajador = resultadoDeOperacion.getString(NUMERO_DE_TRABAJADOR);
-                ProfesorExperienciaEducativaDTO profesor;
-                profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
+                String numeroDeTrabajador = resultadoDeOperacion.getString(NUMERO_DE_TRABAJADOR);
+                ProfesorExperienciaEducativaDTO profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
                 experienciaEducativa.setProfesor(profesor);
                 
                 listaExperienciasEducativas.add(experienciaEducativa);
             }
-        } finally {
-            if (resultadoDeOperacion != null) {
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.close();
-            }
         }
+
         return listaExperienciasEducativas;
     }
     
     @Override
-    public ExperienciaEducativaDTO buscarExperienciaEducativaPorProfesor(String numeroDeTrabajador) throws SQLException{
+    public ExperienciaEducativaDTO buscarExperienciaEducativaPorProfesor(String numeroDeTrabajador) throws SQLException {
         
         String consultaSQL = "SELECT nrc, nombre FROM experienciaeducativa WHERE numeroDeTrabajador = ?";
-        ExperienciaEducativaDTO experienciaEducativa;
-        experienciaEducativa = null;
+        ExperienciaEducativaDTO experienciaEducativa = null;
         
-        try {
-            
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setString(1, numeroDeTrabajador);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
             
             if (resultadoDeOperacion.next()) {
                 
@@ -123,83 +98,66 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
                 experienciaEducativa.setNrc(resultadoDeOperacion.getString(NRC));
                 experienciaEducativa.setNombre(resultadoDeOperacion.getString(NOMBRE));
                 
-                ProfesorExperienciaEducativaDTO profesor;
-                profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
+                ProfesorExperienciaEducativaDTO profesor = interfazProfesorExperienciaEducativaDAO.buscarProfesorEE(numeroDeTrabajador);
                 experienciaEducativa.setProfesor(profesor);
             }
-        } finally {
-            
-            if (resultadoDeOperacion != null) {
-                
-                resultadoDeOperacion.close();
-            }
-            if (declaracionPreparada != null) {
-                
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                
-                conexionBD.close();
-            }
         }
+
         return experienciaEducativa;
     }
     
     @Override
     public boolean asignarProfesorAExperienciaEducativa(String nrc, String numeroDeTrabajador) throws SQLException {
+        
         String actualizarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = ? WHERE nrc = ?";
-        boolean actualizacionExitosa = false;
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
+
             declaracionPreparada.setString(1, numeroDeTrabajador);
             declaracionPreparada.setString(2, nrc);
-            declaracionPreparada.executeUpdate();
-            actualizacionExitosa = true;
-        } finally {
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
         }
-        return actualizacionExitosa;
     }
     
     @Override
     public boolean reasignarProfesorExperienciaEducativa(String nrcAnterior, String nrcNuevo, String numeroDeTrabajador) throws SQLException {
         
-        boolean actualizacionExitosa = false;
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos()) {
 
-        try {
-            
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            conexionBD.setAutoCommit(false);
+            conexion.setAutoCommit(false);
+
             if (nrcAnterior != null && !nrcAnterior.equals(nrcNuevo)) {
                 
                 String liberarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = NULL WHERE nrc = ?";
-                declaracionPreparada = conexionBD.prepareStatement(liberarSQL);
-                declaracionPreparada.setString(1, nrcAnterior);
-                declaracionPreparada.executeUpdate();
-                declaracionPreparada.close();
+                try (PreparedStatement declaracionPreparada = conexion.prepareStatement(liberarSQL)) {
+                    
+                    declaracionPreparada.setString(1, nrcAnterior);
+                    declaracionPreparada.executeUpdate();
+                }
             }
 
             String asignarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = ? WHERE nrc = ?";
-            declaracionPreparada = conexionBD.prepareStatement(asignarSQL);
-            declaracionPreparada.setString(1, numeroDeTrabajador);
-            declaracionPreparada.setString(2, nrcNuevo);
-            declaracionPreparada.executeUpdate();
+            try (PreparedStatement declaracionPreparada = conexion.prepareStatement(asignarSQL)) {
+                
+                declaracionPreparada.setString(1, numeroDeTrabajador);
+                declaracionPreparada.setString(2, nrcNuevo);
 
-            conexionBD.commit();
-            actualizacionExitosa = true;
+                int filasAfectadas = declaracionPreparada.executeUpdate();
 
-        } finally {
-            if (declaracionPreparada != null) {
-                declaracionPreparada.close();
-            }
-            if (conexionBD != null) {
-                conexionBD.setAutoCommit(true);
-                conexionBD.close();
+                if (filasAfectadas > 0) {
+                    
+                    conexion.commit();
+                    return true;
+                } else {
+                    
+                    conexion.rollback();
+                    return false;
+                }
             }
         }
-        return actualizacionExitosa;
     }
 }

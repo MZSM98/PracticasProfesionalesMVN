@@ -12,137 +12,114 @@ import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
 
 public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
 
-    private Connection conexionBD;
-    private PreparedStatement declaracionPreparada = null;
-    private ResultSet resultadoDeOperacion;
+    private static final String COLUMNA_RFC_MORAL = "rfcMoral";
+    private static final String COLUMNA_NOMBRE_OV = "nombreOV";
+    private static final String COLUMNA_DIRECCION_OV = "direccionOV";
+    private static final String COLUMNA_TELEFONO_OV = "telefonoOV";
+    private static final String COLUMNA_ESTADO_OV = "estadoOV";
 
     @Override
     public boolean insertarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException {
         
         String insertarSQL = "INSERT INTO organizacionvinculada (rfcMoral, nombreOV, direccionOV, telefonoOV) VALUES (?, ?, ?, ?)";
-        boolean insercionExitosa = false;
 
-        try {
-            
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(insertarSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
+
             declaracionPreparada.setString(1, organizacionVinculada.getRfcMoral());
             declaracionPreparada.setString(2, organizacionVinculada.getNombreOV());
             declaracionPreparada.setString(3, organizacionVinculada.getDireccionOV());
             declaracionPreparada.setString(4, organizacionVinculada.getTelefonoOV());
             
-            declaracionPreparada.executeUpdate();
-            insercionExitosa = true;
-            
-        } finally {
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
         }
-        return insercionExitosa;
     }
 
     @Override
     public boolean eliminarOrganizacionVinculada(String rfcMoral) throws SQLException {
         
-        final String eliminarSQL = "DELETE FROM organizacionvinculada WHERE rfcMoral = ?";
-        boolean eliminacionExitosa = false;
+        String eliminarSQL = "DELETE FROM organizacionvinculada WHERE rfcMoral = ?";
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(eliminarSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(eliminarSQL)) {
+
             declaracionPreparada.setString(1, rfcMoral);
-            declaracionPreparada.executeUpdate();
-            eliminacionExitosa = true;
-        } finally {
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
         }
-        return eliminacionExitosa;
     }
 
     @Override
     public boolean editarOrganizacionVinculada(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException {
-        final String actualizarSQL = "UPDATE organizacionvinculada SET nombreOV = ?, direccionOV = ?, telefonoOV = ?, estadoOV = ? WHERE rfcMoral = ?";
-        boolean actualizacionExitosa = false;
+        
+        String actualizarSQL = "UPDATE organizacionvinculada SET nombreOV = ?, direccionOV = ?, telefonoOV = ?, estadoOV = ? WHERE rfcMoral = ?";
 
-        try {
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(actualizarSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
+
             declaracionPreparada.setString(1, organizacionVinculada.getNombreOV());
             declaracionPreparada.setString(2, organizacionVinculada.getDireccionOV());
             declaracionPreparada.setString(3, organizacionVinculada.getTelefonoOV());
             declaracionPreparada.setString(4, organizacionVinculada.getEstadoOV());
             declaracionPreparada.setString(5, organizacionVinculada.getRfcMoral());
                         
-            declaracionPreparada.executeUpdate();
-            actualizacionExitosa = true;
-            
-        } finally {
-            
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
+            int filasAfectadas = declaracionPreparada.executeUpdate();
+
+            return filasAfectadas > 0;
         }
-        return actualizacionExitosa;
     }
 
     @Override
     public OrganizacionVinculadaDTO buscarOrganizacionVinculada(String rfcMoral) throws SQLException {
         
-        final String consultaSQL = "SELECT rfcMoral, nombreOV, direccionOV, telefonoOV, estadoOV FROM organizacionvinculada WHERE rfcMoral = ?";
-        OrganizacionVinculadaDTO organizacionVinculada;
-        organizacionVinculada = null;
+        String consultaSQL = "SELECT rfcMoral, nombreOV, direccionOV, telefonoOV, estadoOV FROM organizacionvinculada WHERE rfcMoral = ?";
+        OrganizacionVinculadaDTO organizacionVinculada = null;
 
-        try {
-            
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
+
             declaracionPreparada.setString(1, rfcMoral);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
+
+            ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
                 
                 organizacionVinculada = new OrganizacionVinculadaDTO();
-                organizacionVinculada.setRfcMoral(resultadoDeOperacion.getString("rfcMoral"));
-                organizacionVinculada.setNombreOV(resultadoDeOperacion.getString("nombreOV"));
-                organizacionVinculada.setDireccionOV(resultadoDeOperacion.getString("direccionOV"));
-                organizacionVinculada.setTelefonoOV(resultadoDeOperacion.getString("telefonoOV"));
-                organizacionVinculada.setEstadoOV(resultadoDeOperacion.getString("estadoOV"));
+                organizacionVinculada.setRfcMoral(resultadoDeOperacion.getString(COLUMNA_RFC_MORAL));
+                organizacionVinculada.setNombreOV(resultadoDeOperacion.getString(COLUMNA_NOMBRE_OV));
+                organizacionVinculada.setDireccionOV(resultadoDeOperacion.getString(COLUMNA_DIRECCION_OV));
+                organizacionVinculada.setTelefonoOV(resultadoDeOperacion.getString(COLUMNA_TELEFONO_OV));
+                organizacionVinculada.setEstadoOV(resultadoDeOperacion.getString(COLUMNA_ESTADO_OV));
             }
-        } finally {
-            
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
         }
+
         return organizacionVinculada;
     }
     
     @Override
     public List<OrganizacionVinculadaDTO> listarOrganizacionesVinculadas() throws SQLException {
         
-        final String consultaTodoSQL = "SELECT * FROM organizacionvinculada";
+        String consultaTodoSQL = "SELECT rfcMoral, nombreOV, direccionOV, telefonoOV, estadoOV FROM organizacionvinculada";
         List<OrganizacionVinculadaDTO> listaOrganizacionVinculada = new ArrayList<>();
 
-        try {
-            
-            conexionBD = new ConexionBD().getConexionBaseDatos();
-            declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
-            resultadoDeOperacion = declaracionPreparada.executeQuery();
-            while(resultadoDeOperacion.next()) {
+        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaTodoSQL);
+             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
+
+            while (resultadoDeOperacion.next()) {
                 
                 OrganizacionVinculadaDTO organizacionVinculada = new OrganizacionVinculadaDTO();
-                organizacionVinculada.setRfcMoral(resultadoDeOperacion.getString("rfcMoral"));
-                organizacionVinculada.setNombreOV(resultadoDeOperacion.getString("nombreOV"));
-                organizacionVinculada.setTelefonoOV(resultadoDeOperacion.getString("telefonoOV"));
-                organizacionVinculada.setDireccionOV(resultadoDeOperacion.getString("direccionOV"));
-                organizacionVinculada.setEstadoOV(resultadoDeOperacion.getString("estadoOV"));
+                organizacionVinculada.setRfcMoral(resultadoDeOperacion.getString(COLUMNA_RFC_MORAL));
+                organizacionVinculada.setNombreOV(resultadoDeOperacion.getString(COLUMNA_NOMBRE_OV));
+                organizacionVinculada.setTelefonoOV(resultadoDeOperacion.getString(COLUMNA_TELEFONO_OV));
+                organizacionVinculada.setDireccionOV(resultadoDeOperacion.getString(COLUMNA_DIRECCION_OV));
+                organizacionVinculada.setEstadoOV(resultadoDeOperacion.getString(COLUMNA_ESTADO_OV));
                 listaOrganizacionVinculada.add(organizacionVinculada);                
             }
-        } finally {
-            
-            if (resultadoDeOperacion != null) resultadoDeOperacion.close();
-            if (declaracionPreparada != null) declaracionPreparada.close();
-            if (conexionBD != null) conexionBD.close();
         }
 
         return listaOrganizacionVinculada;
@@ -150,8 +127,8 @@ public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
     
     @Override
     public int contarOrganizaciones() throws SQLException {
-    
-        final String contarSQL = "SELECT COUNT(*) FROM organizacionvinculada";
+        
+        String contarSQL = "SELECT COUNT(*) FROM organizacionvinculada";
         int totalOrganizaciones = 0;
 
         try (Connection conexion = new ConexionBD().getConexionBaseDatos();
@@ -159,10 +136,11 @@ public class OrganizacionVinculadaDAOImpl implements IOrganizacionVinculadaDAO {
              ResultSet resultado = declaracion.executeQuery()) {
 
             if (resultado.next()) {
+                
                 totalOrganizaciones = resultado.getInt(1);
             }
         }
     
-    return totalOrganizaciones;
-}
+        return totalOrganizaciones;
+    }
 }
