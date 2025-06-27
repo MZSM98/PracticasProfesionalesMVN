@@ -7,6 +7,7 @@ import com.pdc.dao.interfaz.IProyectoAsignadoDAO;
 import com.pdc.modelo.dto.AcademicoEvaluadorDTO;
 import com.pdc.modelo.dto.EstudianteEvaluacionDTO;
 import com.pdc.modelo.dto.EstudianteExperienciaEducativaDTO;
+import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import com.pdc.utileria.AlertaUtil;
@@ -16,10 +17,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.apache.log4j.LogManager;
@@ -49,6 +50,9 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
 
     @FXML
     private TextField textCriterioUno;
+    
+    @FXML
+    private Button botonGuardar;
 
     private boolean modoEdicion;
     
@@ -69,7 +73,12 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
     @FXML
     private void accionCancelar(ActionEvent event) {
         ManejadorDeVistas.getInstancia().limpiarCache();
-        ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_CONSULTA_EVALUACION_PARCIAL);
+        UsuarioDTO usuario = ManejadorDeSesion.getUsuario();
+        if(usuario instanceof AcademicoEvaluadorDTO){
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ACADEMICO_EVALUADOR_CONSULTA_EVALUACION_PARCIAL);
+        }else if(usuario instanceof ProfesorExperienciaEducativaDTO){
+            ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.PROFESOREE_CONSULTA_EVALUACION_PRESENTACION);
+        }
     }
 
     @FXML
@@ -175,4 +184,11 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
         return proyectoAsignado;
     }
 
+    public void modoConsulta(){
+        textCriterioUno.setEditable(Boolean.FALSE);
+        textCriterioDos.setEditable(Boolean.FALSE);
+        textCriterioTres.setEditable(Boolean.FALSE);
+        textCriterioCuatro.setEditable(Boolean.FALSE);
+        botonGuardar.setVisible(Boolean.FALSE);
+    }
 }

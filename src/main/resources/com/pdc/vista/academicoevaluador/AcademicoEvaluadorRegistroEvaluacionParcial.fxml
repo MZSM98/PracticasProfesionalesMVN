@@ -86,7 +86,7 @@
             <Label fx:id="labelNumeroEvaluacion" prefHeight="17.0" prefWidth="375.0" text="NumeroEvaluacion" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Button layoutX="171.0" layoutY="374.0" mnemonicParsing="false" onAction="#accionGuardar" prefHeight="25.0" prefWidth="143.0" text="Guardar" />
+      <Button fx:id="botonGuardar" layoutX="171.0" layoutY="374.0" mnemonicParsing="false" onAction="#accionGuardar" prefHeight="25.0" prefWidth="143.0" text="Guardar" />
       <Button layoutX="379.0" layoutY="374.0" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="25.0" prefWidth="143.0" text="Cancelar" />
    </children>
 </AnchorPane>
