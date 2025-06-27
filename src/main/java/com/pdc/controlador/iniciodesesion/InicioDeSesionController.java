@@ -34,6 +34,7 @@ import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 import com.pdc.utileria.GmailUtil;
+import java.util.Objects;
 
 public class InicioDeSesionController implements Initializable {
     
@@ -100,6 +101,11 @@ public class InicioDeSesionController implements Initializable {
         try {
             
             UsuarioDTO usuarioBusqueda = interfazUsuarioDAO.buscarUsuario(usuarioDTO.getUsuario());
+            if(Objects.isNull(usuarioBusqueda)){
+                AlertaUtil.mostrarAlertaError("Usuario y/o contraseña incorrectos.");
+                return;
+            }
+            
             usuarioDTO.setSalt(usuarioBusqueda.getSalt());
 
             if (interfazUsuarioDAO.autenticarUsuario(usuarioDTO)) {
