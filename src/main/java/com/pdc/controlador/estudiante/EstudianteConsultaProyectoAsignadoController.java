@@ -81,7 +81,7 @@ public class EstudianteConsultaProyectoAsignadoController implements Initializab
     
     @FXML
     private void accionCerrar(ActionEvent event) {
-        ManejadorDeVistas.getInstancia().limpiarCacheVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
+        ManejadorDeVistas.getInstancia().limpiarCache();
         ManejadorDeVistas.getInstancia().cambiarVista(ManejadorDeVistas.Vista.ESTUDIANTE_MENU_PRINCIPAL);
     }
     
