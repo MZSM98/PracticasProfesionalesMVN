@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="701.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pdc.controlador.coordinador.CoordinadorGestionAcademicoController">
+<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="701.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.pdc.controlador.coordinador.CoordinadorGestionAcademicoController">
    <children>
       <TableView fx:id="tableGestionAcademicos" layoutX="14.0" layoutY="116.0" prefHeight="328.0" prefWidth="597.0">
          <columns>
             <TableColumn fx:id="columnNumeroEmpleado" editable="false" prefWidth="136.0" text="Numero de Empleado" />
             <TableColumn fx:id="columnNombre" editable="false" prefWidth="277.0" text="Nombre Academico" />
-            <TableColumn fx:id="columnSeccion" prefWidth="183.0" text="Sección" />
+            <TableColumn fx:id="columnSeccion" prefWidth="183.0" text="NRC" />
          </columns>
       </TableView>
       <Label fx:id="lblTipoGestionAcademicos" layoutX="242.0" layoutY="34.0" text="Gestión Académicos">
