@@ -14,7 +14,6 @@ import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.ProyectoDTO;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Objects;

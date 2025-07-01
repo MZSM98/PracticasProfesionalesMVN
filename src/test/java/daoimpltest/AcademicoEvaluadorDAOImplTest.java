@@ -1,5 +1,4 @@
-
-package DAOImplTest;
+package daoimpltest;
 
 
 public class AcademicoEvaluadorDAOImplTest {

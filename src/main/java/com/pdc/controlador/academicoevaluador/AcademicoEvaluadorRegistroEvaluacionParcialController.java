@@ -11,6 +11,7 @@ import com.pdc.modelo.dto.ProfesorExperienciaEducativaDTO;
 import com.pdc.modelo.dto.ProyectoAsignadoDTO;
 import com.pdc.modelo.dto.UsuarioDTO;
 import com.pdc.utileria.AlertaUtil;
+import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.net.URL;
@@ -72,6 +73,7 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
 
     @FXML
     private void accionCancelar(ActionEvent event) {
+        
         ManejadorDeVistas.getInstancia().limpiarCache();
         UsuarioDTO usuario = ManejadorDeSesion.getUsuario();
         if(usuario instanceof AcademicoEvaluadorDTO){
@@ -83,8 +85,10 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
 
     @FXML
     private void accionGuardar(ActionEvent event) {
+        
         EstudianteEvaluacionDTO estudianteEvaluacion = generarObjetoEstudianteEvaluacion();
         try {
+            
             if (modoEdicion) {
                 interfazEstudianteEvaluacion.editarEstudianteEvaluacion(estudianteEvaluacion);
                 AlertaUtil.mostrarAlertaRegistroExitoso();
@@ -102,6 +106,7 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
     }
 
     private EstudianteEvaluacionDTO generarObjetoEstudianteEvaluacion() {
+        
         EstudianteEvaluacionDTO evaluacion;
 
         UsuarioDTO academicoEvaluador = (AcademicoEvaluadorDTO) ManejadorDeSesion.getUsuario();
@@ -139,7 +144,9 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
     }
 
     public void llenarDatosPantallaEdicion(EstudianteEvaluacionDTO estudianteEvaluacion, EstudianteExperienciaEducativaDTO estudianteExperienciaEducativa) {
+        
         try {
+            
             modoEdicion = Boolean.TRUE;
             this.estudianteEvaluacionEdicion = estudianteEvaluacion;
             textCriterioUno.setText(String.valueOf(estudianteEvaluacion.getCriterioUno()));
@@ -152,8 +159,10 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
             labelNombreEstudiante.setText(estudianteExperienciaEducativa.getEstudiante().getNombreEstudiante());
             labelNombreProyecto.setText(proyectoAsignado.getProyecto().getTituloProyecto());
             labelNumeroEvaluacion.setText(String.valueOf(estudianteEvaluacion.getIdvaluacion()));
-        } catch (SQLException ex) {
-            LOG.error(ex);
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
 
@@ -165,8 +174,10 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
             labelNombreEstudiante.setText(estudianteExperienciaEducativa.getEstudiante().getNombreEstudiante());
             labelNombreProyecto.setText(proyectoAsignado.getProyecto().getTituloProyecto());
             labelNumeroEvaluacion.setText(String.valueOf(interfazEstudianteEvaluacion.obtenerSiguienteId()));
-        } catch (SQLException ex) {
-            LOG.error("Error al consultar información en BD",ex);
+        } catch (SQLException sqle) {
+            
+            LOG.error(ConstantesUtil.LOG_ERROR_BD,sqle);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
     }
 
@@ -178,8 +189,10 @@ public class AcademicoEvaluadorRegistroEvaluacionParcialController implements In
                 proyectoAsignado = interfazProyectoAsignado.obtenerProyectoAsignadoPorMatricula(matricula);
                 return proyectoAsignado;
             }
-        } catch (SQLException ex) {
-            LOG.error("Error al verificar el estado del proyecto", ex);
+        } catch (SQLException sqle) {
+            
+            LOG.error("Error al verificar el estado del proyecto", sqle);
+            AlertaUtil.mostrarAlertaErrorCargarInformacion();
         }
         return proyectoAsignado;
     }

@@ -1,5 +1,5 @@
 
-package DAOImplTest;
+package daoimpltest;
 
 
 public class DocumentoDAOImplTest {

@@ -88,6 +88,7 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
 
             if (resultadoDeOperacion.next()) {
+                
                 usuarioDevuelto = new UsuarioDTO();
                 usuarioDevuelto.setUsuario(resultadoDeOperacion.getString("usuario"));
                 TipoUsuarioDTO tipoUsuario = new TipoUsuarioDTO();

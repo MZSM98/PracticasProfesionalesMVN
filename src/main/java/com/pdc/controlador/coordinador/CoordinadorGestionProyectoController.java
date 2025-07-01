@@ -21,9 +21,7 @@ import com.pdc.utileria.AlertaUtil;
 import java.net.URL;
 import java.util.ResourceBundle;
 import com.pdc.dao.implementacion.ProyectoDAOImpl;
-import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.dao.interfaz.IProyectoDAO;
-import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
 import com.pdc.modelo.dto.PeriodoEscolarDTO;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
@@ -55,14 +53,12 @@ public class CoordinadorGestionProyectoController implements Initializable {
     private TableColumn<ProyectoDTO, String> columnEstadoProyecto;
     
     private IProyectoDAO interfazProyectoDAO;
-    private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
     private ObservableList<ProyectoDTO> listaProyectos;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         interfazProyectoDAO = new ProyectoDAOImpl();
-        interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         configurarColumnas();
         cargarProyectos();
         

@@ -15,8 +15,8 @@
             <TableColumn fx:id="columnNombre" editable="false" prefWidth="184.0" text="Nombre" />
             <TableColumn fx:id="columnPeriodo" prefWidth="201.0" text="Periodo Escolar" />
             <TableColumn fx:id="columnSeccion" prefWidth="210.0" text="Sección" />
-            <TableColumn fx:id="columnAvance" prefWidth="107.0" text="Avance Crediticio" />
-            <TableColumn fx:id="columnPromedio" prefWidth="64.0" text="Promedio" />
+            <TableColumn fx:id="columnAvance" prefWidth="105.33331298828125" text="Avance Crediticio" />
+            <TableColumn fx:id="columnPromedio" prefWidth="66.0" text="Promedio" />
          </columns>
       </TableView>
       <Label fx:id="labelGestionEstudiantes" layoutX="285.0" layoutY="21.0" text="Gestión Estudiantes">
@@ -27,5 +27,6 @@
       <Button fx:id="botonAbrirRegistrarEstudiante" layoutX="883.0" layoutY="104.0" mnemonicParsing="false" onAction="#abrirRegistrarEstudiante" text="Registrar" />
       <Button fx:id="botonAbrirEditarEstudiante" layoutX="883.0" layoutY="138.0" mnemonicParsing="false" onAction="#abrirEditarEstudiante" prefHeight="25.0" prefWidth="63.0" text="Editar" />
       <Button fx:id="botonSalir" layoutX="883.0" layoutY="172.0" mnemonicParsing="false" onAction="#salirAMenuPrincipal" prefHeight="25.0" prefWidth="63.0" text="Salir" />
+      <Button layoutX="12.0" layoutY="69.0" mnemonicParsing="false" text="Calificacion Final" />
    </children>
 </AnchorPane>
