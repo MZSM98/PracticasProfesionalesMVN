@@ -34,6 +34,7 @@ public class ConexionBD {
     }
     
     public static ConexionBD getInstanciaConexionBaseDatos() throws SQLException {
+        
         if (instanciaConexionBaseDatos == null || instanciaConexionBaseDatos.getConexionBaseDatos().isClosed()) {
             instanciaConexionBaseDatos = new ConexionBD();
         }
