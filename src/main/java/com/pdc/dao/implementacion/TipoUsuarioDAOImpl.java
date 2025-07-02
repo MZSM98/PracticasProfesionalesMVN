@@ -17,8 +17,8 @@ public class TipoUsuarioDAOImpl implements ITipoUsuarioDAO {
         String consultaSQL = "SELECT idtipo, tipo FROM tipousuario";
         List<TipoUsuarioDTO> listaTipoUsuario = new ArrayList<>();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {
@@ -36,8 +36,8 @@ public class TipoUsuarioDAOImpl implements ITipoUsuarioDAO {
         String consultaSQL = "SELECT idtipo, tipo FROM tipousuario WHERE idtipo = ?";
         TipoUsuarioDTO tipoUsuario = null;
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, idtipo);
             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();

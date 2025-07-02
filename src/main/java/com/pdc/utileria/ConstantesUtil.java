@@ -1,24 +1,23 @@
 package com.pdc.utileria;
 
-
 public class ConstantesUtil {
-    
-    private ConstantesUtil(){
-        
+
+    private ConstantesUtil() {
+
         throw new UnsupportedOperationException(ALERTA_CLASE_UTILERIA);
     }
-    
+
     public static final int RESTRICCION_LONGITUD_TEXTAREA = 1000;
     public static final int RESTRICCION_LONGITUD_TEXTFIELD = 1000;
-    public static final int LONGITUD_NOMBRES = 100 ;
+    public static final int LONGITUD_NOMBRES = 100;
     public static final int LONGITUD_DESCRIPCIONES = 255;
     public static final int LONGITUD_DIRECCION = 200;
     public static final int LONGITUD_TELEFONO = 10;
-    
+
     public static final String ACTUALIZAR = "Actualizar";
     public static final String MENU_PRINCIPAL = "Menu Principal";
     public static final String ESPACIO = " ";
-    
+
     public static final String REGEX_LETRAS_Y_NUMEROS = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\n]+$";
     public static final String REGEX_SOLO_LETRAS = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
     public static final String REGEX_RFC_MORAL = "^[A-Z]{3}[0-9]{6}[A-Z][0-9]{2}$";
@@ -30,7 +29,7 @@ public class ConstantesUtil {
     public static final String REGEX_LONGITUD_DIRECCION = ".{3,200}";
     public static final String REGEX_LONGITUD_DESCRIPCION = ".{3,255}";
     public static final String REGEX_USUARIO_VALIDO = "^[a-zA-Z0-9]{9}$";
-    
+
     public static final String ALERTA_CLASE_UTILERIA = "Clase de utilería...";
     public static final String ALERTA_DATOS_NO_VALIDOS = "Datos inválidos o Incompletos";
     public static final String ALERTA_REGISTRO_RFC_MORAL_DUPLICADO = "Esa Organización vinculada ya se encuentra registrada";
@@ -62,8 +61,15 @@ public class ConstantesUtil {
     public static final String ALERTA_CAMBIO_ESTADO_PROYECTO = "Estado del proyecto cambiado a: ";
     public static final String ALERTA_TIPO_USUARIO_NO_VALIDO = "El tipo de usuario no existe";
     public static final String ALERTA_SELECCION_EDITAR = "Por favor selecciona un registro para editar";
-    public static final String ALERTA_SELECCION_ORGANIZACION_VINCULADA ="Por favor, seleccione una organización";
+    public static final String ALERTA_SELECCION_ORGANIZACION_VINCULADA = "Por favor, seleccione una organización";
     public static final String ALERTA_ERROR_ESTADO_ORGANIZACION = "No se pudo cambiar el estado de la organización";
+    public static final String ALERTA_ESTADO_OBLIGATORIO = "El estado es obligatorio";
+    public static final String ALERTA_CIUDAD_OBLIGATORIA = "La ciudad es obligatoria";
+    public static final String ALERTA_SECTOR_OBLIGATORIO = "El sector es obligatorio";
+    public static final String ALERTA_SELECCION_ESTADO = "Por favor, seleccione un estado";
+    public static final String ALERTA_SELECCION_CIUDAD = "Por favor, seleccione una ciudad";
+    public static final String ALERTA_SELECCION_SECTOR = "Por favor, seleccione un sector";
+    public static final String ALERTA_CORREO_OBLIGATORIO = "El correo es obligatorio";
     
     public static final String LOG_ACTUALIZACION_FALLIDA = "Error al actualizar el registro";
     public static final String LOG_ERROR_VENTANA = "No se pudo cargar la ventana";

@@ -34,7 +34,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         
         String insertarSQL = "INSERT INTO estudianteexperienciaeducativa (nrc, matricula) VALUES (?, ?)";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             declaracionPreparada.setString(1, estudianteAsignado.getExperienciaEducativa().getNrc());
@@ -51,7 +51,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         
         String actualizarSQL = "UPDATE estudianteexperienciaeducativa SET nrc = ?, matricula = ? WHERE idexperienciaasignada = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, estudianteAsignado.getExperienciaEducativa().getNrc());
@@ -70,7 +70,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         String consultaSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa WHERE idexperienciaasignada = ?";
         EstudianteExperienciaEducativaDTO estudianteAsignado = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, idExperienciaAsignada);
@@ -101,7 +101,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         String consultaTodoSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa";
         List<EstudianteExperienciaEducativaDTO> listaEstudiantesAsignados = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaTodoSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
@@ -131,7 +131,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         String consultaSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa WHERE matricula = ?";
         EstudianteExperienciaEducativaDTO experienciaAsignada = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, matriculaEstudiante);
@@ -161,7 +161,7 @@ public class EstudianteExperienciaEducativaDAOImpl implements IEstudianteExperie
         String consultaSQL = "SELECT idexperienciaasignada, nrc, matricula FROM estudianteexperienciaeducativa WHERE nrc = ?";
         List<EstudianteExperienciaEducativaDTO> listaEstudiantesAsignados = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, nrcExperiencia);

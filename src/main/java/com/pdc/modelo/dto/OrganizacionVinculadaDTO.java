@@ -1,4 +1,3 @@
-
 package com.pdc.modelo.dto;
 
 public class OrganizacionVinculadaDTO {
@@ -8,7 +7,11 @@ public class OrganizacionVinculadaDTO {
     private String telefonoOV;
     private String direccionOV;
     private String estadoOV;
-    
+    private String estado;
+    private String ciudad;
+    private String correo;
+    private String sector;
+
     public String getRfcMoral() {
         return rfcMoral;
     }
@@ -40,17 +43,50 @@ public class OrganizacionVinculadaDTO {
     public void setTelefonoOV(String telefonoOV) {
         this.telefonoOV = telefonoOV;
     }
-    
-    
+
     public String getEstadoOV() {
         return estadoOV;
     }
-    
+
     public void setEstadoOV(String estadoOV) {
         this.estadoOV = estadoOV;
     }
-    
-    public enum EstadoOrganizacionVinculada {ACTIVO,INACTIVO};
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public enum EstadoOrganizacionVinculada {
+        ACTIVO, INACTIVO
+    };
 
     @Override
     public String toString() {

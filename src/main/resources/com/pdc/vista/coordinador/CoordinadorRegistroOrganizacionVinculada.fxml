@@ -44,16 +44,16 @@
                   <TextField fx:id="textNombreOV" prefHeight="25.0" prefWidth="223.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Telefono:" GridPane.rowIndex="2" />
                   <TextField fx:id="textTelefonoOV" prefHeight="25.0" prefWidth="175.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="comboEstado" onAction="#accionCargarCiudades" prefHeight="25.0" prefWidth="253.0" promptText="Seleccione un estado" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="comboCiudad" prefHeight="25.0" prefWidth="256.0" promptText="Seleccione una ciudad" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Direccion:" GridPane.rowIndex="5" />
                   <TextField fx:id="textDireccionOV" prefHeight="25.0" prefWidth="223.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <Label text="Correo:" GridPane.rowIndex="6" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <ComboBox fx:id="comboSector" prefHeight="25.0" prefWidth="258.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <TextField fx:id="textCorreo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <Label text="Sector:" GridPane.rowIndex="7" />
                   <Label text="Ciudad:" GridPane.rowIndex="4" />
                   <Label text="Estado:" GridPane.rowIndex="3" />
-                  <ComboBox fx:id="comboEstado" prefHeight="25.0" prefWidth="253.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <ComboBox fx:id="comboCiudad" prefHeight="25.0" prefWidth="256.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ComboBox fx:id="comboSector" prefHeight="25.0" prefWidth="258.0" promptText="Seleccione un sector" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                </children>
             </GridPane>
          </children>

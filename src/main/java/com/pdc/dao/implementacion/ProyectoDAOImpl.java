@@ -51,8 +51,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         String insertarSQL = "INSERT INTO proyecto (titulo, idperiodoescolar, descripcion, rfcMoral, fechaInicio, fechaFinal, responsable, vacantes,"
                 + "cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(insertarSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
             declaracionPreparada.setInt(2, proyecto.getPeriodoEscolar().getIdPeriodoEscolar());
@@ -76,8 +76,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
 
         String eliminarSQL = "DELETE FROM proyecto WHERE proyectoID = ?";
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(eliminarSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(eliminarSQL)) {
 
             declaracionPreparada.setInt(1, proyectoID);
             declaracionPreparada.executeUpdate();
@@ -92,8 +92,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 + " descripcion = ?, rfcMoral = ?, estadoProyecto = ?, fechaInicio = ?, fechaFinal = ?, responsable = ?, vacantes = ?,"
                 + "cronogramaMesUno = ?, cronogramaMesDos = ?, cronogramaMesTres = ?, cronogramaMesCuatro = ? WHERE proyectoID = ?";
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(actualizarSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, proyecto.getTituloProyecto());
             declaracionPreparada.setInt(2, proyecto.getPeriodoEscolar().getIdPeriodoEscolar());
@@ -121,8 +121,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 + " responsable, vacantes FROM proyecto WHERE titulo LIKE ?";
         List<ProyectoDTO> proyectosEncontrados = new ArrayList<>();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, "%" + titulo + "%");
             try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
@@ -164,8 +164,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaTodoSQL);
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaTodoSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {
@@ -202,8 +202,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 + " responsable, vacantes, cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro FROM proyecto WHERE proyectoID = ?";
         ProyectoDTO proyecto = null;
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, proyectoID);
             try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
@@ -249,8 +249,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 + " responsable, vacantes, cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro FROM proyecto WHERE rfcMoral = ?";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, rfcMoral);
             try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
@@ -301,8 +301,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
 
         List<ProyectoDTO> proyectosConVacantes = new ArrayList<>();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {
@@ -350,7 +350,7 @@ public class ProyectoDAOImpl implements IProyectoDAO {
         final String contarSQL = "SELECT COUNT(*) FROM proyecto";
         int totalProyectos = 0;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
              ResultSet resultado = declaracion.executeQuery()) {
 

@@ -18,10 +18,14 @@ import com.pdc.modelo.dto.OrganizacionVinculadaDTO.EstadoOrganizacionVinculada;
 import com.pdc.dao.implementacion.OrganizacionVinculadaDAOImpl;
 import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
+import com.pdc.utileria.EstadoCiudadUtil;
+import com.pdc.utileria.OrganizacionVinculadaUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.scene.control.ComboBox;
 
 public class CoordinadorGestionOrganizacionVinculadaController implements Initializable {
     
@@ -46,6 +50,7 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
     private TableColumn<OrganizacionVinculadaDTO, String> columnEstado;
     
     private OrganizacionVinculadaDAOImpl organizacionVinculadaDAO;
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -53,6 +58,7 @@ public class CoordinadorGestionOrganizacionVinculadaController implements Initia
         organizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         configurarColumnas();
         cargarOrganizacionesVinculadas();
+        
     }
     
     private void configurarColumnas() {

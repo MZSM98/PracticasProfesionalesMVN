@@ -31,7 +31,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
         String consultaSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa WHERE nrc = ?";
         ExperienciaEducativaDTO experienciaEducativa = null;
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, nrc);
@@ -58,7 +58,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
         String consultaTodoSQL = "SELECT nrc, nombre, numeroDeTrabajador FROM experienciaeducativa";
         List<ExperienciaEducativaDTO> listaExperienciasEducativas = new ArrayList<>();
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaTodoSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
@@ -85,7 +85,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
         String consultaSQL = "SELECT nrc, nombre FROM experienciaeducativa WHERE numeroDeTrabajador = ?";
         ExperienciaEducativaDTO experienciaEducativa = null;
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, numeroDeTrabajador);
@@ -111,7 +111,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
         
         String actualizarSQL = "UPDATE experienciaeducativa SET numeroDeTrabajador = ? WHERE nrc = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, numeroDeTrabajador);
@@ -126,7 +126,7 @@ public class ExperienciaEducativaDAOImpl implements IExperienciaEducativaDAO {
     @Override
     public boolean reasignarProfesorExperienciaEducativa(String nrcAnterior, String nrcNuevo, String numeroDeTrabajador) throws SQLException {
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos()) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar()) {
 
             conexion.setAutoCommit(false);
 

@@ -20,8 +20,8 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
         String consultaSQL = "SELECT usuario, tipousuario, salt FROM usuario WHERE usuario = ?";
         UsuarioDTO usuarioDevuelto = null;
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, usuario);
             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -44,8 +44,8 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
         String insertarSQL = "INSERT INTO usuario (usuario, contrasena, tipousuario, salt) VALUES (?, SHA2(?, 256), ?, ?)";
         String salt = generateSalt();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(insertarSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             declaracionPreparada.setString(1, usuario.getUsuario());
             declaracionPreparada.setString(2, usuario.getContrasena().concat(salt));
@@ -62,8 +62,8 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
         String actualizarSQL = "UPDATE usuario SET contrasena = SHA2(?, 256), salt = ? WHERE usuario = ?";
         String nuevoSalt = generateSalt();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(actualizarSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, usuario.getContrasena().concat(nuevoSalt));
             declaracionPreparada.setString(2, nuevoSalt); 
@@ -80,8 +80,8 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
         String consultaSQL = "SELECT usuario, tipousuario FROM usuario WHERE usuario = ? AND contrasena = SHA2(?, 256)";
         UsuarioDTO usuarioDevuelto = null;
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, usuario.getUsuario());
             declaracionPreparada.setString(2, usuario.getContrasena().concat(usuario.getSalt()));

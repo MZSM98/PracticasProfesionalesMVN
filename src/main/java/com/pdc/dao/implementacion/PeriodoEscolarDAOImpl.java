@@ -24,7 +24,7 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
         String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar WHERE idperiodoescolar = ?";
         PeriodoEscolarDTO periodoEscolar = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, idPeriodoEscolar);
@@ -51,7 +51,7 @@ public class PeriodoEscolarDAOImpl implements IPeriodoEscolarDAO {
         String consultaSQL = "SELECT idperiodoescolar, nombreperiodoescolar, fechainicioperiodoescolar, fechafinperiodoescolar, status FROM periodoescolar";
         List<PeriodoEscolarDTO> listaPeriodoEscolar = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
