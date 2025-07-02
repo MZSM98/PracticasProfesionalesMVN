@@ -15,7 +15,7 @@ public class CoordinadorDAOImpl implements ICoordinadorDAO {
         
         String insertarSQL = "INSERT INTO coordinador (numeroDeTrabajador, nombreCoordinador, telefono) VALUES (?, ?, ?)";
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
             
             declaracionPreparada.setString(1, coordinador.getNumeroDeTrabajador());
@@ -33,7 +33,7 @@ public class CoordinadorDAOImpl implements ICoordinadorDAO {
         
         String eliminarSQL = "DELETE FROM coordinador WHERE numeroDeTrabajador = ?";
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(eliminarSQL)) {
             
             declaracionPreparada.setString(1, numeroDeTrabajador);
@@ -49,7 +49,7 @@ public class CoordinadorDAOImpl implements ICoordinadorDAO {
         
         String actualizarSQL = "UPDATE coordinador SET nombreCoordinador = ?, telefono = ? WHERE numeroDeTrabajador = ?";
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
             
             declaracionPreparada.setString(1, coordinador.getNombreCoordinador());
@@ -68,7 +68,7 @@ public class CoordinadorDAOImpl implements ICoordinadorDAO {
         String consultaSQL = "SELECT numeroDeTrabajador, nombreCoordinador, telefono FROM coordinador WHERE numeroDeTrabajador = ?";
         CoordinadorDTO coordinador = null;
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
             
             declaracionPreparada.setString(1, numeroDeTrabajador);

@@ -32,6 +32,7 @@ import com.pdc.utileria.manejador.ManejadorDeSesion;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import com.pdc.dao.interfaz.IProfesorExperienciaEducativaDAO;
 import com.pdc.utileria.GmailUtil;
+import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.Objects;
 
 public class InicioDeSesionController implements Initializable {

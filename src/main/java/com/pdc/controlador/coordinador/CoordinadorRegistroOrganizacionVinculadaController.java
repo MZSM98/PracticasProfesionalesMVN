@@ -17,7 +17,13 @@ import com.pdc.utileria.AlertaUtil;
 import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.dao.interfaz.IOrganizacionVinculadaDAO;
+import com.pdc.utileria.EstadoCiudadUtil;
+import com.pdc.utileria.OrganizacionVinculadaUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
+import java.util.List;
+import java.util.Objects;
+import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
 
 public class CoordinadorRegistroOrganizacionVinculadaController {    
     
@@ -34,19 +40,44 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
     
     @FXML
     private TextField textDireccionOV;
+    
+    @FXML
+    private TextField textCorreo;
             
     @FXML
     private Button botonRegistrarOrganizacionVinculada;
     
     private IOrganizacionVinculadaDAO interfazOrganizacionVinculadaDAO;
+    
     private OrganizacionVinculadaDTO organizacionVinculadaDTO;
     
     private boolean modoEdicion = false;
+    
+    @FXML
+    private ComboBox<String> comboCiudad;
+
+    @FXML
+    private ComboBox<String> comboEstado;
+
+    @FXML
+    private ComboBox<String> comboSector;
     
     public void initialize() {
         
         interfazOrganizacionVinculadaDAO = new OrganizacionVinculadaDAOImpl();
         aplicarRestriccionesACampos();
+        cargarComboEstado();
+        cargarComboSector();
+        
+    }
+     
+    private void cargarComboEstado(){
+        List<String> estados = EstadoCiudadUtil.obtenerTodosLosEstados();
+        comboEstado.setItems(FXCollections.observableArrayList(estados));
+    }
+    
+    private void cargarComboSector(){
+        comboSector.setItems(OrganizacionVinculadaUtil.obtenerSectores());
     }
     
     public void cambiarAModoEdicion(boolean modoEdicion) {
@@ -66,8 +97,23 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
         textNombreOV.setText(organizacionVinculadaDTO.getNombreOV());
         textTelefonoOV.setText(organizacionVinculadaDTO.getTelefonoOV());
         textDireccionOV.setText(organizacionVinculadaDTO.getDireccionOV());
-        
+        textCorreo.setText(organizacionVinculadaDTO.getCorreo());
+        comboEstado.getSelectionModel().select(organizacionVinculadaDTO.getEstado());
+        accionCargarCiudades();
+        comboCiudad.getSelectionModel().select(organizacionVinculadaDTO.getCiudad());
+        comboSector.getSelectionModel().select(organizacionVinculadaDTO.getSector());
         textRfcOV.setDisable(modoEdicion);
+    }
+
+    @FXML
+    private void accionCargarCiudades(){
+        String estadoSeleccionado = comboEstado.getSelectionModel().getSelectedItem();
+        if(Objects.nonNull(estadoSeleccionado)){
+            List<String> ciudades = EstadoCiudadUtil.obtenerCiudadesPorEstado(estadoSeleccionado);
+            comboCiudad.setItems(FXCollections.observableArrayList(ciudades));
+        }else{
+            AlertaUtil.mostrarAlertaError("Debe seleccionar un estado");
+        }
     }
     
     @FXML
@@ -82,6 +128,10 @@ public class CoordinadorRegistroOrganizacionVinculadaController {
         organizacionVinculadaDTO.setNombreOV(textNombreOV.getText().replaceAll(ConstantesUtil.REGEX_ESPACIOS_MULTIPLES,ConstantesUtil.ESPACIO).trim());
         organizacionVinculadaDTO.setTelefonoOV(textTelefonoOV.getText().trim());
         organizacionVinculadaDTO.setDireccionOV(textDireccionOV.getText().replaceAll(ConstantesUtil.REGEX_ESPACIOS_MULTIPLES,ConstantesUtil.ESPACIO).trim());
+        organizacionVinculadaDTO.setCorreo(textCorreo.getText().trim());
+        organizacionVinculadaDTO.setEstado(comboEstado.getSelectionModel().getSelectedItem());
+        organizacionVinculadaDTO.setCiudad(comboCiudad.getSelectionModel().getSelectedItem());
+        organizacionVinculadaDTO.setSector(comboSector.getSelectionModel().getSelectedItem());
         
         if (!validarCamposOrganizacionVinculada(organizacionVinculadaDTO)) {
             

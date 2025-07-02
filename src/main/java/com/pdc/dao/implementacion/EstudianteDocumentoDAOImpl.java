@@ -28,7 +28,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
         
         String insertarSQL = "INSERT INTO estudiantedocumento (matriculaestudiante, iddocumento, ruta, nombrearchivo) VALUES (?, ?, ?, ?)";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             declaracionPreparada.setString(1, estudianteDocumento.getEstudiante().getMatricula());
@@ -47,7 +47,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
         
         String actualizarSQL = "UPDATE estudiantedocumento SET matriculaestudiante = ?, iddocumento = ?, ruta = ?, nombrearchivo = ? WHERE idregistro = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, estudianteDocumento.getEstudiante().getMatricula());
@@ -68,7 +68,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
         String consultaSQL = "SELECT idregistro, matriculaestudiante, iddocumento, ruta, nombrearchivo FROM estudiantedocumento WHERE matriculaestudiante = ?";
         EstudianteDocumentoDTO estudianteDocumento = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, matriculaEstudiante);
@@ -102,7 +102,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
         String consultaSQL = "SELECT idregistro, matriculaestudiante, iddocumento, ruta, nombrearchivo FROM estudiantedocumento WHERE nombrearchivo = ? AND matriculaestudiante = ?";
         EstudianteDocumentoDTO estudianteDocumento = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, nombreArchivo);
@@ -137,7 +137,7 @@ public class EstudianteDocumentoDAOImpl implements IEstudianteDocumentoDAO {
         String consultaSQL = "SELECT idregistro, matriculaestudiante, iddocumento, ruta, nombrearchivo FROM estudiantedocumento WHERE iddocumento = ?";
         EstudianteDocumentoDTO estudianteDocumento = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, idDocumento);

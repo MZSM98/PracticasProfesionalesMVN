@@ -36,7 +36,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         
         String insertarSQL = "INSERT INTO estudiante (matricula, nombreEstudiante, periodoEscolar,seccionEstudiante, avanceCrediticio, promedio) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             conexion.setAutoCommit(false);
@@ -71,7 +71,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         
         String eliminarSQL = "DELETE FROM estudiante WHERE matricula = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(eliminarSQL)) {
 
             declaracionPreparada.setString(1, matricula);
@@ -87,7 +87,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         
         String actualizarSQL = "UPDATE estudiante SET nombreEstudiante = ?, periodoEscolar = ?, promedio = ?, seccionEstudiante = ?, avanceCrediticio = ? WHERE matricula = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, estudiante.getNombreEstudiante());
@@ -109,7 +109,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         String consultaSQL = "SELECT matricula, nombreEstudiante, periodoEscolar,seccionEstudiante, avanceCrediticio, promedio  FROM estudiante WHERE matricula = ?";
         EstudianteDTO estudiante = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, matricula);
@@ -139,7 +139,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         final String CONSULTA_SQL = "SELECT * FROM estudiante";
         List<EstudianteDTO> listaEstudiantes = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(CONSULTA_SQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
@@ -172,7 +172,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
         List<EstudianteDTO> listaEstudiantesSinProyecto = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
@@ -204,7 +204,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
         final String contarSQL = "SELECT COUNT(*) FROM estudiante";
         int totalEstudiantes = 0;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
              ResultSet resultado = declaracion.executeQuery()) {
 
@@ -227,7 +227,7 @@ public class EstudianteDAOImpl implements IEstudianteDAO {
 
         List<EstudianteDTO> listaEstudiantesAsignados = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, numeroDeTrabajador);

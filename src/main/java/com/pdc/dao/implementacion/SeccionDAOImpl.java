@@ -18,8 +18,8 @@ public class SeccionDAOImpl implements ISeccionDAO {
         String consultaSQL = "SELECT idseccion, nombreseccion FROM seccion WHERE idseccion = ?";
         SeccionDTO seccion = null;
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, idSeccion);
             try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
@@ -40,8 +40,8 @@ public class SeccionDAOImpl implements ISeccionDAO {
         String consultaSQL = "SELECT idseccion, nombreseccion FROM seccion";
         List<SeccionDTO> listaSeccion = new ArrayList<>();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL);
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
             while (resultadoDeOperacion.next()) {

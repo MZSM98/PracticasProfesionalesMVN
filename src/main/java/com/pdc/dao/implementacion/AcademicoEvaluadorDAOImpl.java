@@ -26,7 +26,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
         
         String insertarSQL = "INSERT INTO academicoevaluador (numeroDeTrabajador, nombreAcademico) VALUES (?,?)";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             conexion.setAutoCommit(false);
@@ -57,7 +57,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
         
         String eliminarSQL = "DELETE FROM academicoevaluador WHERE numeroDeTrabajador = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(eliminarSQL)) {
 
             declaracionPreparada.setString(1, numeroDeTrabajador);
@@ -73,7 +73,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
 
         String actualizarSQL = "UPDATE academicoevaluador SET nombreAcademico = ? WHERE numeroDeTrabajador = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, academicoEvaluador.getNombreAcademico());
@@ -91,7 +91,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
        String consultaSQL = "SELECT numeroDeTrabajador, nombreAcademico FROM academicoevaluador WHERE numeroDeTrabajador = ?";
        AcademicoEvaluadorDTO academico = null;
 
-       try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+       try (Connection conexion = ConexionBD.getInstancia().conectar();
             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
            declaracionPreparada.setString(1, numeroDeTrabajador);
@@ -116,7 +116,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
         List<AcademicoEvaluadorDTO> academicos;
         academicos = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()){
 
@@ -136,7 +136,7 @@ public class AcademicoEvaluadorDAOImpl implements IAcademicoEvaluadorDAO {
         final String contarSQL = "SELECT COUNT(*) FROM academicoevaluador";
         int totalAcademicosEvaluadores = 0;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
             PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
             ResultSet resultado = declaracion.executeQuery()) {
 

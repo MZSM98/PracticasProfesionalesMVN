@@ -22,7 +22,7 @@ public class DocumentoDAOImpl implements IDocumentoDAO {
         String consultaSQL = "SELECT iddocumento, nombredocumento, formatonombre, limiteArchivos, plantilla FROM documento WHERE iddocumento = ?";
         DocumentoDTO documento = null;
         
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
             
             declaracionPreparada.setInt(1, idDocumento);

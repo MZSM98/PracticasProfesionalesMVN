@@ -27,7 +27,7 @@ public class EstudianteEvaluacionDAOImpl implements IEstudianteEvaluacionDAO {
         String insertarSQL = "INSERT INTO estudianteevaluacion (matricula, numeroDeTrabajador, proyectoID, "
                 + "criteriouno, criteriodos, criteriotres, criteriocuatro) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             declaracionPreparada.setString(1, estudianteEvaluacion.getMatricula());
@@ -51,7 +51,7 @@ public class EstudianteEvaluacionDAOImpl implements IEstudianteEvaluacionDAO {
                 + "proyectoID = ?, criteriouno = ?, criteriodos = ?, criteriotres = ?, criteriocuatro = ? "
                 + "WHERE idvaluacion = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, estudianteEvaluacion.getMatricula());
@@ -76,7 +76,7 @@ public class EstudianteEvaluacionDAOImpl implements IEstudianteEvaluacionDAO {
                 + "criteriouno, criteriodos, criteriotres, criteriocuatro FROM estudianteevaluacion";
         List<EstudianteEvaluacionDTO> listaEvaluaciones = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
@@ -107,7 +107,7 @@ public class EstudianteEvaluacionDAOImpl implements IEstudianteEvaluacionDAO {
                 + "WHERE idvaluacion = ?";
         EstudianteEvaluacionDTO evaluacion = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, idvaluacion);
@@ -141,7 +141,7 @@ public class EstudianteEvaluacionDAOImpl implements IEstudianteEvaluacionDAO {
                 + ") AS siguiente_id";
         int siguienteId = 1;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery();
@@ -163,7 +163,7 @@ public class EstudianteEvaluacionDAOImpl implements IEstudianteEvaluacionDAO {
                 + "WHERE matricula = ?";
         EstudianteEvaluacionDTO evaluacion = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, matricula);
@@ -199,7 +199,7 @@ public class EstudianteEvaluacionDAOImpl implements IEstudianteEvaluacionDAO {
                 + "WHERE ex.numeroDeTrabajador = ?";
         List<EstudianteEvaluacionDTO> listaEvaluaciones = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, numeroDeTrabajador);

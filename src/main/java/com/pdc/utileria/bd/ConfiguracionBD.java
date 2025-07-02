@@ -1,4 +1,3 @@
-
 package com.pdc.utileria.bd;
 
 import com.pdc.utileria.ConstantesUtil;

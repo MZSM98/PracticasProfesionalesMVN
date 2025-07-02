@@ -34,7 +34,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         
         String insertarSQL = "INSERT INTO proyectoasignado (idproyecto, matriculaestudiante) VALUES (?, ?)";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             declaracionPreparada.setInt(1, proyectoAsignado.getProyecto().getProyectoID());
@@ -52,7 +52,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE idproyectoasignado = ?";
         ProyectoAsignadoDTO proyectoAsignado = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, proyectoAsignadoID);
@@ -83,7 +83,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         String consultaTodoSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado";
         List<ProyectoAsignadoDTO> listaProyectosAsignados = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaTodoSQL);
              ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
 
@@ -112,7 +112,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         
         String actualizarSQL = "UPDATE proyectoasignado SET idproyecto = ?, matriculaestudiante = ? WHERE idproyectoasignado = ?";
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setInt(1, proyectoAsignado.getProyecto().getProyectoID());
@@ -131,7 +131,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE idproyecto = ?";
         List<ProyectoAsignadoDTO> listaProyectosAsignados = new ArrayList<>();
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setInt(1, proyectoID);
@@ -164,7 +164,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         String consultaSQL = "SELECT idproyectoasignado, idproyecto, matriculaestudiante FROM proyectoasignado WHERE matriculaestudiante = ?";
         ProyectoAsignadoDTO proyectoAsignado = null;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, matriculaEstudiante);
@@ -195,7 +195,7 @@ public class ProyectoAsignadoDAOImpl implements IProyectoAsignadoDAO {
         String contarSQL = "SELECT COUNT(*) FROM proyectoasignado";
         int totalProyectosAsignados = 0;
 
-        try (Connection conexion = new ConexionBD().getConexionBaseDatos();
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
              PreparedStatement declaracion = conexion.prepareStatement(contarSQL);
              ResultSet resultado = declaracion.executeQuery()) {
 

@@ -17,8 +17,8 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
         
         String insertarSQL = "INSERT INTO responsableorganizacionvinculada (rfc, cargo, nombreResponsable, correoResponsable, rfcMoral) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(insertarSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(insertarSQL)) {
 
             declaracionPreparada.setString(1, responsable.getRfc());
             declaracionPreparada.setString(2, responsable.getCargo());
@@ -35,8 +35,8 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
         
         String eliminarSQL = "DELETE FROM responsableorganizacionvinculada WHERE rfc = ?";
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(eliminarSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(eliminarSQL)) {
 
             declaracionPreparada.setString(1, rfc);
             declaracionPreparada.executeUpdate();
@@ -49,8 +49,8 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
         
         String actualizarSQL = "UPDATE responsableorganizacionvinculada SET cargo = ?, correoResponsable = ? WHERE rfc = ?";
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(actualizarSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(actualizarSQL)) {
 
             declaracionPreparada.setString(1, responsable.getCargo());
             declaracionPreparada.setString(2, responsable.getCorreoResponsable());
@@ -66,8 +66,8 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
         String consultaSQL = "SELECT rfc, cargo, nombreResponsable, correoResponsable, rfcMoral FROM responsableorganizacionvinculada WHERE rfcMoral = ?";
         ResponsableOrganizacionVinculadaDTO responsable = null;
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, rfcMoral);
             try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
@@ -91,8 +91,8 @@ public class ResponsableOrganizacionVinculadaDAOImpl implements IResponsableOrga
         String consultaSQL = "SELECT rfc, nombreResponsable, cargo, correoResponsable, rfcMoral FROM responsableorganizacionvinculada WHERE rfcMoral = ?";
         List<ResponsableOrganizacionVinculadaDTO> responsables = new ArrayList<>();
 
-        try (Connection conexionBD = new ConexionBD().getConexionBaseDatos();
-             PreparedStatement declaracionPreparada = conexionBD.prepareStatement(consultaSQL)) {
+        try (Connection conexion = ConexionBD.getInstancia().conectar();
+             PreparedStatement declaracionPreparada = conexion.prepareStatement(consultaSQL)) {
 
             declaracionPreparada.setString(1, rfcMoral);
             try (ResultSet resultadoDeOperacion = declaracionPreparada.executeQuery()) {
