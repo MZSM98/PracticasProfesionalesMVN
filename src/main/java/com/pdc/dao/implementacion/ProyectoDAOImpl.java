@@ -161,7 +161,8 @@ public class ProyectoDAOImpl implements IProyectoDAO {
     @Override
     public List<ProyectoDTO> listarProyectos() throws SQLException {
 
-        String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable, vacantes FROM proyecto";
+        String consultaTodoSQL = "SELECT proyectoID, titulo, idperiodoescolar, descripcion, rfcMoral, estadoProyecto, fechaInicio, fechaFinal, responsable,"
+                + "cronogramaMesUno, cronogramaMesDos, cronogramaMesTres, cronogramaMesCuatro, vacantes FROM proyecto";
         List<ProyectoDTO> listaProyectos = new ArrayList<>();
 
         try (Connection conexion = ConexionBD.getInstancia().conectar();
@@ -180,14 +181,20 @@ public class ProyectoDAOImpl implements IProyectoDAO {
                 proyecto.setDescripcionProyecto(resultadoDeOperacion.getString(DESCRIPCION));
 
                 String rfcMoral = resultadoDeOperacion.getString(RFC_MORAL);
-                OrganizacionVinculadaDTO organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
+                OrganizacionVinculadaDTO organizacionVinculada;
+                organizacionVinculada = interfazOrganizacionVinculadaDAO.buscarOrganizacionVinculada(rfcMoral);
                 proyecto.setOrganizacion(organizacionVinculada);
                 proyecto.setEstadoProyecto(resultadoDeOperacion.getString(ESTADO_PROYECTO));
                 proyecto.setFechaInicio(resultadoDeOperacion.getDate(FECHA_INICIO));
                 proyecto.setFechaFinal(resultadoDeOperacion.getDate(FECHA_FINAL));
-                ResponsableOrganizacionVinculadaDTO responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
+                ResponsableOrganizacionVinculadaDTO responsable;
+                responsable = interfazResponsableOrganizacionVinculadaDAO.buscarResponsableOV(rfcMoral);
                 proyecto.setResponsable(responsable);
                 proyecto.setVacantes(resultadoDeOperacion.getInt(VACANTES));
+                proyecto.setCronogramaMesUno(resultadoDeOperacion.getString(CRONOGRAMA_MES_UNO));
+                proyecto.setCronogramaMesDos(resultadoDeOperacion.getString(CRONOGRAMA_MES_DOS));
+                proyecto.setCronogramaMesTres(resultadoDeOperacion.getString(CRONOGRAMA_MES_TRES));
+                proyecto.setCronogramaMesCuatro(resultadoDeOperacion.getString(CRONOGRAMA_MES_CUATRO));
 
                 listaProyectos.add(proyecto);
             }

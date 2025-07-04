@@ -29,18 +29,6 @@ public class ConexionBD {
             LOG.error("No se encontró el driver para la base de datos");
             throw new SQLException("Driver de base de datos no encontrado", e);
         }
-<<<<<<< HEAD
-        
-        this.conexionBaseDatos = DriverManager.getConnection(url, user, password);  
-        
-    }
-    
-    public static ConexionBD getInstanciaConexionBaseDatos() throws SQLException {
-        
-        if (instanciaConexionBaseDatos == null || instanciaConexionBaseDatos.getConexionBaseDatos().isClosed()) {
-            instanciaConexionBaseDatos = new ConexionBD();
-=======
-
         try {
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
@@ -65,7 +53,6 @@ public class ConexionBD {
             if (instanciaConexionBaseDatos == null) {
                 instanciaConexionBaseDatos = new ConexionBD();
             }
->>>>>>> e1e8a4d2fe1ed54be4d82b94b811988debf47b3b
         }
         return instanciaConexionBaseDatos;
     }

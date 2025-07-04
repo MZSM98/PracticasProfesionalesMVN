@@ -33,6 +33,7 @@ import com.pdc.utileria.ConstantesUtil;
 import com.pdc.utileria.RestriccionCamposUtil;
 import com.pdc.utileria.manejador.ManejadorDeVistas;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javafx.scene.control.DatePicker;
@@ -201,10 +202,13 @@ public class CoordinadorRegistroProyectoController implements Initializable {
         textDescripcionProyecto.setText(proyectoDTO.getDescripcionProyecto());
         comboPeriodoEscolar.getSelectionModel().select(proyectoDTO.getPeriodoEscolar());
         spinnerVacantes.getValueFactory().setValue(proyectoDTO.getVacantes());
-        textCronogramaMesUno.setText(String.valueOf(proyectoDTO.getCronogramaMesUno()));
-        textCronogramaMesDos.setText(String.valueOf(proyectoDTO.getCronogramaMesDos()));
-        textCronogramaMesTres.setText(String.valueOf(proyectoDTO.getCronogramaMesTres()));
-        textCronogramaMesCuatro.setText(String.valueOf(proyectoDTO.getCronogramaMesCuatro()));
+        textCronogramaMesUno.setText(proyectoDTO.getCronogramaMesUno());
+        textCronogramaMesDos.setText(proyectoDTO.getCronogramaMesDos());
+        textCronogramaMesTres.setText(proyectoDTO.getCronogramaMesTres());
+        textCronogramaMesCuatro.setText(proyectoDTO.getCronogramaMesCuatro());
+        dateInicioProyecto.setValue(proyectoDTO.getFechaInicio().toLocalDate());
+        dateFinalProyecto.setValue(proyectoDTO.getFechaFinal().toLocalDate());
+        
         
         try {
             
@@ -225,7 +229,7 @@ public class CoordinadorRegistroProyectoController implements Initializable {
             
         }catch(SQLException sqle){
             
-            LOG.error(AlertaUtil.ALERTA_ERROR_BD + sqle);
+            LOG.error(AlertaUtil.ALERTA_ERROR_BD, sqle);
             AlertaUtil.mostrarAlertaBaseDatos();
         }
     }
